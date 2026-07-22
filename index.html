@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GC 글로벌사업본부 인포허브</title>
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+  :root{
+    --paper:#eef2f7; --card:#ffffff; --card-2:#f5f8fc;
+    --ink:#0d1f33; --ink-2:#3f5064; --ink-3:#76899d;
+    --line:#dce4ef;
+    --gc-deep-blue:#002b49; --gc-green:#007a33;
+    --c-fx:#3b5bdb; --c-news:#0072ce; --c-compet:#6d28d9; --c-events:#007a33; --c-acad:#9f1239;
+    --shadow-sm:0 1px 2px rgba(0,43,73,.05),0 3px 10px rgba(0,43,73,.05);
+    --brandgrad:linear-gradient(100deg,#002b49 0%,#005c9e 48%,#007a33 100%);
+    --fs:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,system-ui,sans-serif;
+  }
+  html[data-theme="dark"]{
+    --paper:#0c141d; --card:#141f2b; --card-2:#101a24;
+    --ink:#e8eef5; --ink-2:#a7b6c6; --ink-3:#6f8195;
+    --line:#243343;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 3px 10px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--paper); color:var(--ink); font-family:var(--fs);
+    -webkit-font-smoothing:antialiased; display:flex; flex-direction:column; min-height:100vh;
+  }
+
+  /* ── 브랜드 바 ── */
+  .brandbar{ background:var(--gc-deep-blue); color:#fff; border-bottom:1px solid rgba(255,255,255,.08); position:sticky; top:0; z-index:50; }
+  .brandbar-inner{ max-width:1240px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:13px; }
+  .logochip{
+    width:34px; height:34px; border-radius:8px; background:#fff; color:var(--gc-deep-blue);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.92rem; letter-spacing:-.03em; flex:none;
+  }
+  .btitle{ display:flex; flex-direction:column; gap:2px; }
+  .btitle .kr{ font-weight:650; font-size:1.02rem; letter-spacing:-.01em; }
+  .btitle .en{ font-size:.66rem; opacity:.55; letter-spacing:.13em; font-weight:500; text-transform:uppercase; }
+  .spacer{ flex:1; }
+  .themebtn{
+    background:transparent; color:rgba(255,255,255,.82); border:1px solid rgba(255,255,255,.22);
+    border-radius:8px; padding:7px 13px; font-size:.8rem; font-weight:600; cursor:pointer;
+    display:inline-flex; align-items:center; gap:7px; transition:border-color .15s, color .15s; font-family:inherit;
+  }
+  .themebtn:hover{ border-color:rgba(255,255,255,.5); color:#fff; }
+
+  /* ── 메뉴바 ── */
+  .navbar{ background:var(--card); border-bottom:1px solid var(--line); position:sticky; top:63px; z-index:40; }
+  .navbar-inner{ max-width:1240px; margin:0 auto; padding:0 18px; display:flex; gap:4px; overflow-x:auto; }
+  .navitem{
+    appearance:none; background:none; border:none; font-family:inherit; cursor:pointer;
+    padding:14px 4px 12px; margin:0 12px; font-size:.9rem; font-weight:600; color:var(--ink-3); white-space:nowrap;
+    letter-spacing:-.01em; border-bottom:2px solid transparent; transition:color .14s, border-color .14s;
+  }
+  .navitem:first-child{ margin-left:4px; }
+  .navitem .ico{ display:none; }
+  .navitem:hover{ color:var(--ink); }
+  .navitem.active{ color:var(--ink); border-bottom-color:var(--gc-green); font-weight:700; }
+
+  /* ── 콘텐츠 ── */
+  .stage{ flex:1; position:relative; display:flex; }
+  .frameWrap{ flex:1; position:relative; }
+  .frameWrap iframe{ position:absolute; inset:0; width:100%; height:100%; border:none; background:var(--paper); }
+
+  @media (max-width:620px){
+    .brandbar-inner{ padding:11px 15px; } .btitle .kr{ font-size:.96rem; } .btitle .en{ display:none; }
+    .navbar{ top:57px; } .navitem{ padding:12px 3px 10px; margin:0 9px; font-size:.86rem; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- 브랜드 바 -->
+  <header class="brandbar">
+    <div class="brandbar-inner">
+      <div class="logochip">GC</div>
+      <div class="btitle">
+        <span class="kr">GC 글로벌사업본부 인포허브</span>
+        <span class="en">GLOBAL BUSINESS UNIT · INFO HUB</span>
+      </div>
+      <div class="spacer"></div>
+      <button class="themebtn" id="themeBtn"><span id="themeIco">🌙</span> <span id="themeTxt">다크</span></button>
+    </div>
+  </header>
+
+  <!-- 메뉴바 -->
+  <nav class="navbar">
+    <div class="navbar-inner" id="nav">
+      <button class="navitem" data-route="fx"><span class="ico">💱</span>실시간 환율</button>
+      <button class="navitem" data-route="competitor"><span class="ico">📈</span>시장동향</button>
+      <button class="navitem" data-route="events"><span class="ico">📅</span>학회일정</button>
+      <button class="navitem" data-route="academic"><span class="ico">📚</span>학술동향</button>
+    </div>
+  </nav>
+
+  <!-- 콘텐츠 (iframe) -->
+  <div class="stage">
+    <div class="frameWrap" id="frameWrap"></div>
+  </div>
+
+<script>
+"use strict";
+/* ═══════════════ 라우팅 ═══════════════ */
+const ROUTES = {
+  fx:        { file:"환율.html" },
+  competitor:{ file:"경쟁동향_대시보드.html" },
+  events:    { file:"글로벌학회일정_대시보드.html" },
+  academic: { file:"글로벌학술동향_대시보드.html" },
+};
+const DEFAULT_ROUTE = "fx";
+const frames = {};
+const frameWrap = document.getElementById("frameWrap");
+
+function currentRoute(){
+  const h = (location.hash || "").replace("#","");
+  return ROUTES[h] ? h : DEFAULT_ROUTE;
+}
+function ensureFrame(route){
+  if(frames[route]) return frames[route];
+  const f = document.createElement("iframe");
+  f.title = route;
+  f.src = ROUTES[route].file;
+  f.addEventListener("load", ()=> postThemeTo(f));
+  frameWrap.appendChild(f);
+  frames[route] = f;
+  return f;
+}
+function showRoute(route){
+  document.querySelectorAll(".navitem").forEach(b=> b.classList.toggle("active", b.dataset.route===route));
+  const target = ensureFrame(route);
+  Object.values(frames).forEach(f=> f.style.display = (f===target ? "block" : "none"));
+}
+function navTo(route){ location.hash = "#"+route; }
+document.getElementById("nav").addEventListener("click", e=>{
+  const b = e.target.closest(".navitem"); if(!b) return;
+  navTo(b.dataset.route);
+});
+window.addEventListener("hashchange", ()=> showRoute(currentRoute()));
+
+/* ═══════════════ 테마 ═══════════════ */
+const THEME_KEY = "gbu-theme";
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme", t);
+  document.getElementById("themeIco").textContent = t==="dark" ? "☀️" : "🌙";
+  document.getElementById("themeTxt").textContent = t==="dark" ? "라이트" : "다크";
+  try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
+  Object.values(frames).forEach(postThemeTo);
+}
+function postThemeTo(frame){
+  const t = document.documentElement.getAttribute("data-theme");
+  try{ frame.contentWindow.postMessage({type:"gbu-theme", theme:t}, "*"); }catch(e){}
+}
+document.getElementById("themeBtn").addEventListener("click", ()=>{
+  const cur = document.documentElement.getAttribute("data-theme");
+  applyTheme(cur==="dark" ? "light" : "dark");
+});
+
+/* ═══════════════ 초기화 ═══════════════ */
+(function init(){
+  let t="light";
+  try{ t=localStorage.getItem(THEME_KEY)||"light"; }catch(e){}
+  applyTheme(t);
+  if(!location.hash) location.replace("#"+DEFAULT_ROUTE);
+  showRoute(currentRoute());
+})();
+</script>
+</body>
+</html>

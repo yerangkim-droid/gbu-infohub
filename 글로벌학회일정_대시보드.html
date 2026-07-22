@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>글로벌 학회·행사 일정 달력 — GC녹십자 글로벌사업본부</title>
+<style>
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+  :root{
+    --paper:#f5f8fc; --card:#ffffff; --ink:#132a49; --ink-2:#4a5b73; --ink-3:#8291a6;
+    --line:#e0e7f1; --line-2:#eef3f9;
+    --navy:#0b5c2e; --accent:#007a33; --accent-strong:#005c26; --accent-soft:#007a3314;
+    --brand1:#007a33; --brand2:#43b02a;
+    --shadow:0 1px 2px rgba(20,54,95,.06),0 3px 10px rgba(20,54,95,.05);
+    --pop-shadow:0 8px 28px rgba(20,54,95,.20),0 2px 8px rgba(20,54,95,.12);
+    /* 유형별 색상 */
+    --conf:#1d4ed8; --partner:#6d28d9; --regu:#b45309;
+    --conf-bg:#1d4ed814; --partner-bg:#6d28d914; --regu-bg:#b4530916;
+    /* 상태 색상 */
+    --live:#0f766e; --live-bg:#0f766e16; --up:#0072ce; --up-bg:#0072ce16;
+    --sun:#c0392b; --sat:#2563eb;
+    --today-bg:#007a3314;
+    --radius:12px; --radius-sm:8px;
+    --fs:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --paper:#0c1420; --card:#131f30; --ink:#e9f0f8; --ink-2:#a6b5c9; --ink-3:#6f7f95;
+    --line:#243449; --line-2:#1a2636; --accent:#6fd39a; --accent-strong:#9ee7bf; --accent-soft:#6fd39a22;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
+    --pop-shadow:0 10px 34px rgba(0,0,0,.5),0 3px 12px rgba(0,0,0,.4);
+    --conf:#6ea8fe; --partner:#a78bfa; --regu:#fbbf24;
+    --conf-bg:#6ea8fe1c; --partner-bg:#a78bfa1c; --regu-bg:#fbbf241c;
+    --live:#2dd4bf; --live-bg:#2dd4bf1c; --up:#38bdf8; --up-bg:#38bdf81c;
+    --sun:#f87171; --sat:#60a5fa; --today-bg:#43b02a1c;
+  }}
+  :root[data-theme="dark"]{
+    --paper:#0c1420; --card:#131f30; --ink:#e9f0f8; --ink-2:#a6b5c9; --ink-3:#6f7f95;
+    --line:#243449; --line-2:#1a2636; --accent:#6fd39a; --accent-strong:#9ee7bf; --accent-soft:#6fd39a22;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
+    --pop-shadow:0 10px 34px rgba(0,0,0,.5),0 3px 12px rgba(0,0,0,.4);
+    --conf:#6ea8fe; --partner:#a78bfa; --regu:#fbbf24;
+    --conf-bg:#6ea8fe1c; --partner-bg:#a78bfa1c; --regu-bg:#fbbf241c;
+    --live:#2dd4bf; --live-bg:#2dd4bf1c; --up:#38bdf8; --up-bg:#38bdf81c;
+    --sun:#f87171; --sat:#60a5fa; --today-bg:#43b02a1c;
+  }
+  :root[data-theme="light"]{
+    --paper:#f5f8fc; --card:#ffffff; --ink:#132a49; --ink-2:#4a5b73; --ink-3:#8291a6;
+    --line:#e0e7f1; --line-2:#eef3f9; --accent:#007a33; --accent-strong:#005c26; --accent-soft:#007a3314;
+    --shadow:0 1px 2px rgba(20,54,95,.06),0 3px 10px rgba(20,54,95,.05);
+    --pop-shadow:0 8px 28px rgba(20,54,95,.20),0 2px 8px rgba(20,54,95,.12);
+    --conf:#1d4ed8; --partner:#6d28d9; --regu:#b45309;
+    --conf-bg:#1d4ed814; --partner-bg:#6d28d914; --regu-bg:#b4530916;
+    --live:#0f766e; --live-bg:#0f766e16; --up:#0072ce; --up-bg:#0072ce16;
+    --sun:#c0392b; --sat:#2563eb; --today-bg:#007a3314;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--fs);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  /* Brand bar (GC CI) */
+  .brandbar{background:linear-gradient(100deg,var(--brand1),var(--brand2));color:#fff}
+  .bwrap{max-width:1200px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:15px}
+  .logochip{background:#fff;border-radius:9px;padding:6px 13px;display:flex;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+  .logochip .gc{font-weight:800;font-size:15px;letter-spacing:-.02em;background:linear-gradient(100deg,#007a33,#43b02a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .bdiv{width:1px;height:30px;background:rgba(255,255,255,.28)}
+  .btext .b1{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
+  .btext .b2{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#c4d6ee;margin-top:1px}
+  .bspacer{flex:1}
+  #themeBtn{cursor:pointer;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);color:#fff;
+    border-radius:999px;padding:5px 13px;font-size:12.5px;font-family:inherit}
+  #themeBtn:hover{background:rgba(255,255,255,.26);border-color:#fff}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:24px 22px 72px}
+
+  header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;padding:4px 0 20px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  h1{font-size:clamp(21px,2.2vw,26px);margin:7px 0 0;font-weight:700;letter-spacing:-.02em;line-height:1.25;text-wrap:balance}
+  .sub{color:var(--ink-2);font-size:13.5px;font-weight:400;line-height:1.6;max-width:62ch;margin-top:8px;word-break:keep-all;text-wrap:pretty}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .mchip{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 11px;color:var(--ink-2);font-size:12px;white-space:nowrap}
+  .mchip b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+  .seclbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 9px}
+
+  /* KPI tiles */
+  .kpis{display:flex;flex-wrap:wrap;gap:10px}
+  .kpi{flex:1 1 150px;min-width:142px;background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:9px 17px;box-shadow:var(--shadow);cursor:pointer;font-family:inherit;transition:border-color .12s,background .12s;
+    display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .kpi:hover{border-color:var(--accent)}
+  .kpi[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft),var(--shadow);background:var(--accent-soft)}
+  .kpi .lbl{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2);font-weight:600;white-space:nowrap}
+  .kpi .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .kpi .num{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--ink)}
+  .kpi.total .num{color:var(--accent)}
+
+  /* filters */
+  .controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:10px}
+  .search{flex:1 1 240px;min-width:200px;position:relative}
+  .search input{width:100%;padding:9px 12px 9px 33px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--card);color:var(--ink);font-size:13.5px;font-family:inherit}
+  .search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink-3)}
+  .selwrap{display:flex;align-items:center;gap:6px}
+  .selwrap label{font-size:12px;color:var(--ink-3);font-weight:600}
+  select{padding:9px 30px 9px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--card);color:var(--ink);
+    font-size:13px;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238291a6' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
+  select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  #reset{background:transparent;border:1px solid var(--line);color:var(--ink-2);border-radius:var(--radius-sm);padding:9px 14px;cursor:pointer;font-size:13px;font-family:inherit}
+  #reset:hover{border-color:var(--regu);color:var(--regu)}
+
+  .catfilter{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:12.5px;cursor:pointer;
+    color:var(--ink-2);font-family:inherit;display:flex;align-items:center;gap:7px;transition:.12s}
+  .pill:hover{border-color:var(--accent)}
+  .pill[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  .pill .cnt{font-size:11px;opacity:.72;font-variant-numeric:tabular-nums}
+  .pill .pdot{width:9px;height:9px;border-radius:3px;flex:none}
+  .pill[aria-pressed="true"] .pdot{box-shadow:0 0 0 1.5px rgba(255,255,255,.6)}
+  .pill-all{font-weight:700}
+  .pill .rdot{font-size:12px;line-height:1}
+
+  /* ── Filter block (label + pills) ── */
+  .filterblock{display:flex;align-items:flex-start;gap:11px;margin-top:12px}
+  .fl-label{flex:none;font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;
+    padding-top:8px;min-width:36px}
+  .filterblock .catfilter{margin-top:0;flex:1}
+
+  /* ── Calendar toolbar ── */
+  .caltoolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .navbtn{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:var(--radius-sm);
+    width:34px;height:34px;cursor:pointer;font-size:16px;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:.12s}
+  .navbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .caltitle{font-size:18px;font-weight:800;letter-spacing:-.01em;min-width:150px;text-align:center;font-variant-numeric:tabular-nums}
+  .todaybtn{background:var(--accent-soft);border:1px solid var(--line);color:var(--accent);border-radius:var(--radius-sm);
+    padding:8px 14px;cursor:pointer;font-size:13px;font-weight:700;font-family:inherit}
+  .todaybtn:hover{border-color:var(--accent)}
+  .legend{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .legend .lg{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2);font-weight:600}
+  .legend .lgdot{width:11px;height:11px;border-radius:3px;flex:none}
+
+  /* ── Calendar grid ── */
+  .calwrap{margin-top:12px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+  .calhead{display:grid;grid-template-columns:repeat(7,1fr);background:linear-gradient(180deg,var(--line-2),transparent)}
+  .calhead div{padding:9px 8px;text-align:center;font-size:12px;font-weight:800;color:var(--ink-2);border-bottom:1px solid var(--line)}
+  .calhead div.sun{color:var(--sun)}
+  .calhead div.sat{color:var(--sat)}
+
+  .cal-week{position:relative;border-bottom:1px solid var(--line)}
+  .cal-week:last-child{border-bottom:none}
+  .cal-bg{position:absolute;inset:0;display:grid;grid-template-columns:repeat(7,1fr);z-index:0}
+  .cal-day{border-right:1px solid var(--line);padding:7px 9px}
+  .cal-day:last-child{border-right:none}
+  .cal-day.oth{background:var(--line-2)}
+  .cal-day.oth .dnum{color:var(--ink-3);opacity:.5}
+  .cal-day.sun .dnum{color:var(--sun)}
+  .cal-day.sat .dnum{color:var(--sat)}
+  .cal-day.holiday .dnum{color:var(--sun)}
+  .cal-day.today{background:var(--today-bg)}
+  .cal-day .dnum{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
+  .cal-day.today .dnum{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;
+    background:var(--accent);color:#fff;border-radius:7px;padding:0 5px}
+  .cal-day .holname{display:inline-block;font-size:10px;font-weight:800;color:var(--sun);margin-top:3px;line-height:1.4;
+    background:rgba(224,0,43,.12);border-radius:5px;padding:0 6px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 2px);vertical-align:top}
+
+  .cal-bars{position:relative;z-index:1;display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:25px;
+    gap:5px 4px;padding:30px 5px 10px;min-height:100px}
+  .cal-bar{grid-row:auto;border:none;cursor:pointer;font-family:inherit;text-align:left;
+    border-radius:6px;padding:2px 9px;font-size:12px;font-weight:700;line-height:21px;height:23px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;transition:filter .12s,transform .06s;
+    display:flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+  .cal-bar:hover{filter:brightness(1.08)}
+  .cal-bar:active{transform:translateY(1px)}
+  .cal-bar:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+  .cal-bar.type-학회{background:var(--conf)}
+  .cal-bar.type-파트너링{background:var(--partner)}
+  .cal-bar.type-규제전시{background:var(--regu)}
+  .cal-bar.past{opacity:.5}
+  .cal-bar.live{box-shadow:0 0 0 2px var(--card),0 0 0 3.5px var(--live)}
+  .cal-bar.contL{border-top-left-radius:0;border-bottom-left-radius:0}
+  .cal-bar.contR{border-top-right-radius:0;border-bottom-right-radius:0}
+  .cal-bar .arw{opacity:.85;font-weight:800}
+
+  .empty{text-align:center;color:var(--ink-3);padding:44px 20px;font-size:14px}
+  .empty .big{font-size:32px;margin-bottom:8px}
+
+  .resultbar{margin:14px 2px 0;font-size:13px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .resultbar b{color:var(--ink);font-variant-numeric:tabular-nums}
+  .resultbar .ctx{color:var(--accent);font-weight:700}
+
+  /* ── Popup ── */
+  #popup{position:fixed;z-index:50;width:300px;max-width:calc(100vw - 24px);background:var(--card);
+    border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--pop-shadow);padding:15px 16px;display:none}
+  #popup.show{display:block}
+  #popup::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;background:var(--bar,var(--accent))}
+  #popup .pu-close{position:absolute;top:9px;right:10px;background:transparent;border:none;color:var(--ink-3);cursor:pointer;font-size:17px;line-height:1;padding:2px 4px}
+  #popup .pu-close:hover{color:var(--ink)}
+  #popup .pu-title{font-size:14.5px;font-weight:800;letter-spacing:-.01em;line-height:1.35;padding-right:20px}
+  #popup .pu-title .abbr{color:var(--accent)}
+  #popup .pu-date{font-size:12.5px;color:var(--ink-2);font-weight:700;font-variant-numeric:tabular-nums;margin-top:7px;display:flex;align-items:center;gap:6px}
+  #popup .pu-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  #popup .status{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;white-space:nowrap}
+  #popup .status.past{background:var(--line-2);color:var(--ink-3)}
+  #popup .status.live{background:var(--live-bg);color:var(--live)}
+  #popup .status.up{background:var(--up-bg);color:var(--up)}
+  .tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+  .tag .tdot{width:7px;height:7px;border-radius:2px;flex:none}
+  .tag.loc{background:var(--line-2);color:var(--ink-2)}
+  .tag.type-학회{background:var(--conf-bg);color:var(--conf)}
+  .tag.type-파트너링{background:var(--partner-bg);color:var(--partner)}
+  .tag.type-규제전시{background:var(--regu-bg);color:var(--regu)}
+  .tag.cat{background:var(--accent-soft);color:var(--accent)}
+  #popup .pu-note{font-size:12px;color:var(--ink-3);line-height:1.5;margin-top:10px}
+  #popup .pu-link{display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:12.5px;font-weight:700;color:var(--accent);text-decoration:none}
+  #popup .pu-link:hover{text-decoration:underline}
+
+  footer.notes{margin-top:28px;font-size:12px;color:var(--ink-3);line-height:1.85;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px}
+  footer.notes .ftitle{font-weight:800;color:var(--ink-2);margin-bottom:5px;font-size:12.5px}
+  footer.notes code{background:var(--accent-soft);color:var(--accent);padding:1px 6px;border-radius:5px;font-size:11.5px}
+
+  @media (max-width:640px){
+    .bwrap,.wrap{padding-left:14px;padding-right:14px}
+    .legend{margin-left:0;width:100%}
+    .calwrap{overflow-x:auto}
+    .calinner{min-width:680px}
+    .cal-bar{font-size:11px;padding:2px 6px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Global Conference & Event Calendar</div>
+      <h1>글로벌 제약·바이오 학회 / 행사 달력</h1>
+      <div class="sub">전 세계 주요 제약·바이오 학회, 파트너링·투자, 규제·전시 행사를 달력으로. 미국·유럽 필수 포함, 그 외 지역은 대륙별로 분류됩니다. 행사 막대를 클릭하면 상세와 공식 홈페이지를 볼 수 있습니다.</div>
+    </div>
+    <div class="chips">
+      <span class="mchip">총 <b id="chipTotal">0</b>개 행사</span>
+      <span class="mchip">오늘 <b id="chipToday">–</b></span>
+      <span class="mchip" id="holChip">🇰🇷 공휴일 불러오는 중…</span>
+    </div>
+  </header>
+
+  <div class="seclbl">요약 · 클릭하여 필터 / 이동</div>
+  <div class="kpis" id="kpis"></div>
+
+  <div class="controls">
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="searchBox" type="text" placeholder="행사명 · 약칭 · 도시 · 국가 검색 (예: ASCO, 샌디에이고, 독일)">
+    </div>
+    <button id="reset">초기화</button>
+  </div>
+
+  <div class="filterblock">
+    <span class="fl-label">지역</span>
+    <div class="catfilter" id="regionPills"></div>
+  </div>
+  <div class="filterblock">
+    <span class="fl-label">유형</span>
+    <div class="catfilter" id="typePills"></div>
+  </div>
+
+  <div class="caltoolbar">
+    <button class="navbtn" id="prevBtn" aria-label="이전 달">‹</button>
+    <div class="caltitle" id="calTitle">–</div>
+    <button class="navbtn" id="nextBtn" aria-label="다음 달">›</button>
+    <button class="todaybtn" id="todayBtn">오늘</button>
+    <div class="legend">
+      <span class="lg"><span class="lgdot" style="background:var(--conf)"></span>학회</span>
+      <span class="lg"><span class="lgdot" style="background:var(--partner)"></span>파트너링</span>
+      <span class="lg"><span class="lgdot" style="background:var(--regu)"></span>규제·전시</span>
+    </div>
+  </div>
+
+  <div class="calwrap">
+    <div class="calinner">
+      <div class="calhead">
+        <div class="sun">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="sat">토</div>
+      </div>
+      <div id="calBody"></div>
+    </div>
+  </div>
+
+  <div class="resultbar" id="resultbar"></div>
+
+  <footer class="notes">
+    <div class="ftitle">안내</div>
+    <div>• 일정·URL은 각 주최 측 공식 발표 기준의 내장 데이터입니다. 정적 페이지 특성상 실시간 크롤링이 아니므로, 출장·등록 전 <b>공식 홈페이지에서 최종 확인</b>하시기 바랍니다.</div>
+    <div>• 한국 공휴일은 <code>date.nager.at</code> 공개 API에서 <b>실시간</b>으로 불러와 표시합니다(연도 이동 시 해당 연도 공휴일 자동 반영). 오프라인이면 공휴일이 표시되지 않을 수 있습니다.</div>
+    <div>• 데이터 갱신: <code>data/events.data.js</code> 파일의 <code>DATA_START ~ DATA_END</code> 구간 교체로 정기 갱신 가능(인포허브 홈 화면과 동일 데이터 공유).</div>
+  </footer>
+</div>
+
+<!-- 행사 상세 팝업 -->
+<div id="popup" role="dialog" aria-label="행사 상세"></div>
+
+<!-- 공유 이벤트 데이터 (인포허브 홈과 단일 출처) -->
+<script src="data/events.data.js"></script>
+<script>
+// ── 인포허브(부모 프레임) 테마 동기화 ──
+window.addEventListener("message", function(e){
+  if(e.data && e.data.type === "gbu-theme")
+    document.documentElement.setAttribute("data-theme", e.data.theme);
+});
+// ── 기준일: 접속 시점의 실제 오늘(로컬 자정 기준)으로 실시간 반영 ─────────
+const TODAY = (()=>{ const n=new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); })();
+
+// ── 지역 분류: 미국·유럽은 별도 최상위, 그 외는 대륙 단위 ────────────────
+const CONT_OF = {
+  // 아시아
+  "중국":"아시아","일본":"아시아","대만":"아시아","홍콩":"아시아","몽골":"아시아",
+  "베트남":"아시아","태국":"아시아","말레이시아":"아시아","인도네시아":"아시아",
+  "필리핀":"아시아","캄보디아":"아시아","미얀마":"아시아","브루나이":"아시아",
+  "인도":"아시아","파키스탄":"아시아","방글라데시":"아시아","네팔":"아시아",
+  "카자흐스탄":"아시아","싱가포르":"아시아","한국":"아시아","조지아":"아시아","아르메니아":"아시아",
+  // 중동
+  "사우디아라비아":"중동","아랍에미리트 연합":"중동","바레인":"중동","오만":"중동",
+  "예멘":"중동","이라크":"중동","이란":"중동","레바논":"중동","시리아":"중동",
+  "요르단":"중동","튀르키예":"중동","카타르":"중동","이스라엘":"중동","쿠웨이트":"중동",
+  // 유럽(CIS 포함)
+  "러시아 연방":"유럽","우크라이나":"유럽","벨라루스":"유럽","몰도바":"유럽",
+  // 아프리카
+  "리비아":"아프리카","튀니지":"아프리카","모로코":"아프리카","알제리":"아프리카",
+  "이집트":"아프리카","케냐":"아프리카","남아프리카 공화국":"아프리카","나이지리아":"아프리카",
+  // 북미(중미 포함)
+  "미국":"북미","캐나다":"북미","멕시코":"북미","과테말라":"북미","온두라스":"북미",
+  "코스타리카":"북미","도미니카 공화국":"북미","파나마":"북미",
+  // 남미
+  "브라질":"남미","아르헨티나":"남미","칠레":"남미","콜롬비아":"남미","페루":"남미",
+  "우루과이":"남미","파라과이":"남미","에콰도르":"남미",
+  // 오세아니아
+  "호주":"오세아니아","뉴질랜드":"오세아니아"
+};
+const EUROPE = new Set(["독일","프랑스","스페인","이탈리아","스위스","오스트리아","네덜란드",
+  "벨기에","영국","아일랜드","덴마크","스웨덴","노르웨이","핀란드","포르투갈","폴란드",
+  "체코","그리스","헝가리","룩셈부르크","슬로베니아","크로아티아"]);
+function regionOf(country){
+  if(country==="미국") return "미국";           // 미국은 별도 최상위 지역
+  if(country==="글로벌"||country==="온라인"||!country) return "글로벌";
+  if(EUROPE.has(country)) return "유럽";
+  return CONT_OF[country] || "글로벌";
+}
+const REGION_ORDER = ["미국","유럽","아시아","중동","북미","남미","아프리카","오세아니아","글로벌"];
+const REGION_EMOJI = {"미국":"🇺🇸","유럽":"🇪🇺","아시아":"🌏","중동":"🕌","북미":"🌎","남미":"🏔️","아프리카":"🌍","오세아니아":"🦘","글로벌":"🌐"};
+
+// ── 유형 정의 ────────────────────────────────────────────────────────────
+const TYPES = [
+  {key:"학회", label:"산업·학술 학회", varc:"--conf"},
+  {key:"파트너링", label:"파트너링·투자", varc:"--partner"},
+  {key:"규제전시", label:"규제·전시", varc:"--regu"}
+];
+const TYPE_LABEL = {"학회":"학회","파트너링":"파트너링","규제전시":"규제·전시"};
+
+// ── 이벤트 데이터 (재생성 마커 사이 교체로 갱신) ─────────────────────────
+// 이벤트 데이터는 data/events.data.js(window.GBU_EVENTS)에서 단일 출처로 관리합니다.
+// (인포허브 홈 화면과 공유 · 갱신은 그 파일 한 곳에서)
+const EVENTS = (window.GBU_EVENTS || []);
+
+// ── 유틸 ────────────────────────────────────────────────────────────────
+const MONTH_KO = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+function parseD(s){ return new Date(s+"T00:00:00"); }
+function pad(n){ return String(n).padStart(2,"0"); }
+function fmtToday(d){ return d.getFullYear()+"."+pad(d.getMonth()+1)+"."+pad(d.getDate()); }
+function dayDiff(a,b){ return Math.round((a-b)/86400000); }
+function addDays(d,n){ return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n); }
+function ymd(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+
+function fmtRange(s,e){
+  const a=parseD(s), b=parseD(e);
+  const ay=a.getFullYear(), am=a.getMonth()+1, ad=a.getDate();
+  const by=b.getFullYear(), bm=b.getMonth()+1, bd=b.getDate();
+  const base=ay+"."+pad(am)+"."+pad(ad);
+  if(s===e) return base;
+  if(ay===by && am===bm) return base+"–"+pad(bd);
+  if(ay===by) return base+"–"+pad(bm)+"."+pad(bd);
+  return base+"–"+by+"."+pad(bm)+"."+pad(bd);
+}
+function statusOf(ev){
+  const s=parseD(ev.start), e=parseD(ev.end);
+  if(e < TODAY) return "past";
+  if(s <= TODAY && TODAY <= e) return "live";
+  return "up";
+}
+const daysUntil = (s)=> dayDiff(parseD(s), TODAY);
+
+// region 파생 + 정렬
+EVENTS.forEach(ev=> ev.region = ev.region || regionOf(ev.country));
+EVENTS.sort((a,b)=> a.start < b.start ? -1 : a.start > b.start ? 1 : 0);
+
+// ── 상태 ────────────────────────────────────────────────────────────────
+const state = { q:"", region:"all", type:"all" };
+let viewYear = TODAY.getFullYear();
+let viewMonth = TODAY.getMonth()+1; // 1-12
+
+// ── 한국 공휴일 (date.nager.at 공개 API에서 실시간 로드) ─────────────────
+const HOLIDAY_API = y => `https://date.nager.at/api/v3/PublicHolidays/${y}/KR`;
+// 보완 레이어: 공개 API가 누락하는 대체공휴일 등(대한민국 관보 기준). API 결과에 덮어써 병합.
+const HOLIDAY_SUPP = {
+  2026: {
+    "2026-03-02":"삼일절 대체공휴일",
+    "2026-05-25":"부처님오신날 대체공휴일",
+    "2026-08-17":"광복절 대체공휴일",
+    "2026-09-28":"추석 대체공휴일",
+    "2026-10-05":"개천절 대체공휴일"
+  },
+  2027: {
+    "2027-08-16":"광복절 대체공휴일",
+    "2027-10-04":"개천절 대체공휴일",
+    "2027-10-11":"한글날 대체공휴일",
+    "2027-12-27":"성탄절 대체공휴일"
+  }
+};
+const holidayCache = {};    // year → {"YYYY-MM-DD": name} · null(로드 실패)
+const holidayFetching = {}; // year → true(진행 중)
+let holidayOnline = null;   // null:미확인 / true / false
+function suppFor(year){ return HOLIDAY_SUPP[year] ? Object.assign({}, HOLIDAY_SUPP[year]) : null; }
+function ensureHolidays(year){
+  if(holidayCache[year]!==undefined || holidayFetching[year]) return;
+  if(typeof fetch!=="function"){ holidayCache[year]=suppFor(year); holidayOnline=false; setHolidayStatus(); return; }
+  holidayFetching[year]=true;
+  fetch(HOLIDAY_API(year), {cache:"force-cache"})
+    .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+    .then(data=>{
+      const map={};
+      data.forEach(h=>{ map[h.date]= h.localName || h.name; });
+      Object.assign(map, HOLIDAY_SUPP[year]||{}); // 대체공휴일 등 보완 병합(우선)
+      holidayCache[year]=map;
+      holidayOnline=true; setHolidayStatus();
+      renderCalendar(); // 공휴일 반영해 다시 그림
+    })
+    .catch(()=>{
+      holidayCache[year]=suppFor(year); // 오프라인이어도 대체공휴일은 표시
+      if(holidayOnline!==true) holidayOnline=false;
+      setHolidayStatus();
+      renderCalendar();
+    })
+    .finally(()=>{ holidayFetching[year]=false; });
+}
+function holidayName(d){
+  const m=holidayCache[d.getFullYear()];
+  return m ? (m[ymd(d)]||null) : null;
+}
+function setHolidayStatus(){
+  const el=document.getElementById("holChip");
+  if(!el) return;
+  if(holidayOnline===true) el.innerHTML='🇰🇷 한국 공휴일 <b>실시간</b>';
+  else if(holidayOnline===false) el.textContent='🇰🇷 공휴일 오프라인';
+  else el.textContent='🇰🇷 공휴일 불러오는 중…';
+}
+
+// ── 필터 (검색·지역·유형) ───────────────────────────────────────────────
+function passFilters(ev){
+  if(state.q){
+    const q=state.q.toLowerCase();
+    const hay=(ev.name+" "+(ev.abbr||"")+" "+ev.city+" "+ev.country+" "+ev.region+" "+(ev.category||"")).toLowerCase();
+    if(!hay.includes(q)) return false;
+  }
+  if(state.region!=="all"){
+    if(state.region==="__other__"){ if(ev.region==="미국"||ev.region==="유럽") return false; }
+    else if(ev.region!==state.region) return false;
+  }
+  if(state.type!=="all" && ev.type!==state.type) return false;
+  return true;
+}
+function filtered(){ return EVENTS.filter(passFilters); }
+
+// ── KPI (요약 + 연도 이동) ──────────────────────────────────────────────
+function buildKPIs(){
+  const host=document.getElementById("kpis");
+  const years=[...new Set(EVENTS.map(e=>e.start.slice(0,4)))].sort();
+  const upcoming=EVENTS.filter(e=>daysUntil(e.start)>=0).length;
+  const tiles=[{id:"total", lbl:"총 행사", num:EVENTS.length, color:"var(--accent)", cls:"total"}];
+  years.forEach(y=> tiles.push({id:"y"+y, lbl:y+"년 ↗", num:EVENTS.filter(e=>e.start.startsWith(y)).length, color:"var(--conf)"}));
+  tiles.push({id:"upcoming", lbl:"다가오는 행사 ↗", num:upcoming, color:"var(--up)"});
+  host.innerHTML=tiles.map(t=>
+    `<button class="kpi ${t.cls||""}" data-kpi="${t.id}" aria-pressed="false">
+      <div class="lbl"><span class="dot" style="background:${t.color}"></span>${t.lbl}</div>
+      <div class="num">${t.num}</div>
+    </button>`).join("");
+  host.querySelectorAll(".kpi").forEach(b=> b.addEventListener("click", ()=> onKPI(b.dataset.kpi)));
+}
+function onKPI(id){
+  hidePopup();
+  if(id==="total"){ state.q=""; state.region="all"; state.type="all"; renderAll(); return; }
+  if(id==="upcoming"){
+    const next=filtered().filter(e=>daysUntil(e.start)>=0).sort((a,b)=>a.start<b.start?-1:1)[0]
+      || EVENTS.filter(e=>daysUntil(e.start)>=0)[0];
+    if(next){ const d=parseD(next.start); viewYear=d.getFullYear(); viewMonth=d.getMonth()+1; }
+    renderAll(); return;
+  }
+  if(/^y\d{4}$/.test(id)){ viewYear=Number(id.slice(1)); viewMonth=1; renderAll(); return; }
+}
+
+// ── 지역 pill ────────────────────────────────────────────────────────────
+function buildRegionPills(){
+  const host=document.getElementById("regionPills");
+  const present=REGION_ORDER.filter(r=> EVENTS.some(e=>e.region===r));
+  let html=`<button class="pill pill-all" data-region="all" aria-pressed="true">전체 <span class="cnt">${EVENTS.length}</span></button>`;
+  present.forEach(r=>{ const n=EVENTS.filter(e=>e.region===r).length;
+    html+=`<button class="pill" data-region="${r}" aria-pressed="false"><span class="rdot">${REGION_EMOJI[r]||""}</span>${r} <span class="cnt">${n}</span></button>`; });
+  const other=EVENTS.filter(e=>e.region!=="미국"&&e.region!=="유럽").length;
+  html+=`<button class="pill" data-region="__other__" aria-pressed="false">기타(미국·유럽 외) <span class="cnt">${other}</span></button>`;
+  host.innerHTML=html;
+  host.querySelectorAll(".pill").forEach(b=> b.addEventListener("click", ()=>{ state.region=b.dataset.region; hidePopup(); renderAll(); }));
+}
+
+// ── 유형 pill ────────────────────────────────────────────────────────────
+function buildTypePills(){
+  const host=document.getElementById("typePills");
+  let html=`<button class="pill pill-all" data-type="all" aria-pressed="true">전체 유형 <span class="cnt">${EVENTS.length}</span></button>`;
+  TYPES.forEach(t=>{ const n=EVENTS.filter(e=>e.type===t.key).length;
+    html+=`<button class="pill" data-type="${t.key}" aria-pressed="false"><span class="pdot" style="background:var(${t.varc})"></span>${t.label} <span class="cnt">${n}</span></button>`; });
+  host.innerHTML=html;
+  host.querySelectorAll(".pill").forEach(b=> b.addEventListener("click", ()=>{ state.type=b.dataset.type; hidePopup(); renderAll(); }));
+}
+
+// ── 컨트롤 동기화 ────────────────────────────────────────────────────────
+function syncControls(){
+  const noFilter = state.region==="all" && state.type==="all" && !state.q;
+  document.querySelectorAll(".kpi").forEach(b=>{
+    const id=b.dataset.kpi;
+    let on=false;
+    if(id==="total") on=noFilter;
+    else if(/^y\d{4}$/.test(id)) on=(Number(id.slice(1))===viewYear);
+    b.setAttribute("aria-pressed", String(on));
+  });
+  document.querySelectorAll("#regionPills .pill").forEach(b=> b.setAttribute("aria-pressed", String(b.dataset.region===state.region)));
+  document.querySelectorAll("#typePills .pill").forEach(b=> b.setAttribute("aria-pressed", String(b.dataset.type===state.type)));
+  document.getElementById("searchBox").value=state.q;
+}
+
+// ── 달력 그리드 렌더 ─────────────────────────────────────────────────────
+function monthWeeks(year, month){
+  const first=new Date(year, month-1, 1);
+  const gridStart=addDays(first, -first.getDay()); // 그 주 일요일
+  const last=new Date(year, month, 0);
+  const weeksN=Math.ceil((first.getDay()+last.getDate())/7);
+  const weeks=[];
+  for(let w=0; w<weeksN; w++){
+    const days=[];
+    for(let i=0;i<7;i++) days.push(addDays(gridStart, w*7+i));
+    weeks.push(days);
+  }
+  return weeks;
+}
+// 한 주에 걸치는 이벤트 → {ev,startCol,span,lane,contL,contR}
+function weekBars(week, evs){
+  const wStart=week[0], wEnd=week[6];
+  const segs=[];
+  evs.forEach(ev=>{
+    const s=parseD(ev.start), e=parseD(ev.end);
+    if(e < wStart || s > wEnd) return;
+    const startCol=Math.max(0, dayDiff(s, wStart));
+    const endCol=Math.min(6, dayDiff(e, wStart));
+    segs.push({ev, startCol, endCol, span:endCol-startCol+1, contL:s<wStart, contR:e>wEnd, sortKey:ev.start});
+  });
+  // 레인 배정: 시작열, 그다음 시작일 순
+  segs.sort((a,b)=> a.startCol-b.startCol || (a.sortKey<b.sortKey?-1:1) || (b.span-a.span));
+  const laneEnd=[]; // 각 레인의 마지막 사용 열
+  segs.forEach(seg=>{
+    let lane=0;
+    while(lane<laneEnd.length && laneEnd[lane]>=seg.startCol) lane++;
+    seg.lane=lane; laneEnd[lane]=seg.endCol;
+  });
+  return segs;
+}
+
+let barSeq=0;
+const barMap={};   // barId → event
+function renderCalendar(){
+  const body=document.getElementById("calBody");
+  const evs=filtered();
+  const weeks=monthWeeks(viewYear, viewMonth);
+  barMap.__={}; // reset
+  let html="";
+  weeks.forEach(week=>{
+    // 배경(날짜 셀)
+    let bg=""; let weekHasHol=false;
+    week.forEach(d=>{
+      const oth = (d.getMonth()!==viewMonth-1);
+      const isToday = ymd(d)===ymd(TODAY);
+      const dow=d.getDay();
+      const hol=holidayName(d);
+      if(hol) weekHasHol=true;
+      const holDisp = hol ? hol.replace("대체공휴일","대체") : "";
+      const cls=["cal-day"];
+      if(oth) cls.push("oth");
+      if(dow===0) cls.push("sun"); else if(dow===6) cls.push("sat");
+      if(hol) cls.push("holiday");
+      if(isToday) cls.push("today");
+      bg+=`<div class="${cls.join(" ")}"><span class="dnum">${d.getDate()}</span>`+
+        (hol?`<span class="holname" title="${hol}">${holDisp}</span>`:"")+`</div>`;
+    });
+    // 막대
+    const segs=weekBars(week, evs);
+    let bars="";
+    segs.forEach(seg=>{
+      const ev=seg.ev; const st=statusOf(ev);
+      const id="b"+(barSeq++);
+      barMap[id]=ev;
+      const label=(seg.contL?'<span class="arw">◀</span>':'') +
+        (ev.abbr||ev.name) +
+        (seg.contR?'<span class="arw" style="margin-left:auto">▶</span>':'');
+      const cls=["cal-bar","type-"+ev.type];
+      if(st==="past") cls.push("past");
+      if(st==="live") cls.push("live");
+      if(seg.contL) cls.push("contL");
+      if(seg.contR) cls.push("contR");
+      bars+=`<button class="${cls.join(" ")}" data-bar="${id}" title="${ev.name}"
+        style="grid-column:${seg.startCol+1} / span ${seg.span};grid-row:${seg.lane+1}">${label}</button>`;
+    });
+    // 공휴일 있는 주는 상단 공간을 더 확보해 막대와 겹치지 않게
+    const topPad = weekHasHol ? 50 : 30;
+    const laneCount = segs.reduce((m,s)=> Math.max(m, s.lane+1), 0);
+    const minH = topPad + Math.max(laneCount,1)*29 + 8;
+    html+=`<div class="cal-week"><div class="cal-bg">${bg}</div>`+
+      `<div class="cal-bars" style="padding-top:${topPad}px;min-height:${minH}px">${bars}</div></div>`;
+  });
+  body.innerHTML=html;
+  body.querySelectorAll(".cal-bar").forEach(b=>
+    b.addEventListener("click", (e)=>{ e.stopPropagation(); showPopup(barMap[b.dataset.bar], b); }));
+}
+
+// ── 팝업 ─────────────────────────────────────────────────────────────────
+function showPopup(ev, anchor){
+  const pop=document.getElementById("popup");
+  const st=statusOf(ev);
+  const tvar = ev.type==="학회"?"--conf":ev.type==="파트너링"?"--partner":"--regu";
+  const stTag = st==="past" ? `<span class="status past">종료</span>`
+    : st==="live" ? `<span class="status live">진행 중</span>`
+    : `<span class="status up">D-${daysUntil(ev.start)}</span>`;
+  const abbr=ev.abbr?`<span class="abbr">${ev.abbr}</span> · `:"";
+  const cat=ev.category?`<span class="tag cat">${ev.category}</span>`:"";
+  const venue=ev.venue?` · ${ev.venue}`:"";
+  const note=ev.note?`<div class="pu-note">${ev.note}</div>`:"";
+  const link=ev.url?`<a class="pu-link" href="${ev.url}" target="_blank" rel="noopener">공식 홈페이지 ↗</a>`:"";
+  pop.style.setProperty("--bar", "var("+tvar+")");
+  pop.innerHTML=`<button class="pu-close" aria-label="닫기">×</button>
+    <div class="pu-title">${abbr}${ev.name}</div>
+    <div class="pu-date">📅 ${fmtRange(ev.start, ev.end)} ${stTag}</div>
+    <div class="pu-meta">
+      <span class="tag loc">📍 ${ev.city?ev.city+", ":""}${ev.country} · ${REGION_EMOJI[ev.region]||""}${ev.region}</span>
+      <span class="tag type-${ev.type}"><span class="tdot" style="background:var(${tvar})"></span>${TYPE_LABEL[ev.type]||ev.type}</span>
+      ${cat}
+    </div>
+    ${ev.venue?`<div class="pu-note">🏛️ ${ev.venue}</div>`:""}
+    ${note}${link}`;
+  pop.querySelector(".pu-close").addEventListener("click", hidePopup);
+  pop.classList.add("show");
+  // 위치: 앵커 아래, 화면 경계 플립
+  const r=anchor.getBoundingClientRect();
+  const pw=pop.offsetWidth, ph=pop.offsetHeight, gap=8, vw=window.innerWidth, vh=window.innerHeight;
+  let left=r.left; if(left+pw > vw-12) left=vw-12-pw; if(left<12) left=12;
+  let top=r.bottom+gap; if(top+ph > vh-12) top=r.top-gap-ph; if(top<12) top=12;
+  pop.style.left=left+"px"; pop.style.top=top+"px";
+}
+function hidePopup(){ document.getElementById("popup").classList.remove("show"); }
+
+// ── 전체 렌더 ────────────────────────────────────────────────────────────
+function renderAll(){
+  syncControls();
+  document.getElementById("calTitle").textContent = viewYear+"년 "+MONTH_KO[viewMonth-1];
+  // 현재 화면에 보이는 날짜의 연도 공휴일 확보(경계 주가 이전/다음 연도를 포함할 수 있음)
+  const wks=monthWeeks(viewYear, viewMonth);
+  const yrs=new Set(); wks.forEach(w=>w.forEach(d=>yrs.add(d.getFullYear())));
+  yrs.forEach(y=> ensureHolidays(y));
+  renderCalendar();
+  // 결과바
+  const evs=filtered();
+  const inMonth=evs.filter(e=>{
+    const s=parseD(e.start), en=parseD(e.end);
+    const mS=new Date(viewYear,viewMonth-1,1), mE=new Date(viewYear,viewMonth,0);
+    return s<=mE && en>=mS;
+  }).length;
+  const ctx=[];
+  if(state.region!=="all") ctx.push(state.region==="__other__"?"미국·유럽 외":state.region);
+  if(state.type!=="all") ctx.push(TYPE_LABEL[state.type]||state.type);
+  if(state.q) ctx.push(`"${state.q}"`);
+  document.getElementById("resultbar").innerHTML =
+    `${viewYear}년 ${MONTH_KO[viewMonth-1]} <b>${inMonth}</b>건 표시 · 필터 결과 전체 <b>${evs.length}</b>건`
+    + (ctx.length?` <span class="ctx">· ${ctx.join(" · ")}</span>`:"");
+}
+
+// ── 이동 ─────────────────────────────────────────────────────────────────
+function shiftMonth(delta){
+  let m=viewMonth+delta, y=viewYear;
+  while(m<1){ m+=12; y--; } while(m>12){ m-=12; y++; }
+  viewMonth=m; viewYear=y; hidePopup(); renderAll();
+}
+
+// ── 이벤트 바인딩 ────────────────────────────────────────────────────────
+document.getElementById("searchBox").addEventListener("input", (e)=>{ state.q=e.target.value.trim(); hidePopup(); renderAll(); });
+document.getElementById("reset").addEventListener("click", ()=>{
+  state.q=""; state.region="all"; state.type="all";
+  viewYear=TODAY.getFullYear(); viewMonth=TODAY.getMonth()+1; hidePopup(); renderAll();
+});
+document.getElementById("prevBtn").addEventListener("click", ()=> shiftMonth(-1));
+document.getElementById("nextBtn").addEventListener("click", ()=> shiftMonth(1));
+document.getElementById("todayBtn").addEventListener("click", ()=>{
+  viewYear=TODAY.getFullYear(); viewMonth=TODAY.getMonth()+1; hidePopup(); renderAll();
+});
+document.getElementById("themeBtn")?.addEventListener("click", ()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  const next = cur==="dark" ? "light" : cur==="light" ? "dark" :
+    (window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches ? "light":"dark");
+  document.documentElement.setAttribute("data-theme", next);
+});
+// 팝업 바깥 클릭 / ESC 닫기
+document.addEventListener("click", (e)=>{ const p=document.getElementById("popup"); if(p.classList.contains("show") && !p.contains(e.target)) hidePopup(); });
+document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") hidePopup(); });
+
+// ── 초기화 ──────────────────────────────────────────────────────────────
+document.getElementById("chipTotal").textContent=EVENTS.length;
+document.getElementById("chipToday").textContent=fmtToday(TODAY);
+setHolidayStatus();
+buildKPIs();
+buildRegionPills();
+buildTypePills();
+renderAll();
+</script>
+</body>
+</html>
