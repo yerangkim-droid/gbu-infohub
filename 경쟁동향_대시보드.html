@@ -2,40 +2,43 @@
 <style>
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
   :root{
-    --paper:#f5f8fc; --card:#ffffff; --ink:#132a49; --ink-2:#4a5b73; --ink-3:#8291a6;
-    --line:#e0e7f1; --line-2:#eef3f9;
-    --navy:#14365f; --accent:#14365f; --accent-strong:#0e2647; --accent-soft:#14365f12;
-    --brand1:#14365f; --brand2:#1f5590;
-    --shadow:0 1px 2px rgba(20,54,95,.06),0 3px 10px rgba(20,54,95,.05);
-    --news:#1d4ed8; --ir:#6d28d9; --clinical:#0f766e; --regulatory:#b45309; --pubmed:#be123c; --preprint:#475569;
-    --news-bg:#1d4ed814; --ir-bg:#6d28d914; --clinical-bg:#0f766e16; --regulatory-bg:#b4530916; --pubmed-bg:#be123c14; --preprint-bg:#47556916;
-    --radius:18px; --radius-sm:12px;
+    /* 중립 베이스 (인포허브 공통) */
+    --paper:#f4f6f8; --card:#ffffff; --ink:#16202b; --ink-2:#55616e; --ink-3:#8b96a3;
+    --line:#e4e8ec; --line-2:#eff2f5;
+    /* 대시보드 accent: GC Blue Deep */
+    --navy:#00426b; --accent:#00426b; --accent-strong:#002b49; --accent-soft:#00426b10;
+    --brand1:#00426b; --brand2:#0072ce;
+    --shadow:0 1px 2px rgba(22,32,43,.04),0 2px 8px rgba(22,32,43,.04);
+    /* 소스 구분색 (한 톤으로 뮤트 통일) */
+    --news:#24557f; --ir:#5d5a86; --clinical:#16706a; --regulatory:#8a6321; --pubmed:#9e2b45; --preprint:#5a6672;
+    --news-bg:#24557f12; --ir-bg:#5d5a8612; --clinical-bg:#16706a12; --regulatory-bg:#8a632114; --pubmed-bg:#9e2b4512; --preprint-bg:#5a667214;
+    --radius:14px; --radius-sm:10px;
     --fs:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,system-ui,sans-serif;
   }
   @media (prefers-color-scheme:dark){:root{
-    --paper:#0c1420; --card:#131f30; --ink:#e9f0f8; --ink-2:#a6b5c9; --ink-3:#6f7f95;
-    --line:#243449; --line-2:#1a2636; --accent:#7fb0e6; --accent-strong:#a7ccf2; --accent-soft:#7fb0e622;
+    --paper:#0f1418; --card:#171d23; --ink:#e8edf2; --ink-2:#a9b4bf; --ink-3:#77828d;
+    --line:#252d35; --line-2:#1c2329; --accent:#7ab6e8; --accent-strong:#a5cef2; --accent-soft:#7ab6e820;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
-    --news:#6ea8fe; --ir:#a78bfa; --clinical:#2dd4bf; --regulatory:#fbbf24; --pubmed:#fb7185; --preprint:#94a3b8;
-    --news-bg:#6ea8fe1c; --ir-bg:#a78bfa1c; --clinical-bg:#2dd4bf1c; --regulatory-bg:#fbbf241c; --pubmed-bg:#fb71851c; --preprint-bg:#94a3b81c;
+    --news:#8fb4d8; --ir:#a8a4d0; --clinical:#6cc6bf; --regulatory:#d6b06a; --pubmed:#e795a6; --preprint:#9aa5b1;
+    --news-bg:#8fb4d81c; --ir-bg:#a8a4d01c; --clinical-bg:#6cc6bf1c; --regulatory-bg:#d6b06a1c; --pubmed-bg:#e795a61c; --preprint-bg:#9aa5b11c;
   }}
   :root[data-theme="dark"]{
-    --paper:#0c1420; --card:#131f30; --ink:#e9f0f8; --ink-2:#a6b5c9; --ink-3:#6f7f95;
-    --line:#243449; --line-2:#1a2636; --accent:#7fb0e6; --accent-strong:#a7ccf2; --accent-soft:#7fb0e622;
+    --paper:#0f1418; --card:#171d23; --ink:#e8edf2; --ink-2:#a9b4bf; --ink-3:#77828d;
+    --line:#252d35; --line-2:#1c2329; --accent:#7ab6e8; --accent-strong:#a5cef2; --accent-soft:#7ab6e820;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
-    --news:#6ea8fe; --ir:#a78bfa; --clinical:#2dd4bf; --regulatory:#fbbf24; --pubmed:#fb7185; --preprint:#94a3b8;
-    --news-bg:#6ea8fe1c; --ir-bg:#a78bfa1c; --clinical-bg:#2dd4bf1c; --regulatory-bg:#fbbf241c; --pubmed-bg:#fb71851c; --preprint-bg:#94a3b81c;
+    --news:#8fb4d8; --ir:#a8a4d0; --clinical:#6cc6bf; --regulatory:#d6b06a; --pubmed:#e795a6; --preprint:#9aa5b1;
+    --news-bg:#8fb4d81c; --ir-bg:#a8a4d01c; --clinical-bg:#6cc6bf1c; --regulatory-bg:#d6b06a1c; --pubmed-bg:#e795a61c; --preprint-bg:#9aa5b11c;
   }
   :root[data-theme="light"]{
-    --paper:#f5f8fc; --card:#ffffff; --ink:#132a49; --ink-2:#4a5b73; --ink-3:#8291a6;
-    --line:#e0e7f1; --line-2:#eef3f9; --accent:#14365f; --accent-strong:#0e2647; --accent-soft:#14365f12;
-    --shadow:0 1px 2px rgba(20,54,95,.06),0 3px 10px rgba(20,54,95,.05);
-    --news:#1d4ed8; --ir:#6d28d9; --clinical:#0f766e; --regulatory:#b45309; --pubmed:#be123c; --preprint:#475569;
-    --news-bg:#1d4ed814; --ir-bg:#6d28d914; --clinical-bg:#0f766e16; --regulatory-bg:#b4530916; --pubmed-bg:#be123c14; --preprint-bg:#47556916;
+    --paper:#f4f6f8; --card:#ffffff; --ink:#16202b; --ink-2:#55616e; --ink-3:#8b96a3;
+    --line:#e4e8ec; --line-2:#eff2f5; --accent:#00426b; --accent-strong:#002b49; --accent-soft:#00426b10;
+    --shadow:0 1px 2px rgba(22,32,43,.04),0 2px 8px rgba(22,32,43,.04);
+    --news:#24557f; --ir:#5d5a86; --clinical:#16706a; --regulatory:#8a6321; --pubmed:#9e2b45; --preprint:#5a6672;
+    --news-bg:#24557f12; --ir-bg:#5d5a8612; --clinical-bg:#16706a12; --regulatory-bg:#8a632114; --pubmed-bg:#9e2b4512; --preprint-bg:#5a667214;
   }
 
   *{box-sizing:border-box}
-  body{margin:0;background:var(--paper);background:radial-gradient(1200px 600px at 85% -10%,color-mix(in srgb,var(--accent) 10%,transparent) 0%,transparent 60%),linear-gradient(170deg,color-mix(in srgb,#ffffff 12%,var(--paper)) 0%,var(--paper) 100%);background-attachment:fixed;color:var(--ink);font-family:var(--fs);line-height:1.55;-webkit-font-smoothing:antialiased}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--fs);line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:inherit}
 
   /* Brand bar (GC CI) */
@@ -64,7 +67,7 @@
   .seclbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 9px}
 
   /* 흰 패널 (환율 레이아웃 통일: 상단 콘솔 + 결과 그룹) */
-  .panel{background:var(--card);background:color-mix(in srgb,var(--paper) 55%,var(--card));
+  .panel{background:var(--card);
     border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px 18px;margin-bottom:15px}
   .panel .seclbl:first-child{margin-top:2px}
   .console{margin-top:18px}
@@ -101,7 +104,7 @@
   .search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink-3)}
   select{padding:9px 30px 9px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--card);color:var(--ink);
     font-size:13px;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238291a6' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b96a3' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
   select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
   #reset{background:transparent;border:1px solid var(--line);color:var(--ink-2);border-radius:var(--radius-sm);padding:9px 14px;cursor:pointer;font-size:13px;font-family:inherit}
   #reset:hover{border-color:var(--pubmed);color:var(--pubmed)}
@@ -124,8 +127,8 @@
   .resultbar .wkctx{color:var(--accent);font-weight:700}
 
   /* category group */
-  .cathead{font-size:14px;font-weight:800;letter-spacing:.01em;color:var(--cat,var(--accent));
-    margin:26px 0 13px;padding-bottom:7px;border-bottom:2px solid var(--line);display:flex;align-items:center;gap:9px}
+  .cathead{font-size:14px;font-weight:700;letter-spacing:.01em;color:var(--cat,var(--accent));
+    margin:26px 0 13px;padding-bottom:8px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px}
   .cathead:first-child{margin-top:4px}
   .cathead .catdot{width:11px;height:11px;border-radius:3px;flex:none;background:var(--cat,var(--accent))}
   .cathead .cc{font-size:11px;color:var(--ink-3);font-weight:600;letter-spacing:0}
@@ -171,7 +174,7 @@
     </div>
     <div class="chips">
       <span class="mchip">수집기간 <b>최근 2년</b></span>
-      <span class="mchip" title="매일 오전 8시 자동 크롤링으로 갱신됩니다">업데이트 <b id="asof">2026-07-29</b></span>
+      <span class="mchip" title="매일 오전 8시 자동 크롤링으로 갱신됩니다">업데이트 <b id="asof">2026-07-31</b></span>
       <span class="mchip">총 <b id="totchip">0</b>건</span>
     </div>
   </header>
@@ -3553,19 +3556,6 @@ let DATA = [
     "summary_ko": "면역글로불린 매출 56억 6,600만 달러로 전년 대비 20% 증가했고, 총매출 106억 800만 달러(+14%), 순이익 29억 1,000만 달러(+15%)를 기록했다. CSL Behring 부문 매출은 Ig 프랜차이즈 주도로 14% 성장했다.",
     "linked_issue": "면역글로불린 시장 점유·약가",
     "nct_id": null
-  },
-  {
-    "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
-    "competitor": "Grifols",
-    "comp_product": "Xembify",
-    "source_type": "news",
-    "title": "Grifols receives expanded XEMBIFY (immune globulin subcutaneous human-klhw) label in U.S.",
-    "date": "2024-07-29",
-    "url": "https://www.grifols.com/en/view-news/-/news/grifols-receives-expanded-xembify-immune-globulin-subcutaneous-human-klhw-label-in-us-strengthening-its-ig-portfolio-for-patients",
-    "summary_ko": "미국 FDA가 20% 피하주사 면역글로불린 XEMBIFY의 적응증을 치료 경험이 없는(treatment-naive) 원발성 체액면역결핍 환자까지 확대 승인했다. 2주 간격 투여(biweekly dosing)도 함께 허가됐으며 4상 임상 데이터가 근거가 됐다.",
-    "linked_issue": "SCIG(피하주사) 전환",
-    "nct_id": null
   }
 ];
 /*__DATA_END__*/
@@ -3573,7 +3563,7 @@ let DATA = [
 const SRC={news:{label:"뉴스",color:"var(--news)",bg:"var(--news-bg)"},ir:{label:"IR",color:"var(--ir)",bg:"var(--ir-bg)"},issue:{label:"시장이슈",color:"var(--regulatory)",bg:"var(--regulatory-bg)"}};
 const CAT_ORDER=["Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","Hemophilia (혈우병)","CMO / CDMO","Technology Transfer","Plant Export","Bulk Export"];
 const CAT_LABEL={"Plasma Derivative":"혈액제제","Vaccine (백신)":"백신","Rare Disease (희귀질환)":"희귀질환","Hemophilia (혈우병)":"혈우병","CMO / CDMO":"CMO/CDMO","Technology Transfer":"기술이전","Plant Export":"플랜트 수출","Bulk Export":"벌크 수출"};
-const CAT_COLOR={"Plasma Derivative":"#1d4ed8","Vaccine (백신)":"#0f766e","Rare Disease (희귀질환)":"#7c3aed","Hemophilia (혈우병)":"#be123c","CMO / CDMO":"#b45309","Technology Transfer":"#0891b2","Plant Export":"#4d7c0f","Bulk Export":"#334155"};
+const CAT_COLOR={"Plasma Derivative":"#24557f","Vaccine (백신)":"#16706a","Rare Disease (희귀질환)":"#5d5a86","Hemophilia (혈우병)":"#9e2b45","CMO / CDMO":"#8a6321","Technology Transfer":"#2a6f7d","Plant Export":"#4e6b39","Bulk Export":"#5a6672"};
 const catLabel=c=>CAT_LABEL[c]||c;
 const catColor=c=>CAT_COLOR[c]||"var(--accent)";
 const state={q:"",cats:new Set(),comp:"",mode:"news",period:""};
