@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%94%8D%3C/text%3E%3C/svg%3E">
+<title>GC 인포허브 크롤링 규칙</title>
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     토큰 — 인포허브 대시보드와 동일한 체계
+     중립 그레이 베이스(GC Blue 쪽으로 미세하게 기울인 회색)
+     + 대시보드별 GC CI accent 1색. 색이 곧 길찾기 장치.
+     ───────────────────────────────────────────────────────────── */
+  :root{
+    --paper:#f5f7f9;
+    --card:#ffffff;
+    --card-soft:#f0f3f6;
+    --ink:#111c26;
+    --ink-2:#4f5c6a;
+    --ink-3:#8a96a2;
+    --rule:#e5eaee;
+    --rule-strong:#d5dce2;
+
+    --market:#00426b;    --tint-market:#e4ecf2;
+    --events:#007a33;    --tint-events:#e5f2ea;
+    --academic:#a8102c;  --tint-academic:#f8e8eb;
+    --brand:#0072ce;
+
+    --fs-sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    --fs-mono:ui-monospace,"Cascadia Mono",Consolas,"D2Coding","Malgun Gothic",monospace;
+
+    --measure:1000px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0e1317;
+      --card:#161c22;
+      --card-soft:#1b2229;
+      --ink:#e7edf2;
+      --ink-2:#a6b2bd;
+      --ink-3:#74808b;
+      --rule:#232b33;
+      --rule-strong:#313a43;
+
+      --market:#4a90c8;    --tint-market:#1a2733;
+      --events:#5ec98d;    --tint-events:#162b21;
+      --academic:#f0798c;  --tint-academic:#331d24;
+      --brand:#66b2ec;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0e1317;
+    --card:#161c22;
+    --card-soft:#1b2229;
+    --ink:#e7edf2;
+    --ink-2:#a6b2bd;
+    --ink-3:#74808b;
+    --rule:#232b33;
+    --rule-strong:#313a43;
+
+    --market:#4a90c8;    --tint-market:#1a2733;
+    --events:#5ec98d;    --tint-events:#162b21;
+    --academic:#f0798c;  --tint-academic:#331d24;
+    --brand:#66b2ec;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--fs-sans); font-size:15px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    max-width:var(--measure); margin:0 auto; padding:56px 24px 88px;
+    display:flex; flex-direction:column; gap:44px;
+  }
+
+  /* ── 헤더 ── */
+  .masthead{ display:flex; flex-direction:column; gap:14px; }
+  .ciline{
+    height:3px; width:96px; border-radius:2px;
+    background:linear-gradient(90deg,#e4002b 0%,#8f4a2c 46%,#007a33 100%);
+  }
+  h1{
+    margin:0; font-size:1.85rem; font-weight:800; letter-spacing:-.03em;
+    line-height:1.25; text-wrap:balance;
+  }
+  .standfirst{
+    margin:0; max-width:64ch; color:var(--ink-2); font-size:1.02rem;
+  }
+  .meta{
+    display:flex; flex-wrap:wrap; gap:8px 18px; align-items:baseline;
+    font-family:var(--fs-mono); font-size:.78rem; color:var(--ink-3);
+    font-variant-numeric:tabular-nums;
+  }
+  .meta a{ color:var(--brand); text-decoration:none; border-bottom:1px solid transparent; }
+  .meta a:hover{ border-bottom-color:currentColor; }
+  .meta a:focus-visible{ outline:2px solid var(--brand); outline-offset:3px; border-radius:3px; }
+
+  /* ── 섹션 공통 ── */
+  section{ display:flex; flex-direction:column; gap:16px; }
+  .eyebrow{
+    display:flex; align-items:center; gap:9px;
+    font-family:var(--fs-mono); font-size:.72rem; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-3);
+  }
+  .eyebrow::after{ content:""; flex:1; height:1px; background:var(--rule); }
+  h2{
+    margin:0; font-size:1.16rem; font-weight:700; letter-spacing:-.02em;
+    display:flex; align-items:center; gap:10px;
+  }
+  .dot{ width:9px; height:9px; border-radius:50%; background:var(--accent); flex:none; }
+  h3{
+    margin:0; font-size:.83rem; font-weight:700; letter-spacing:.02em;
+    color:var(--ink-2);
+  }
+
+  /* 대시보드별 accent 주입 */
+  .d-market  { --accent:var(--market);   --tint:var(--tint-market); }
+  .d-events  { --accent:var(--events);   --tint:var(--tint-events); }
+  .d-academic{ --accent:var(--academic); --tint:var(--tint-academic); }
+
+  /* ── 표 ── */
+  .scroll{ overflow-x:auto; background:var(--card); border:1px solid var(--rule); border-radius:14px; }
+  table{ width:100%; border-collapse:collapse; font-size:.875rem; }
+  caption{ text-align:left; padding:0 0 8px; font-size:.83rem; color:var(--ink-3); }
+  th,td{ padding:11px 15px; text-align:left; vertical-align:top; border-bottom:1px solid var(--rule); }
+  thead th{
+    background:var(--card-soft); color:var(--ink-2);
+    font-size:.75rem; font-weight:700; letter-spacing:.04em;
+    white-space:nowrap; border-bottom:1px solid var(--rule-strong);
+  }
+  tbody tr:last-child th, tbody tr:last-child td{ border-bottom:none; }
+  tbody th{ font-weight:700; color:var(--ink); white-space:nowrap; }
+  .num{ font-family:var(--fs-mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .en{ font-family:var(--fs-mono); font-size:.94em; }
+
+  /* 한눈에 보기 — 대시보드 이름 칸에 accent 스트라이프 */
+  .matrix tbody th{
+    position:relative; padding-left:22px; min-width:104px;
+  }
+  .matrix tbody th::before{
+    content:""; position:absolute; left:0; top:11px; bottom:11px;
+    width:3px; border-radius:0 2px 2px 0; background:var(--row);
+  }
+  .matrix tr:nth-child(1) th{ --row:var(--market); }
+  .matrix tr:nth-child(2) th{ --row:var(--events); }
+  .matrix tr:nth-child(3) th{ --row:var(--academic); }
+
+  /* ── 스펙 블록 (검색기간 / 소스 / 키워드) ── */
+  .spec{
+    display:grid; grid-template-columns:104px 1fr; gap:1px;
+    background:var(--rule); border:1px solid var(--rule);
+    border-radius:14px; overflow:hidden;
+  }
+  .spec dt{
+    background:var(--tint); color:var(--accent);
+    padding:12px 14px; font-size:.76rem; font-weight:700; letter-spacing:.04em;
+  }
+  .spec dd{ margin:0; background:var(--card); padding:12px 15px; font-size:.9rem; }
+  .spec dd > * + *{ margin-top:5px; }
+  .spec .sub{ display:block; color:var(--ink-3); font-size:.83rem; }
+
+  /* ── 원칙 목록 ── */
+  .rules{
+    margin:0; padding:14px 18px; list-style:none;
+    background:var(--card); border:1px solid var(--rule); border-radius:14px;
+    display:flex; flex-direction:column; gap:8px; font-size:.88rem;
+  }
+  .rules li{ display:flex; gap:10px; }
+  .rules li::before{
+    content:""; flex:none; width:5px; height:5px; margin-top:.62em;
+    border-radius:50%; background:var(--accent);
+  }
+  .no{ color:var(--academic); font-weight:700; }
+
+  /* ── 푸터 ── */
+  footer{
+    border-top:1px solid var(--rule); padding-top:20px;
+    display:flex; flex-direction:column; gap:8px;
+    font-size:.8rem; color:var(--ink-3);
+  }
+  footer code{ font-family:var(--fs-mono); font-size:.94em; color:var(--ink-2); }
+
+  @media (max-width:640px){
+    .sheet{ padding:36px 16px 64px; gap:34px; }
+    h1{ font-size:1.5rem; }
+    .spec{ grid-template-columns:84px 1fr; }
+    .spec dt{ font-size:.72rem; padding:11px 10px; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{ transition:none !important; }
+  }
+</style>
+<style>
+  /* 단독 페이지용 보정 — Artifact 호스트가 넣어주던 리셋을 대체 */
+  dl{ margin:0; }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="masthead">
+    <div class="ciline"></div>
+    <h1>인포허브 크롤링 규칙</h1>
+    <p class="standfirst">
+      글로벌 사업본부 인포허브의 세 대시보드가 <strong>언제 발행된 자료를</strong>, <strong>어디서</strong>,
+      <strong>어떤 키워드로</strong> 수집하는지 정리한 문서입니다. 실시간 환율은 크롤링이 아닌 시세 API 조회라 제외했습니다.
+    </p>
+    <div class="meta">
+      <span>기준일 2026-08-10</span>
+      <span>대시보드 <a href="https://infohub-site.vercel.app">infohub-site.vercel.app</a></span>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow">한눈에 보기</div>
+    <div class="scroll">
+      <table class="matrix">
+        <thead>
+          <tr><th scope="col">대시보드</th><th scope="col">검색기간</th><th scope="col">소스</th><th scope="col">키워드</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">시장 동향</th>
+            <td>평일 = 최근 4주<br>월요일 = 최근 2년 전체 재수집</td>
+            <td>공개 뉴스 · 경쟁사 공식 IR · 규제기관 발표</td>
+            <td>8개 사업영역 × 경쟁사 + 제품 + 기간</td>
+          </tr>
+          <tr>
+            <th scope="row">학회 일정</th>
+            <td>올해 ~ 3년 후<br><span class="num">2026 ~ 2029</span></td>
+            <td>행사 주최 측 공식 사이트</td>
+            <td>고정 감시 45개 행사 + 신규 발굴</td>
+          </tr>
+          <tr>
+            <th scope="row">학술 동향</th>
+            <td>최근 2년<br>45일 이내 자료는 <strong>NEW</strong></td>
+            <td>PubMed · ClinicalTrials.gov · ChEMBL · 프리프린트</td>
+            <td>3개 분류 × GC 제품 + 동일 적응증 경쟁 약물</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════ 시장 동향 ═══════════ -->
+  <section class="d-market">
+    <div class="eyebrow">대시보드 1</div>
+    <h2><span class="dot"></span>시장 동향</h2>
+
+    <dl class="spec">
+      <dt>검색기간</dt>
+      <dd>
+        <div>평일에는 <strong>최근 4주(28일)</strong>만 집중 수집하고, 월요일에는 <strong>최근 2년</strong> 전체를 다시 훑어 빈 주차를 메웁니다.</div>
+        <span class="sub">2년이 지난 자료는 삭제하지 않고 화면에서 "이전 자료"로 묶어 보관합니다.</span>
+      </dd>
+
+      <dt>소스</dt>
+      <dd>
+        <div>전 세계 공개 뉴스(영문 포함)</div>
+        <div>경쟁사 공식 뉴스룸 · IR(Investor Relations) 페이지 · SEC 공시</div>
+        <div>규제기관 · 정부 · 국제기구 발표 — <span class="en">FDA · EMA · PMDA · NMPA · MFDS · WHO · PAHO · UNICEF</span></div>
+      </dd>
+
+      <dt>키워드</dt>
+      <dd>
+        <div>8개 사업영역별로 <strong>경쟁사명 + 제품명 + 기간</strong>을 조합합니다.
+        <span class="en">(예: "Octapharma Octagam news June 2026")</span></div>
+        <span class="sub">검색은 실제 브랜드명으로 — 알리글로 · ALYGLO, 지씨플루 · GC FLU, 배리셀라 · Barycela</span>
+      </dd>
+    </dl>
+
+    <h3>사업영역별 감시 대상</h3>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">사업영역</th><th scope="col">경쟁사</th><th scope="col">제품 키워드</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">혈액제제 — 면역글로불린</th>
+            <td>CSL Behring · Takeda · Grifols · Octapharma · ADMA · Kedrion · Intas · Reliance · 쓰촨 위엔다</td>
+            <td class="en">Privigen · Hizentra · Gammagard · HYQVIA · Cuvitru · Gamunex-C · Xembify · Octagam · Panzyga · Cutaquig · Asceniv · Bivigam</td>
+          </tr>
+          <tr>
+            <th scope="row">혈액제제 — 알부민</th>
+            <td>CSL Behring · Grifols · SK플라즈마</td>
+            <td class="en">Alburx · Albutein</td>
+          </tr>
+          <tr>
+            <th scope="row">백신 — 독감 · 수두</th>
+            <td>Sanofi Pasteur · GSK · CSL Seqirus · MSD · Viatris · Abbott · Sinovac · SK바이오사이언스 · IDT Biologika · Moderna</td>
+            <td class="en">Fluzone · Flublok · Fluarix · Flucelvax · Fluad · Influvac · VARIVAX · ProQuad · Varilrix</td>
+          </tr>
+          <tr>
+            <th scope="row">희귀질환 — 헌터증후군</th>
+            <td>Takeda · JCR Pharmaceuticals · Denali · REGENXBIO · Generium</td>
+            <td class="en">Elaprase · IZCARGO(JR-141) · DNL310 · RGX-121 · Clotilia</td>
+          </tr>
+          <tr>
+            <th scope="row">혈우병</th>
+            <td>Roche</td>
+            <td class="en">Hemlibra · NXT007</td>
+          </tr>
+          <tr>
+            <th scope="row">CMO / CDMO</th>
+            <td>삼성바이오로직스 · 삼성바이오에피스 · 셀트리온 · 알테오젠 · Vetter · Lonza · Catalent · WuXi Biologics · Fujifilm Diosynth · Boehringer Ingelheim</td>
+            <td>수주 · 캐파 증설 · 바이오시밀러 · 무균충전</td>
+          </tr>
+          <tr>
+            <th scope="row">기술이전 · 플랜트 · 벌크 수출</th>
+            <td>SK바이오사이언스 · Grifols Engineering · SK플라즈마</td>
+            <td>신흥국 백신 자급화 · 혈액제제 플랜트 턴키 · 원액 벌크</td>
+          </tr>
+          <tr>
+            <th scope="row">시장 이슈</th>
+            <td>주요 5개 시장(미국 · EU · 일본 · 중국 · 한국) + GC 진출 · 거래 대상국</td>
+            <td>허가 · 규제 · 약가 · 급여 · 관세 · 통상 · 조달 · 입찰 · 공급망 · 생물보안</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════ 학회 일정 ═══════════ -->
+  <section class="d-events">
+    <div class="eyebrow">대시보드 2</div>
+    <h2><span class="dot"></span>학회 일정</h2>
+
+    <dl class="spec">
+      <dt>검색기간</dt>
+      <dd>
+        <div>오늘 기준 <strong>올해부터 3년 후까지</strong> 열리는 행사 — 현재 <span class="num">2026 ~ 2029</span>년.</div>
+        <span class="sub">이미 지난 행사는 수집하지 않습니다.</span>
+      </dd>
+
+      <dt>소스</dt>
+      <dd>
+        <div>각 행사 <strong>주최 측 공식 사이트</strong>에 명시된 일정만 수집합니다.</div>
+        <span class="sub">3자 행사정보 사이트(clocate · 10times · emedevents 등)는 확정되지 않은 추정 일정을 확정처럼 싣기 때문에 근거로 쓰지 않습니다.</span>
+      </dd>
+
+      <dt>키워드</dt>
+      <dd>
+        <div>고정 감시 목록 <strong>45개 행사</strong>를 매번 확인한 뒤, 주목 영역의 누락 행사를 추가로 발굴합니다.</div>
+        <span class="sub">주목 영역 — 혈액제제 · 혈우병 · 백신 · 헌터증후군 · 호중구감소증 · CDMO · 플랜트/기술이전 · 규제실무 · 파트너링</span>
+      </dd>
+    </dl>
+
+    <h3>고정 감시 목록</h3>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">분류</th><th scope="col">행사</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">산업 · 학술 학회 <span class="num">23</span></th>
+            <td class="en">EAHAD · WFH · ISTH · ISBT · AABB · ASH · EHA · IPFA/EBA · PPTA · World Vaccine Congress · Options for the Control of Influenza · IDWeek · ESCMID Global · CROI · WORLDSymposium · SSIEM · AACR · ASCO · ESMO · MASCC/ISOO · ASGCT · ESGCT · PPB</td>
+          </tr>
+          <tr>
+            <th scope="row">파트너링 · 투자 <span class="num">8</span></th>
+            <td class="en">J.P. Morgan Healthcare · Biotech Showcase · BIO International · BIO-Europe / Spring · BioJapan · BIO Asia–Taiwan · BioAsia India · BIO KOREA</td>
+          </tr>
+          <tr>
+            <th scope="row">규제 · 전시 <span class="num">14</span></th>
+            <td class="en">CPHI (Worldwide · China · India · Korea · Japan · MEA) · DCAT Week · INTERPHEX · DIA (Global · Europe · Japan · China) · PDA · ISPE · BioProcess International · Arab Health/WHX Dubai · Global Health Saudi · RAPS Convergence</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>일정 판단 기준</h3>
+    <ul class="rules">
+      <li>공식 사이트에 <strong>확정 일정</strong>으로 올라온 것만 싣습니다.</li>
+      <li><span class="no">제외</span> 잠정(tentative) · 예정 · TBD/TBA · 연도만 있고 날짜가 없는 것.</li>
+      <li><span class="no">제외</span> 예년 패턴("매년 6월 첫째 주")으로 추측한 날짜. 근거가 없으면 넣지 않습니다.</li>
+      <li>날짜는 확정이고 개최도시만 미정이면 도시를 비우고 "개최도시 미정(TBA)"으로 표기합니다.</li>
+      <li>다음 회차 일정이 아직 공개되지 않은 것은 정상입니다 — 무리해서 채우지 않습니다.</li>
+    </ul>
+  </section>
+
+  <!-- ═══════════ 학술 동향 ═══════════ -->
+  <section class="d-academic">
+    <div class="eyebrow">대시보드 3</div>
+    <h2><span class="dot"></span>학술 동향</h2>
+
+    <dl class="spec">
+      <dt>검색기간</dt>
+      <dd>
+        <div>최근 <strong>2년</strong> 이내 자료. 오늘 기준 45일 이내면 <strong>NEW</strong>로 표시합니다.</div>
+        <span class="sub">소스별 날짜 기준이 다릅니다 — 논문·프리프린트는 발행일, 임상은 <strong>연구 시작일</strong>, 기전 데이터는 승인일. 그래서 임상·기전 카드에는 2년보다 오래된 날짜가 정상적으로 표시됩니다.</span>
+      </dd>
+
+      <dt>소스</dt>
+      <dd>
+        <div><strong>학술 논문</strong> — PubMed <span class="en">(NCBI E-utilities)</span></div>
+        <div><strong>임상 연구</strong> — ClinicalTrials.gov <span class="en">API v2</span></div>
+        <div><strong>기전 · 활성</strong> — ChEMBL <span class="en">REST (EMBL-EBI)</span></div>
+        <div><strong>프리프린트</strong> — bioRxiv · medRxiv
+          <span class="sub">공개 API가 키워드 검색을 지원하지 않아 커버리지가 제한적입니다.</span></div>
+      </dd>
+
+      <dt>키워드</dt>
+      <dd>
+        <div>3개 분류별로 <strong>GC 제품의 성분 · 브랜드</strong>와 <strong>동일 적응증의 경쟁 · 계열 약물</strong>, <strong>적응증</strong>을 조합합니다.</div>
+        <span class="sub">GC 자사 제품은 최근 2년 신규 논문이 드물어, 대부분 동일 적응증 경쟁 · 계열 약물 근거로 구성됩니다.</span>
+      </dd>
+    </dl>
+
+    <h3>분류별 수집 대상</h3>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">분류</th><th scope="col">GC 제품</th>
+            <th scope="col">동일 적응증 경쟁 · 계열 약물</th><th scope="col">적응증</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">혈액제제 · 혈우병</th>
+            <td>알리글로<br>GC알부민20%<br>그린진에프</td>
+            <td class="en">IVIG/SCIG (HyQvia · Privigen · Hizentra · Gammagard · Gamunex-C · Xembify · Asceniv · Bivigam · Panzyga · Octagam · Cutaquig) · human albumin · emicizumab · NXT007 · factor VIII · 유전자치료 · fitusiran · concizumab · marstacimab</td>
+            <td>PID · CIDP · ITP · 저알부민혈증 · 간경변 복수 · 혈우병 A · 인자 억제제</td>
+          </tr>
+          <tr>
+            <th scope="row">백신</th>
+            <td>지씨플루<br>배리셀라</td>
+            <td class="en">인플루엔자 백신 (Fluzone · Flublok · Fluarix · Flucelvax · Fluad — 고용량 · 재조합 · 세포배양 · mRNA) · 수두 백신 (Varivax · Varilrix · ProQuad)</td>
+            <td>인플루엔자 예방 · 고령자 면역원성 · 수두 예방 · 접종정책 · 돌파감염</td>
+          </tr>
+          <tr>
+            <th scope="row">헌터증후군 · 호중구감소증</th>
+            <td>헌터라제<br>뉴라펙</td>
+            <td class="en">Elaprase · JR-141 · DNL310 · RGX-121 · BBB 통과 차세대 ERT / pegfilgrastim(Neulasta · 바이오시밀러) · filgrastim · lipegfilgrastim · eflapegrastim · efbemalenograstim alfa · trilaciclib · plinabulin</td>
+            <td>MPS II(신경병증형 포함) · 항암화학요법 유발 호중구감소 · 발열성 호중구감소 · 선천성 호중구감소증 · 조혈모세포 가동화</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════ 공통 규칙 ═══════════ -->
+  <section>
+    <div class="eyebrow">세 대시보드 공통</div>
+    <div class="scroll">
+      <table>
+        <tbody>
+          <tr>
+            <th scope="row">근거</th>
+            <td>실제 검색 · API 결과에 있는 자료만 싣습니다. 원문 URL이 없으면 제외합니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">요약</th>
+            <td>출처에 명시된 사실만 한국어 2문장 이내로. 카드의 원문 링크로 바로 검증할 수 있습니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">중복 제거</th>
+            <td>시장 동향은 URL, 학술 동향은 PMID · NCT · URL, 학회 일정은 약칭 + 시작일 기준으로 자동 처리됩니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">누적</th>
+            <td>매 실행 결과를 기존 자료에 병합합니다. 수집이 일부 실패해도 이미 쌓인 자료는 사라지지 않습니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">갱신 주기</th>
+            <td class="num">시장 동향 매일 08:00 · 학술 동향 매주 월요일 10:00 · 학회 일정 매월 1일 00:00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <div>대시보드의 각 화면 하단 "수집 범위 및 한계"에 같은 내용이 더 자세히 적혀 있습니다.</div>
+    <div>규칙 원본: <code>_auto/crawl_prompt.txt</code> · <code>_auto/events_prompt.txt</code> · <code>_auto/academic_prompt.txt</code></div>
+  </footer>
+
+</div>
+</body>
+</html>
