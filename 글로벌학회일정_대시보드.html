@@ -13,8 +13,7 @@
     --paper:#f5f7f9; --card:#ffffff; --ink:#111c26; --ink-2:#4f5c6a; --ink-3:#8a96a2;
     --line:#e5eaee; --line-2:#f0f3f6;
     /* 대시보드 accent: GC Green */
-    --navy:#005c26; --accent:#007a33; --accent-strong:#005c26; --accent-soft:#007a3312;
-    --brand1:#007a33; --brand2:#43b02a;
+    --accent:#007a33; --accent-strong:#005c26; --accent-soft:#007a3312;
     --shadow:0 1px 2px rgba(17,28,38,.04),0 2px 8px rgba(17,28,38,.04);
     --pop-shadow:0 6px 24px rgba(17,28,38,.16),0 2px 8px rgba(17,28,38,.10);
     /* 유형별 색상 (뮤트 통일) */
@@ -64,18 +63,6 @@
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--fs);line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:inherit}
 
-  /* Brand bar (GC CI) */
-  .brandbar{background:linear-gradient(100deg,var(--brand1),var(--brand2));color:#fff}
-  .bwrap{max-width:1200px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:15px}
-  .logochip{background:#fff;border-radius:9px;padding:6px 13px;display:flex;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.18)}
-  .logochip .gc{font-weight:800;font-size:15px;letter-spacing:-.02em;background:linear-gradient(100deg,#007a33,#43b02a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .bdiv{width:1px;height:30px;background:rgba(255,255,255,.28)}
-  .btext .b1{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
-  .btext .b2{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#c4d6ee;margin-top:1px}
-  .bspacer{flex:1}
-  #themeBtn{cursor:pointer;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);color:#fff;
-    border-radius:999px;padding:5px 13px;font-size:12.5px;font-family:inherit}
-  #themeBtn:hover{background:rgba(255,255,255,.26);border-color:#fff}
 
   .wrap{max-width:1120px;margin:0 auto;padding:24px 18px 72px}
 
@@ -817,12 +804,6 @@ document.getElementById("todayBtn").addEventListener("click", ()=>{
 });
 // 행사 일정 갱신은 작업 스케줄러 `GC학회일정_월간갱신`(매월 1일 00:00)이
 // _auto/update_events.ps1 을 실행해 처리한다(공휴일은 페이지 로드 시 자동 재조회).
-document.getElementById("themeBtn")?.addEventListener("click", ()=>{
-  const cur=document.documentElement.getAttribute("data-theme");
-  const next = cur==="dark" ? "light" : cur==="light" ? "dark" :
-    (window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches ? "light":"dark");
-  document.documentElement.setAttribute("data-theme", next);
-});
 // 팝업 바깥 클릭 / ESC 닫기
 document.addEventListener("click", (e)=>{ const p=document.getElementById("popup"); if(p.classList.contains("show") && !p.contains(e.target)) hidePopup(); });
 document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") hidePopup(); });

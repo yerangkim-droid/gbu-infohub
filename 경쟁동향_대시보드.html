@@ -8,8 +8,7 @@
     --paper:#f5f7f9; --card:#ffffff; --ink:#111c26; --ink-2:#4f5c6a; --ink-3:#8a96a2;
     --line:#e5eaee; --line-2:#f0f3f6;
     /* 대시보드 accent: GC Blue Deep */
-    --navy:#00426b; --accent:#00426b; --accent-strong:#002b49; --accent-soft:#00426b10;
-    --brand1:#00426b; --brand2:#0072ce;
+    --accent:#00426b; --accent-strong:#002b49; --accent-soft:#00426b10;
     --shadow:0 1px 2px rgba(17,28,38,.04),0 2px 8px rgba(17,28,38,.04);
     /* 소스 구분색 (한 톤으로 뮤트 통일) */
     --news:#24557f; --ir:#5d5a86; --clinical:#16706a; --regulatory:#8a6321; --pubmed:#9e2b45; --preprint:#5a6672;
@@ -45,18 +44,6 @@
   body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--fs);line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:inherit}
 
-  /* Brand bar (GC CI) */
-  .brandbar{background:linear-gradient(100deg,var(--brand1),var(--brand2));color:#fff}
-  .bwrap{max-width:1200px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:15px}
-  .logochip{background:#fff;border-radius:9px;padding:7px 12px;display:flex;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.18)}
-  .logochip img{height:30px;display:block}
-  .bdiv{width:1px;height:30px;background:rgba(255,255,255,.28)}
-  .btext .b1{font-size:14.5px;font-weight:700;letter-spacing:-.01em}
-  .btext .b2{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#c4d6ee;margin-top:1px}
-  .bspacer{flex:1}
-  #themeBtn{cursor:pointer;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);color:#fff;
-    border-radius:999px;padding:5px 13px;font-size:12.5px;font-family:inherit}
-  #themeBtn:hover{background:rgba(255,255,255,.26);border-color:#fff}
 
   .wrap{max-width:1120px;margin:0 auto;padding:24px 18px 72px}
 
@@ -4370,7 +4357,6 @@ document.getElementById("reset").addEventListener("click",()=>{
   document.getElementById("q").value="";render();
 });
 // 테마 전환 시 사업 영역 색상(인라인 지정)을 다시 계산해야 하므로 재렌더
-document.getElementById("themeBtn")?.addEventListener("click",()=>{const r=document.documentElement;const cur=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");r.setAttribute("data-theme",cur==="dark"?"light":"dark");render();});
 
 document.getElementById("covnote").innerHTML=
   `<div class="cvtitle">수집 범위 및 한계</div>`+
