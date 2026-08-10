@@ -11,7 +11,7 @@
     --shadow:0 1px 2px rgba(22,32,43,.04),0 2px 8px rgba(22,32,43,.04);
     /* 소스 구분색 (한 톤으로 뮤트 통일) */
     --news:#24557f; --ir:#5d5a86; --clinical:#16706a; --regulatory:#8a6321; --pubmed:#9e2b45; --preprint:#5a6672;
-    --news-bg:#24557f12; --ir-bg:#5d5a8612; --clinical-bg:#16706a12; --regulatory-bg:#8a632114; --pubmed-bg:#9e2b4512; --preprint-bg:#5a667214;
+    --news-bg:#24557f12; --ir-bg:#5d5a8612; --news-bg2:#24557f1f; --ir-bg2:#5d5a861f; --clinical-bg:#16706a12; --regulatory-bg:#8a632114; --pubmed-bg:#9e2b4512; --preprint-bg:#5a667214;
     --radius:14px; --radius-sm:10px;
     --fs:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,system-ui,sans-serif;
   }
@@ -20,21 +20,21 @@
     --line:#252d35; --line-2:#1c2329; --accent:#7ab6e8; --accent-strong:#a5cef2; --accent-soft:#7ab6e820;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
     --news:#8fb4d8; --ir:#a8a4d0; --clinical:#6cc6bf; --regulatory:#d6b06a; --pubmed:#e795a6; --preprint:#9aa5b1;
-    --news-bg:#8fb4d81c; --ir-bg:#a8a4d01c; --clinical-bg:#6cc6bf1c; --regulatory-bg:#d6b06a1c; --pubmed-bg:#e795a61c; --preprint-bg:#9aa5b11c;
+    --news-bg:#8fb4d81c; --ir-bg:#a8a4d01c; --news-bg2:#8fb4d82e; --ir-bg2:#a8a4d02e; --clinical-bg:#6cc6bf1c; --regulatory-bg:#d6b06a1c; --pubmed-bg:#e795a61c; --preprint-bg:#9aa5b11c;
   }}
   :root[data-theme="dark"]{
     --paper:#0f1418; --card:#171d23; --ink:#e8edf2; --ink-2:#a9b4bf; --ink-3:#77828d;
     --line:#252d35; --line-2:#1c2329; --accent:#7ab6e8; --accent-strong:#a5cef2; --accent-soft:#7ab6e820;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
     --news:#8fb4d8; --ir:#a8a4d0; --clinical:#6cc6bf; --regulatory:#d6b06a; --pubmed:#e795a6; --preprint:#9aa5b1;
-    --news-bg:#8fb4d81c; --ir-bg:#a8a4d01c; --clinical-bg:#6cc6bf1c; --regulatory-bg:#d6b06a1c; --pubmed-bg:#e795a61c; --preprint-bg:#9aa5b11c;
+    --news-bg:#8fb4d81c; --ir-bg:#a8a4d01c; --news-bg2:#8fb4d82e; --ir-bg2:#a8a4d02e; --clinical-bg:#6cc6bf1c; --regulatory-bg:#d6b06a1c; --pubmed-bg:#e795a61c; --preprint-bg:#9aa5b11c;
   }
   :root[data-theme="light"]{
     --paper:#f4f6f8; --card:#ffffff; --ink:#16202b; --ink-2:#55616e; --ink-3:#8b96a3;
     --line:#e4e8ec; --line-2:#eff2f5; --accent:#00426b; --accent-strong:#002b49; --accent-soft:#00426b10;
     --shadow:0 1px 2px rgba(22,32,43,.04),0 2px 8px rgba(22,32,43,.04);
     --news:#24557f; --ir:#5d5a86; --clinical:#16706a; --regulatory:#8a6321; --pubmed:#9e2b45; --preprint:#5a6672;
-    --news-bg:#24557f12; --ir-bg:#5d5a8612; --clinical-bg:#16706a12; --regulatory-bg:#8a632114; --pubmed-bg:#9e2b4512; --preprint-bg:#5a667214;
+    --news-bg:#24557f12; --ir-bg:#5d5a8612; --news-bg2:#24557f1f; --ir-bg2:#5d5a861f; --clinical-bg:#16706a12; --regulatory-bg:#8a632114; --pubmed-bg:#9e2b4512; --preprint-bg:#5a667214;
   }
 
   *{box-sizing:border-box}
@@ -65,6 +65,25 @@
   .mchip b{color:var(--ink);font-variant-numeric:tabular-nums}
 
   .seclbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 9px}
+  .seclbl .hint{font-size:11.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-3);margin-left:9px;opacity:.95}
+
+  /* ── 분류 탭 (뉴스 기사 / 경쟁사 IR 자료) ── */
+  .modetabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:12px;margin-top:2px}
+  .modebtn{--m:var(--accent);--msoft:var(--accent-soft);
+    background:var(--card);border:1.5px solid var(--line);border-left:5px solid var(--m);
+    border-radius:var(--radius);padding:14px 17px 12px;cursor:pointer;text-align:left;font-family:inherit;
+    display:flex;flex-direction:column;gap:4px;box-shadow:var(--shadow);transition:border-color .13s,background .13s,box-shadow .13s}
+  .modebtn:hover{border-color:var(--m);border-left-color:var(--m);background:var(--msoft)}
+  .modebtn[aria-pressed="true"]{border-color:var(--m);background:var(--msoft);
+    box-shadow:0 0 0 3px var(--msoft),var(--shadow)}
+  .modebtn .mtop{display:flex;align-items:center;gap:9px}
+  .modebtn .mico{font-size:17px;line-height:1;flex:none}
+  .modebtn .mname{font-size:19px;font-weight:800;letter-spacing:-.025em;line-height:1.2;color:var(--ink)}
+  .modebtn[aria-pressed="true"] .mname{color:var(--m)}
+  .modebtn .mnum{margin-left:auto;font-size:14.5px;font-weight:800;font-variant-numeric:tabular-nums;
+    color:var(--m);background:var(--msoft);border:1px solid var(--m);border-radius:999px;padding:1px 11px;white-space:nowrap}
+  .modebtn[aria-pressed="true"] .mnum{background:var(--m);color:var(--card);border-color:var(--m)}
+  .modebtn .msub{font-size:11.5px;font-weight:600;color:var(--ink-3);letter-spacing:.01em;padding-left:26px}
 
   /* 흰 패널 (환율 레이아웃 통일: 상단 콘솔 + 결과 그룹) */
   .panel{background:var(--card);
@@ -74,17 +93,6 @@
   .catpanel{--cat:var(--accent)}
   .catpanel .cathead{margin-top:2px;margin-bottom:14px}
   .catpanel .group:last-child{margin-bottom:2px}
-
-  /* KPI tiles */
-  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:11px}
-  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:13px 14px;box-shadow:var(--shadow);
-    cursor:pointer;text-align:left;font-family:inherit;transition:border-color .12s}
-  .kpi:hover{border-color:var(--accent)}
-  .kpi[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft),var(--shadow)}
-  .kpi .lbl{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);font-weight:600}
-  .kpi .dot{width:9px;height:9px;border-radius:3px;flex:none}
-  .kpi .num{font-size:24px;font-weight:750;margin-top:5px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-  .kpi.total{background:linear-gradient(135deg,var(--accent-soft),transparent)}
 
   /* Week tabs */
   .weektabs{display:flex;gap:7px;overflow-x:auto;padding:3px 1px 8px;scrollbar-width:thin}
@@ -140,7 +148,7 @@
 
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;box-shadow:var(--shadow);
     display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
-  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--bar,var(--line))}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--bar,var(--line))}
   .row1{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
   .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
   .date{font-size:12px;color:var(--ink-3);margin-left:auto;font-variant-numeric:tabular-nums}
@@ -158,9 +166,19 @@
   .srcname{font-size:11.5px;color:var(--ink-3);white-space:nowrap}
 
   .empty{text-align:center;padding:56px 20px;color:var(--ink-3)}
-  .note{margin-top:32px;padding:14px 16px;border:1px dashed var(--line);border-radius:var(--radius);background:var(--card);font-size:12.5px;color:var(--ink-3);line-height:1.6}
+  .note{margin-top:32px;padding:15px 18px;border:1px dashed var(--line);border-radius:var(--radius);background:var(--card);font-size:12.5px;color:var(--ink-3);line-height:1.65}
   .note b{color:var(--ink-2)}
-  footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .note .cvtitle{font-weight:800;color:var(--ink-2);font-size:12.5px;margin-bottom:7px}
+  /* 불렛 행잉 인덴트: 두 번째 줄부터도 첫 글자에 맞춰 정렬 */
+  .note ul{margin:0;padding:0;list-style:none}
+  .note li{position:relative;padding-left:14px;margin-bottom:3px;word-break:keep-all;text-wrap:pretty}
+  .note li b{white-space:nowrap}   /* 강조 어구가 중간에서 끊기지 않게 */
+  .note li:last-child{margin-bottom:0}
+  .note li::before{content:"•";position:absolute;left:0;top:0;color:var(--ink-3);font-weight:700}
+  footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 18px;line-height:1.7;word-break:keep-all;text-wrap:pretty}
+  /* 문구가 어절 중간에서 끊기지 않도록 — 구분점(·) 자리에서만 줄바꿈 */
+  footer .nb{white-space:nowrap}
 
   @media (max-width:560px){.wrap{padding:18px 14px 60px}.bwrap{flex-wrap:wrap;padding:11px 14px}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -170,18 +188,16 @@
   <header class="top">
     <div>
       <h1>📈 시장 모니터링</h1>
-      <div class="sub">혈액제제·백신·희귀질환·혈우병·CMO/CDMO·기술이전·플랜트수출·벌크수출 8개 사업영역의 글로벌 경쟁사 동향과 시장 이슈를 <b>뉴스 기사(주차별)</b>·<b>경쟁사 IR 자료(분기별)</b> 두 축으로 수집·요약한 내부 분석 자료입니다. 규제·허가·관세·정책 등 시장 이슈는 관련 뉴스 기사에 함께 반영됩니다.</div>
+      <div class="sub">5개 사업 영역과 관련하여 글로벌 시장 이슈와 동향을 <b>‘뉴스 기사’</b>, <b>‘경쟁사 IR 자료’</b> 2가지 분류로 구분하여 수집하고 요약한 내용입니다.</div>
     </div>
     <div class="chips">
       <span class="mchip">수집기간 <b>최근 2년</b></span>
-      <span class="mchip" title="매일 오전 8시 자동 크롤링으로 갱신됩니다">업데이트 <b id="asof">2026-07-31</b></span>
-      <span class="mchip">총 <b id="totchip">0</b>건</span>
+      <span class="mchip" title="매일 오전 8시 자동 크롤링으로 갱신됩니다">업데이트 <b id="asof">2026-08-10</b></span>
     </div>
   </header>
 
   <div class="panel console">
-    <div class="seclbl">분류 (뉴스 기사 · 경쟁사 IR 자료)</div>
-    <section class="kpis" id="kpis"></section>
+    <section class="modetabs" id="kpis"></section>
 
     <div class="seclbl" id="periodlbl">주차별 (탭 선택)</div>
     <div class="weektabs" id="weektabs"></div>
@@ -194,7 +210,7 @@
       <button id="reset" type="button">초기화</button>
     </div>
 
-    <div class="seclbl">사업 영역 (클릭하여 필터)</div>
+    <div class="seclbl">사업 영역 <span class="hint">여러 영역을 동시에 선택할 수 있습니다 · 선택된 영역을 다시 누르면 해제 · ‘전체’를 누르면 초기화</span></div>
     <div class="catfilter" id="catfilter"></div>
   </div>
 
@@ -203,19 +219,372 @@
 
   <div class="note" id="covnote"></div>
   <footer>
-    <span>자료원: 전 세계 공개 뉴스 및 경쟁사 공식 IR 리포트 (오픈소스)</span>
-    <span>GC녹십자 글로벌사업본부 · 내부 참고용 · 요약은 출처 명시 사실 기반</span>
+    <span><span class="nb">자료원:</span> <span class="nb">전 세계 공개 뉴스</span> <span class="nb">및 경쟁사 공식 IR 리포트</span> <span class="nb">(오픈소스)</span></span>
+    <span><span class="nb">GC녹십자 글로벌사업본부</span> · <span class="nb">내부 참고용</span> · <span class="nb">요약은 출처 명시 사실 기반</span></span>
   </footer>
 </div>
 
 <script>
 // ── 인포허브(부모 프레임) 테마 동기화 ──
 window.addEventListener("message", function(e){
-  if(e.data && e.data.type === "gbu-theme")
+  if(e.data && e.data.type === "gbu-theme"){
     document.documentElement.setAttribute("data-theme", e.data.theme);
+    if(typeof render === "function") render();   // 영역 색상 재계산
+  }
 });
 /*__DATA_START__*/
 let DATA = [
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "알리글로 IVIG",
+    "competitor": "美 관세·통상(CBP)",
+    "comp_product": "",
+    "source_type": "issue",
+    "title": "US: CBP Issues Implementation Guidance for Section 232 Tariffs on Patented Pharmaceuticals",
+    "date": "2026-08-07",
+    "url": "https://globalimportblog.bakermckenzie.com/2026/08/07/us-cbp-issues-implementation-guidance-for-section-232-tariffs-on-patented-pharmaceuticals/",
+    "summary_ko": "미국 CBP가 특허의약품 대상 무역확장법 232조 관세의 이행 지침을 발표했다. 기본세율 100%에 EU·일본·한국·스위스·리히텐슈타인 15%, 영국산 10%의 차등세율이 적용되고 온쇼어링·약가 합의 기업은 0% 임시세율이 가능하며, Annex III 기재 기업은 2026년 7월 31일·그 외 기업은 9월 29일부터 발효되고 모든 수입자는 7월 31일부터 Chapter 99 분류 신고 의무를 진다.",
+    "linked_issue": "관세·통상 규제",
+    "nct_id": null
+  },
+  {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "WuXi Biologics",
+    "comp_product": "CRDMO",
+    "source_type": "news",
+    "title": "Transcenta sells CDMO assets to WuXi Bio to focus on drug pipeline",
+    "date": "2026-08-07",
+    "url": "https://allsci.com/news/corporate-strategy/transcenta-cdmo-assets-sale-exits-manufacturing/",
+    "summary_ko": "우시바이오로직스가 8월 6일 자산매매계약을 통해 트랜센타(Transcenta) 자회사 HJB의 중국 항저우 첸탕신구 GMP 생산시설을 1억9000만 위안(약 2620만 달러)에 인수했다. 토지사용권·건물·설비·사업계약과 지정 인력이 포함되며, 트랜센타의 HiCB 연속공정 플랫폼과 ExcelPro CHO 배지 등 지식재산은 이전 대상에서 제외됐다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
+    "nct_id": null
+  },
+  {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "Alteogen",
+    "comp_product": "ALT-B4(하이브로자임)",
+    "source_type": "ir",
+    "title": "알테오젠, 상반기 매출 1405억원·영업이익 735억원",
+    "date": "2026-08-07",
+    "url": "https://www.hankyung.com/article/202608070507i",
+    "summary_ko": "알테오젠은 2026년 상반기 연결 매출 1405억원(전년 동기 대비 +37%), 영업이익 735억원(+21%), 순이익 1013억원(+108%)을 공시했다. 2분기 매출은 688억9400만원으로 전년 동기 대비 269.5% 급증하며 영업이익 341억8000만원으로 흑자 전환했고, 1분기 체결한 ALT-B4 라이선스 계약의 선급금·마일스톤이 반영됐다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루",
+    "competitor": "Viatris",
+    "comp_product": "Influvac",
+    "source_type": "ir",
+    "title": "Viatris Reports Second-Quarter 2026 Financial Results",
+    "date": "2026-08-06",
+    "url": "https://newsroom.viatris.com/2026-08-06-Viatris-Reports-Second-Quarter-2026-Financial-Results",
+    "summary_ko": "2026년 2분기 매출 38억 달러(+5%), 조정 EBITDA 12억 달러(+8% 운영기준), 조정 EPS 0.69달러를 기록하며 시장 예상치를 상회했다. 2026년 연간 가이던스를 매출 145.5억~149.5억 달러, 조정 EPS 2.45~2.59달러로 상향했으나 인플루박 등 백신 제품별 실적은 별도 공시되지 않았다.",
+    "linked_issue": "공공입찰(PAHO/UNICEF) 경쟁",
+    "nct_id": null
+  },
+  {
+    "category": "Rare Disease (희귀질환)",
+    "gc_product": "헌터라제",
+    "competitor": "REGENXBIO",
+    "comp_product": "RGX-121 / NAVSUNLI",
+    "source_type": "ir",
+    "title": "REGENXBIO Reports Second Quarter 2026 Financial Results and Operational Highlights",
+    "date": "2026-08-06",
+    "url": "http://www.prnewswire.com/news-releases/regenxbio-reports-second-quarter-2026-financial-results-and-operational-highlights-302844662.html",
+    "summary_ko": "REGENXBIO의 2026년 2분기 매출은 1억 800만 달러(전년 동기 2,140만 달러)로 AbbVie 마일스톤 1억 달러 유입에 힘입어 순이익 2,270만 달러로 흑자 전환했고, 7월 거래 반영 시 프로포마 현금은 약 3억 1,300만 달러다. MPS II 유전자치료제 NAVSUNLI(RGX-121)는 7월 Type A 미팅에서 FDA가 추가 임상 불필요를 재확인해 3분기 중 BLA 재제출이 예정됐다.",
+    "linked_issue": "엘라프라제 표준요법 위협",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루",
+    "competitor": "美 CDC·ACIP",
+    "comp_product": "독감백신",
+    "source_type": "issue",
+    "title": "Moderna Gets FDA Approval for mRNA Flu Vaccine, But CDC Input Still Uncertain",
+    "date": "2026-08-06",
+    "url": "https://medcitynews.com/2026/08/moderna-flu-vaccine-fda-approval-mflusiva-acip-cdc-mrna/",
+    "summary_ko": "미국 예방접종자문위원회(ACIP)가 소송으로 2026년 들어 회의를 열지 못해 신규 허가된 mRNA 독감백신 mFlusiva에 대한 권고를 내지 못하고 있다. ACA는 ACIP 권고를 받은 예방접종에만 본인부담 없는 보험 적용을 의무화하므로 권고 부재는 급여·환자 접근성 제약으로 직결되며, 다음 ACIP 회의는 2026년 10월로 예정됐다.",
+    "linked_issue": "조달·급여 정책",
+    "nct_id": null
+  },
+  {
+    "category": "Rare Disease (희귀질환)",
+    "gc_product": "헌터라제",
+    "competitor": "Denali Therapeutics",
+    "comp_product": "AVLAYAH (tividenofusp alfa)",
+    "source_type": "ir",
+    "title": "Denali Therapeutics Reports Second Quarter 2026 Financial Results and Business Highlights",
+    "date": "2026-08-06",
+    "url": "https://investors.denalitherapeutics.com/news-releases/news-release-details/denali-therapeutics-reports-second-quarter-2026-financial",
+    "summary_ko": "출시 첫 온전한 분기인 2026년 2분기 AVLAYAH 순매출은 360만 달러였고, 3분기 가이던스는 1,000만~1,200만 달러로 제시됐다(R&D 비용 9,700만 달러, 순손실 1억 2,760만 달러, 6월 말 현금 9억 4,000만 달러·PRV 매각 반영 시 11억 달러 이상). 적격 의료기관의 약 80%에 접점을 확보했고 민간보험 커버리지가 전체 가입자의 50% 이상, 주(州) 메디케이드 14곳을 확보했다.",
+    "linked_issue": "엘라프라제 표준요법 위협",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루",
+    "competitor": "Moderna",
+    "comp_product": "mFLUSIVA (mRNA-1010)",
+    "source_type": "news",
+    "title": "Moderna Receives U.S. FDA Approval for Influenza Vaccine mFLUSIVA",
+    "date": "2026-08-05",
+    "url": "https://www.biospace.com/press-releases/moderna-receives-u-s-fda-approval-for-influenza-vaccine-mflusiva",
+    "summary_ko": "미국 FDA가 세계 최초 mRNA 독감백신 mFLUSIVA(mRNA-1010)를 50세 이상 성인 대상으로 승인했으며, 65세 이상은 면역원성 기반 가속승인으로 허가됐다. 40,805명 규모 임상 3상을 근거로 하며 2026-2027 호흡기 시즌부터 미국 일부 소매점에 공급될 예정이고 EU·캐나다·호주에서도 심사가 진행 중이다.",
+    "linked_issue": "차세대 mRNA 독감백신",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루",
+    "competitor": "美 FDA",
+    "comp_product": "독감백신(mRNA)",
+    "source_type": "issue",
+    "title": "FDA approves Moderna's mRNA flu vaccine, the first to use the technology",
+    "date": "2026-08-05",
+    "url": "https://www.statnews.com/2026/08/05/fda-approves-moderna-mflusiva-first-mrna-flu-vaccine/",
+    "summary_ko": "미국 FDA가 2026년 8월 5일 모더나의 mFlusiva(mRNA-1010)를 승인해 세계 최초의 mRNA 계절 독감백신이 허가됐다. 50세 이상 성인 대상이며 65세 이상 적응증은 시판 후 임상 결과를 조건으로 하는 가속승인으로, 모더나는 2026/27 시즌 미국 공급을 예상한다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "",
+    "competitor": "에콰도르 CONASA",
+    "comp_product": "",
+    "source_type": "issue",
+    "title": "Ecuador aprueba su nuevo Cuadro Nacional de Medicamentos Básicos con 512 principios activos para 2026",
+    "date": "2026-08-05",
+    "url": "https://www.primicias.ec/sociedad/nuevo-cuadro-medicamentos-basicos-2026-crisis-salud-ecuador-129641/",
+    "summary_ko": "에콰도르 국가보건위원회(CONASA)가 2026년 8월 5일 국가필수의약품목록(Cuadro Nacional de Medicamentos Básicos)을 개정 승인해 성분 수를 2023년 이후 적용된 494개에서 512개로 확대했다. 관보 게재 후 2026년 중 발효되며, 보건부는 항암 등 그동안 국내에서 충족되지 않았던 질환 영역이 보강됐다고 설명했다.",
+    "linked_issue": "조달·급여 정책",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "알리글로 IVIG",
+    "competitor": "ADMA Biologics",
+    "comp_product": "Asceniv/Bivigam",
+    "source_type": "ir",
+    "title": "ADMA Biologics Reports Second Quarter 2026 Financial Results and Provides Business Update",
+    "date": "2026-08-05",
+    "url": "https://ir.admabiologics.com/news-releases/news-release-details/adma-biologics-reports-second-quarter-2026-financial-results-and",
+    "summary_ko": "2026년 2분기 매출 1억2,440만 달러(+2%), GAAP 순이익 3,780만 달러(+11%), 조정 EBITDA 6,180만 달러(+22%)를 기록했다. ASCENIV 매출은 1억290만 달러로 24% 성장했고 BIVIGAM은 1,940만 달러, 매출총이익률은 69%(전년 55%)로 개선됐으며 연간 가이던스(매출 5.3~5.6억 달러)를 재확인했다.",
+    "linked_issue": "고면역글로불린 특화",
+    "nct_id": null
+  },
+  {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "Alteogen",
+    "comp_product": "ALT-B4(하이브로자임)",
+    "source_type": "news",
+    "title": "알테오젠, 글로벌 제약사와 5219억원 규모 기술수출 계약",
+    "date": "2026-08-05",
+    "url": "https://www.newspim.com/news/view/20260805000125",
+    "summary_ko": "알테오젠이 글로벌 제약사와 최대 3억6500만 달러(약 5219억원) 규모의 ALT-B4 기술수출 계약을 체결했다고 8월 4일 공시했다. 선급금·개발/허가/상업화 마일스톤에 더해 상업화 이후 순매출 기준 판매 로열티를 별도로 수취하며, 계약 상대방은 비밀 유지 조항에 따라 비공개다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "배리셀라",
+    "competitor": "MSD/Merck",
+    "comp_product": "ProQuad/VARIVAX/M-M-R II",
+    "source_type": "ir",
+    "title": "Merck Announces Second-Quarter 2026 Financial Results; Highlights Key Regulatory and Clinical Milestones Across Broad, Diverse Pipeline",
+    "date": "2026-08-04",
+    "url": "https://www.merck.com/news/merck-highlights-key-regulatory-and-clinical-milestones-across-broad-diverse-pipeline/",
+    "summary_ko": "2026년 2분기 프로쿼드·MMR II·바리박스 합산 매출은 5억9,200만 달러로 전년 동기 6억900만 달러 대비 3% 감소(환율 제외 보합)했으며, 미국 수요 감소를 판가 인상이 일부 상쇄했다. 같은 기간 가다실 매출은 11억6,900만 달러로 4% 증가했고 전사 매출은 166억 달러로 5% 성장했다.",
+    "linked_issue": "수두·MMR 백신 경쟁",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루",
+    "competitor": "SK바이오사이언스",
+    "comp_product": "스카이셀플루",
+    "source_type": "news",
+    "title": "SK바이오사이언스, 의료진 대상 학술행사 개최…백신 임상 근거 공유",
+    "date": "2026-08-03",
+    "url": "https://www.newspim.com/news/view/20260803000044",
+    "summary_ko": "SK바이오사이언스가 7월 14일 수원·7월 28일 부산에서 의료진 110여 명 대상 '스카이 비전 심포지엄'을 열고 세포배양 독감백신 스카이셀플루의 2024~2025절기 실사용 데이터를 공개했다. 소아·청소년 45.6%, 생후 6~35개월 영유아 88.6%의 예방효과를 제시했으며 스카이조스터·베이포투스 임상 결과도 함께 발표했다.",
+    "linked_issue": "세포배양·면역증강 백신 확대",
+    "nct_id": null
+  },
+  {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "Catalent",
+    "comp_product": "CDMO(경구고형제·스프레이드라이)",
+    "source_type": "news",
+    "title": "Codis Completes Acquisition of Catalent's Nottingham, UK Facility, Expanding Europe's Premier Spray Dry Network",
+    "date": "2026-08-03",
+    "url": "https://www.prnewswire.com/news-releases/codis-completes-acquisition-of-catalents-nottingham-uk-facility-expanding-europes-premier-spray-dry-network-302841345.html",
+    "summary_ko": "코디스(Codis)가 카탈런트의 영국 노팅엄 시설 인수를 완료해 유럽 최대 규모의 스프레이 드라이 네트워크를 구축했다. 7월 6일 인수 계약 발표 이후 약 한 달 만에 종결된 거래로, 코디스는 경구 고형제 개발·소규모 생산 역량을 확보하게 됐다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "",
+    "competitor": "이집트 EDA",
+    "comp_product": "",
+    "source_type": "issue",
+    "title": "Egyptian Drug Authority studies new flexible pricing system as pharmaceutical companies push for increases",
+    "date": "2026-08-02",
+    "url": "https://www.madamasr.com/en/2026/08/02/news/u/egyptian-drug-authority-studies-new-flexible-pricing-system-as-pharmaceutical-companies-push-for-increases/",
+    "summary_ko": "이집트 의약품청(EDA)이 제약업계의 인상 요구에 대응해 약가를 더 자주 변동시킬 수 있는 새로운 유연 약가 산정 체계를 검토하고 있다. EDA는 최근 파운드 환율 안정(달러당 52→49파운드)을 이유로 업계가 요구한 10% 일괄 인상 요청은 수용하지 않은 상태다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루",
+    "competitor": "Moderna",
+    "comp_product": "mFLUSIVA (mRNA-1010)",
+    "source_type": "ir",
+    "title": "Moderna Reports Second Quarter 2026 Financial Results and Provides Business Updates",
+    "date": "2026-07-31",
+    "url": "https://www.biospace.com/press-releases/moderna-reports-second-quarter-2026-financial-results-and-provides-business-updates",
+    "summary_ko": "2026년 2분기 매출 1억4,500만 달러, 순손실 8억 달러, 주당손실 1.97달러를 기록했고 6월 말 현금·투자자산은 69억 달러다. 2026년 매출 최대 10% 성장 가이던스를 유지하면서 독감백신 mFLUSIVA의 8월 5일 PDUFA 승인 기대와 VRBPAC 만장일치 권고를 실적 발표에서 강조했다.",
+    "linked_issue": "차세대 mRNA 독감백신",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "알리글로 IVIG",
+    "competitor": "Takeda",
+    "comp_product": "Gammagard/HYQVIA/Cuvitru",
+    "source_type": "ir",
+    "title": "Takeda Announces FY2026 First Quarter Results, Near-Term Launch Preparations and Pipeline Progress on Track",
+    "date": "2026-07-30",
+    "url": "https://www.takeda.com/newsroom/newsreleases/2026/takeda-reports-first-quarter-fy2026-results/",
+    "summary_ko": "FY2026 1분기 매출 1조2,199억 엔(실환율 +10.2%, 고정환율 -0.5%), 순이익 1,132억 엔(-8.9%)을 기록했고 연간 가이던스는 유지했다. 면역글로불린 매출은 미국 IVIG 물량 배분 영향으로 고정환율 -0.6%인 2,139억 엔이었으나 SCIG 포트폴리오(CUVITRU·HYQVIA)는 +17% 성장했으며, 연간 면역글로불린은 고정환율 중간 한 자릿수 성장을 전망했다.",
+    "linked_issue": "SCIG(피하주사) 전환",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루",
+    "competitor": "Sanofi Pasteur",
+    "comp_product": "Fluzone/Flublok",
+    "source_type": "ir",
+    "title": "Q2 2026: double-digit sales growth and strong business EPS growth; 2026 guidance upgraded",
+    "date": "2026-07-30",
+    "url": "https://www.sanofi.com/en/media-room/press-releases/2026/2026-07-30-05-30-00-3335767",
+    "summary_ko": "2026년 2분기 백신 매출은 11억 유로로 4.7% 감소했고, 특히 독감·코로나 백신 매출은 5,400만 유로로 61.7% 급감했다. 감소 요인은 2025년 미국·유럽 시즌 후반 일회성 수요의 높은 기저효과와 남반구 판매 부진이며, 전사 매출은 고정환율 기준 17.8% 성장해 2026년 가이던스를 상향했다.",
+    "linked_issue": "고용량 백신 효과 근거",
+    "nct_id": null
+  },
+  {
+    "category": "Rare Disease (희귀질환)",
+    "gc_product": "헌터라제",
+    "competitor": "JCR Pharmaceuticals",
+    "comp_product": "IZCARGO (pabinafusp alfa, JR-141)",
+    "source_type": "ir",
+    "title": "JCR Pharmaceuticals: Consolidated Financial Results for the Three Months Ended June 30, 2026 (FY2026 Q1)",
+    "date": "2026-07-30",
+    "url": "https://www.jcrpharm.co.jp/en/assets/uploads/docs/FY2026-Q1_Financial_Report_EN.pdf",
+    "summary_ko": "JCR의 FY2026 1분기 연결 매출은 97억 엔으로 전년 동기 대비 13.2% 증가했으나, 영업손실 21억 엔·순손실 19억 엔으로 적자폭이 확대됐다. 회사는 연간 실적 가이던스와 배당 전망을 그대로 유지했다.",
+    "linked_issue": "BBB 통과 차세대 ERT 등장",
+    "nct_id": null
+  },
+  {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "Samsung Biologics",
+    "comp_product": "CDMO",
+    "source_type": "news",
+    "title": "역대 최대 실적에도…삼성바이오, 3개월째 대형 수주 공백",
+    "date": "2026-07-30",
+    "url": "https://www.newspim.com/news/view/20260730000821",
+    "summary_ko": "삼성바이오로직스가 상반기 영업이익 1조1672억원(전년 동기 대비 +28.6%)의 최대 실적에도 3개월 이상 대형 신규 수주 계약이 없는 상태로, 상반기 확정 신규 수주는 약 5억 달러에 그쳤다. 누적 수주 잔고는 243억 달러(확정 217억·비확정 26억 달러)이며, 글로벌 관세 정책과 지정학적 불확실성이 고객사 발주 결정을 지연시키고 있는 것으로 분석됐다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "",
+    "competitor": "美 FDA",
+    "comp_product": "혈장(동결건조혈장)",
+    "source_type": "issue",
+    "title": "REGULATORY UPDATE: FDA Licenses First Freeze-Dried Plasma Product",
+    "date": "2026-07-29",
+    "url": "https://www.aabb.org/news-resources/news/article/2026/07/29/regulatory-update--fda-licenses-first-freeze-dried-plasma-product",
+    "summary_ko": "미국 FDA가 2026년 7월 29일 Teleflex 자회사 Vascular Solutions의 Ezplaz를 허가해 미국 최초의 동결건조혈장(FDP) 제품이 라이선스를 받았다. 상온 보관·온도 변화 내성·신속 재수화가 가능해 냉동혈장의 콜드체인·해동 제약을 없앤 제품으로, 다른 혈장제제를 쓸 수 없는 성인 수혈 환자에 적응증을 받았다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "알리글로 IVIG",
+    "competitor": "Octapharma",
+    "comp_product": "혈장분획제제(Octagam/Panzyga/Cutaquig)",
+    "source_type": "news",
+    "title": "Octapharma to build $1.5 billion state-of-the-art critical care manufacturing facility in Rock Hill, SC",
+    "date": "2026-07-29",
+    "url": "https://www.prnewswire.com/news-releases/octapharma-to-build-1-5-billion-state-of-the-art-critical-care-manufacturing-facility-in-rock-hill-sc-302838003.html",
+    "summary_ko": "옥타파마가 미국 사우스캐롤라이나 록힐 50에이커 부지에 15억 달러를 투자해 혈장분획제제·출혈관리 제품 생산시설을 짓고 정규직 1,500명을 고용한다고 발표했다. 국가안보·비상대응 수요에 대응한 미국 내 자체 생산역량 확보가 목적이라고 밝혔다.",
+    "linked_issue": "원료 혈장(Plasma) 수급",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "알리글로 IVIG",
+    "competitor": "CSL Behring",
+    "comp_product": "Privigen/Hizentra",
+    "source_type": "news",
+    "title": "CSL launches clinical trials for new plasma manufacturing process (Horizon 2)",
+    "date": "2026-07-29",
+    "url": "https://www.fool.com.au/2026/07/29/csl-launches-clinical-trials-for-new-plasma-manufacturing-process/",
+    "summary_ko": "CSL이 동일 혈장량에서 면역글로불린 생산량을 크게 늘리는 차세대 제조공정 'Horizon 2'의 유효성·안전성 확인을 위한 임상시험 계획을 발표했다. FDA·EMA와 협의를 거쳐 2027년 중반 호주 Broadmeadows 생산 물질로 임상을 개시하며, 일리노이 캔카키(Kankakee) 공장 증설과 병행 추진한다.",
+    "linked_issue": "원료 혈장(Plasma) 수급",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "",
+    "competitor": "케냐 PPB",
+    "comp_product": "",
+    "source_type": "issue",
+    "title": "Kenya's PPB to roll out national system to track and authenticate health products",
+    "date": "2026-07-28",
+    "url": "https://www.healthcaremea.com/2026/07/28/kenyas-ppb-to-roll-out-national-system-to-track-and-authenticate-health-products/",
+    "summary_ko": "케냐 약사·독극물위원회(PPB)가 디지털헬스법(2023)에 근거한 국가 의약품 추적·인증 시스템을 2026년 8월 3일 가동한다. 12월 31일까지 전환기에는 PPB 신고 배치번호 기반 추적을, 2027년 1월 1일부터는 GS1 표준 기반 개별 단위 시리얼라이제이션까지 의무화하며 케냐 내 제조·수입 전 품목(HPTs)이 대상이다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루/배리셀라",
+    "competitor": "GSK",
+    "comp_product": "Fluarix Tetra/Varilrix",
+    "source_type": "ir",
+    "title": "GSK delivers strong Q2 core results performance and continued momentum",
+    "date": "2026-07-28",
+    "url": "https://www.gsk.com/en-gb/media/press-releases/gsk-delivers-strong-q2-core-results-performance-and-continued-momentum/",
+    "summary_ko": "2026년 2분기 백신 부문 매출은 23억 파운드로 8% 성장했으며, 대상포진 백신 싱그릭스 9억 파운드(+3%)·수막구균 백신 5억 파운드(+21%)·아렉비 2억 파운드(+100% 초과)가 견인했다. 전사 매출은 84억 파운드로 5% 성장했으나 플루아릭스·바리릭스가 포함된 소아·성인 기타 백신 매출은 8% 감소했다.",
+    "linked_issue": "수두·MMR 백신 경쟁",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "알리글로 IVIG",
+    "competitor": "Grifols",
+    "comp_product": "Gamunex-C/Xembify/Albutein",
+    "source_type": "ir",
+    "title": "Grifols increases revenue by 2.6% to €3.6 billion, and net profit by 28.7% to €227 million until June (H1 2026 Financial Results)",
+    "date": "2026-07-28",
+    "url": "https://www.grifols.com/en/h1-2026-financial-results",
+    "summary_ko": "2026년 상반기 매출 35억7,400만 유로(고정환율 +2.6%), 그룹 순이익 2억2,700만 유로(+28.7%)를 기록했다. 바이오파마 부문이 고정환율 +5.4% 성장했고 면역글로불린이 +12.8%(IVIG +12.5%, SCIG +17.7%) 견인했으며, 조정 EBITDA는 8억5,400만 유로(마진 23.9%), 순레버리지 4.2배다.",
+    "linked_issue": "면역글로불린 시장 점유·약가",
+    "nct_id": null
+  },
   {
     "category": "Plasma Derivative",
     "gc_product": "알리글로 IVIG",
@@ -227,6 +596,32 @@ let DATA = [
     "url": "https://www.grifols.com/en/view-news/-/news/grifols-increases-revenue-by-2-6-to-euros-3-6-billion-and-net-profit-by-28-7-to-euros-227-million-until-june",
     "summary_ko": "그리폴스 2026년 상반기 매출 36억 유로(고정환율 +2.6%), 순이익 2억 2,700만 유로(+28.7%)를 기록했으며 2분기 매출은 18억 7,400만 유로였다. 2분기 조정 EBITDA는 4억 7,200만 유로(마진 25.2%), 면역글로불린이 성장을 견인해 XEMBIFY가 2분기 고정환율 기준 약 34% 성장했고, 연간 잉여현금흐름 가이던스 5억~5억 7,500만 유로를 유지했다.",
     "linked_issue": "면역글로불린 시장 점유·약가",
+    "nct_id": null
+  },
+  {
+    "category": "Rare Disease (희귀질환)",
+    "gc_product": "헌터라제",
+    "competitor": "Denali Therapeutics",
+    "comp_product": "AVLAYAH (tividenofusp alfa)",
+    "source_type": "news",
+    "title": "Denali Therapeutics Reports Material Event (Form 8-K) — Closing of Rare Pediatric Disease Priority Review Voucher Sale",
+    "date": "2026-07-27",
+    "url": "https://www.stocktitan.net/sec-filings/DNLI/8-k-denali-therapeutics-inc-reports-material-event-5908c5288880.html",
+    "summary_ko": "Denali가 2026년 7월 27일 희귀소아질환 우선심사바우처(PRV) 매각을 종결해 총 1억 9,500만 달러를 수령했다. 해당 PRV는 2026년 3월 헌터증후군 치료제 AVLAYAH(티비데노푸스파제 알파)의 FDA 승인으로 부여받은 것으로, 6월 12일 체결한 자산양수도계약에 따라 대형 제약사에 매각됐다.",
+    "linked_issue": "BBB 통과 차세대 ERT 등장",
+    "nct_id": null
+  },
+  {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "Celltrion",
+    "comp_product": "바이오시밀러·CDMO",
+    "source_type": "ir",
+    "title": "셀트리온, 2분기 매출 1조3937억원·영업이익 4518억원",
+    "date": "2026-07-27",
+    "url": "https://zdnet.co.kr/view/?no=20260727142528",
+    "summary_ko": "셀트리온은 2026년 2분기 확정 실적으로 매출 1조3937억원(전년 동기 대비 +45.0%), 영업이익 4518억원(+86.3%), 영업이익률 32.4%를 기록해 분기 최대 실적을 냈다. 회사는 신규 제품 중심의 포트폴리오 전환과 생산 효율성 향상에 따른 질적 성장이라고 설명했다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
     "nct_id": null
   },
   {
@@ -243,6 +638,19 @@ let DATA = [
     "nct_id": null
   },
   {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "Samsung Epis Holdings / Samsung Bioepis",
+    "comp_product": "바이오시밀러",
+    "source_type": "ir",
+    "title": "Samsung Epis Holdings Reports Second Quarter and Half-Year 2026 Financial Results",
+    "date": "2026-07-24",
+    "url": "https://www.newswire.co.kr/newsRead.php?no=1039282",
+    "summary_ko": "삼성에피스홀딩스는 삼성바이오에피스 기준 2026년 상반기 매출 8471억원(전년 동기 대비 +6%), 영업이익 2306억원(+6%)을 공시했다. 2분기 단독으로는 매출 3922억원·영업이익 866억원으로 공급 일정 조정과 R&D 투자 확대로 각각 2%·4% 감소했으나 영업이익률 22%를 유지했고, 유럽 직판 제품을 5개로 확대했다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
+    "nct_id": null
+  },
+  {
     "category": "Plasma Derivative",
     "gc_product": "알리글로 IVIG",
     "competitor": "CSL Behring",
@@ -256,6 +664,45 @@ let DATA = [
     "nct_id": null
   },
   {
+    "category": "Hemophilia (혈우병)",
+    "gc_product": "그린진에프",
+    "competitor": "EU EMA",
+    "comp_product": "혈우병A 치료제(Jivi)",
+    "source_type": "issue",
+    "title": "Meeting highlights from the Committee for Medicinal Products for Human Use (CHMP) 20-23 July 2026",
+    "date": "2026-07-24",
+    "url": "https://www.ema.europa.eu/en/news/meeting-highlights-committee-medicinal-products-human-use-chmp-20-23-july-2026",
+    "summary_ko": "EU EMA CHMP가 7월 20~23일 회의에서 신약 12건 허가 권고와 기존 허가 품목 8건의 적응증 확대 권고를 채택했고, 적응증 확대 대상에 A형 혈우병 치료제 Jivi(damoctocog alfa pegol)가 포함됐다. 또 코로나19 백신 4종(Comirnaty·Spikevax·Nuvaxovid·Bimervax)의 2026/27 시즌 XFG 변이 대응 조성 변경에 긍정 의견을 냈다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
+    "category": "Hemophilia (혈우병)",
+    "gc_product": "그린진에프",
+    "competitor": "Roche",
+    "comp_product": "Hemlibra / NXT007",
+    "source_type": "ir",
+    "title": "Chugai Announces 2026 2nd Quarter Results",
+    "date": "2026-07-24",
+    "url": "https://www.chugai-pharm.co.jp/english/news/detail/20260724160000_1265.html",
+    "summary_ko": "주가이의 2026년 상반기 코어 매출은 6,633억 엔(+14.7%), 코어 영업이익 3,291억 엔(+21.0%), 코어 순이익 2,384억 엔(+23.2%)으로, 헴리브라 로열티 수입과 로슈향 헴리브라 수출 증가가 성장을 견인했다. 차세대 성장동력인 NXT007은 상반기 중 임상 3상 2건을 개시했다.",
+    "linked_issue": "차세대 이중항체(NXT007)",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "GC알부민20%",
+    "competitor": "러시아 보건부",
+    "comp_product": "알부민",
+    "source_type": "issue",
+    "title": "Минздрав подтвердил качественное соответствие брянского «Альбумина»",
+    "date": "2026-07-23",
+    "url": "https://zhnews.ru/politics/region/2026/07/23/minzdrav-podtverdil-kachestvennoe-sootvetstvie-bryanskogo-albumina/",
+    "summary_ko": "러시아 보건부가 브랸스크주 혈액수혈센터가 생산하는 알부민 주입제가 유라시아경제연합(EAEU) 요건에 부합한다고 인정하는 결정을 내렸다. 러시아 현지 생산 알부민이 EAEU 기준 적합 판정을 받은 사례로, 러시아·EAEU 알부민 공급 구조에 영향을 준다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
     "category": "CMO / CDMO",
     "gc_product": "GC CDMO",
     "competitor": "Samsung Biologics",
@@ -265,6 +712,19 @@ let DATA = [
     "date": "2026-07-23",
     "url": "https://samsungbiologics.com/media/company-news/samsung-biologics-reports-second-quarter-2026-financial-results",
     "summary_ko": "2026년 2분기 매출 1조 3,210억원, 영업이익 5,860억원을 기록했고 누적 수주 규모는 216억 달러에 달했다. 미국 록빌 공장 통합, 3분기 네덜란드 영업소 개설, 연말 완료 예정인 PolyPeptide Group 인수를 진행 중이다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
+    "nct_id": null
+  },
+  {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "Samsung Biologics",
+    "comp_product": "CDMO",
+    "source_type": "ir",
+    "title": "Samsung Biologics Reports Second Quarter 2026 Financial Results",
+    "date": "2026-07-23",
+    "url": "https://www.prnewswire.com/news-releases/samsung-biologics-reports-second-quarter-2026-financial-results-302832693.html",
+    "summary_ko": "2026년 2분기 매출 1조3210억원(전년 동기 대비 +30.2%), 영업이익 5860억원(+22.9%)을 기록했고 상반기 누적 매출 2조5780억원·영업이익 1조1670억원을 달성했다. 누적 수주 금액은 216억 달러이며, 2026년 가이던스는 기존 범위의 상단 달성이 가능하다고 밝혔다.",
     "linked_issue": "글로벌 캐파 증설·수주",
     "nct_id": null
   },
@@ -285,12 +745,12 @@ let DATA = [
     "category": "Hemophilia (혈우병)",
     "gc_product": "그린진에프",
     "competitor": "Roche",
-    "comp_product": "Hemlibra",
+    "comp_product": "Hemlibra (emicizumab)",
     "source_type": "ir",
-    "title": "Roche's strong momentum continues in the first half of 2026, delivering +6% sales growth at CER",
+    "title": "Roche Half-Year Results 2026 — Ad hoc announcement pursuant to Art. 53 LR",
     "date": "2026-07-23",
     "url": "https://www.roche.com/media/releases/med-cor-2026-07-23",
-    "summary_ko": "2026년 상반기 매출이 고정환율 기준 6% 성장했고 Xolair·Hemlibra·Ocrevus·Phesgo·Vabysmo 등 5대 성장동력 매출은 110억 스위스프랑(+12% CER)을 기록했다. Hemlibra는 비항체(non-inhibitor) 환자에서 Factor VIII 전환 수요가 이어지며 성장했다.",
+    "summary_ko": "로슈의 2026년 상반기 헴리브라 매출은 신규 환자 수요 확대로 9% 증가한 13억 스위스프랑을 기록하며 제약부문 5대 성장동력에 포함됐다(5대 품목 합산 110억 프랑, 고정환율 12% 성장). 미국이 최대 시장으로 9% 성장했고 유럽·인터내셔널 지역은 Factor VIII 치료제에서의 전환 가속이 성장을 뒷받침했다.",
     "linked_issue": "Factor VIII 시장 축소",
     "nct_id": null
   },
@@ -321,6 +781,32 @@ let DATA = [
     "nct_id": null
   },
   {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "Lonza",
+    "comp_product": "CDMO",
+    "source_type": "ir",
+    "title": "Lonza Delivered Strong H1 2026 Performance Across All Business Platforms and Raises CORE EBITDA Margin Outlook",
+    "date": "2026-07-22",
+    "url": "https://www.lonza.com/news/2026-07-22-06-30",
+    "summary_ko": "론자는 2026년 상반기 매출 34억 스위스프랑(고정환율 기준 +16.0%), CORE EBITDA 12억 스위스프랑(+27.4%), 마진 34.8%(+4.4%p)를 기록했다. 연간 CORE EBITDA 마진 가이던스를 기존 32% 이상에서 33~34%로 상향했으며 매출 성장률 가이던스는 고정환율 기준 11~12%로 유지했다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
+    "nct_id": null
+  },
+  {
+    "category": "Rare Disease (희귀질환)",
+    "gc_product": "헌터라제",
+    "competitor": "JCR Pharmaceuticals",
+    "comp_product": "IZCARGO (pabinafusp alfa, JR-141)",
+    "source_type": "news",
+    "title": "JCR Pharmaceuticals Receives Marketing Authorization in the United Arab Emirates for IZCARGO™, a Blood-Brain Barrier-Penetrating Enzyme Replacement Therapy for Hunter Syndrome",
+    "date": "2026-07-22",
+    "url": "https://www.biospace.com/press-releases/jcr-pharmaceuticals-receives-marketing-authorization-in-the-united-arab-emirates-for-izcargo-a-blood-brain-barrier-penetrating-enzyme-replacement-therapy-for-hunter-syndrome",
+    "summary_ko": "JCR의 BBB 통과 효소대체요법 IZCARGO(파비나푸스파제 알파)가 아랍에미리트(UAE) 품목허가를 획득해, 2021년 일본 출시 이후 일본 외 첫 허가 사례가 됐다. 유통은 파트너 Taiba Middle East FZ LLC가 맡으며 JCR은 중동·북아프리카(MENA) 전역으로 허가를 확대할 계획이다.",
+    "linked_issue": "BBB 통과 차세대 ERT 등장",
+    "nct_id": null
+  },
+  {
     "category": "Rare Disease (희귀질환)",
     "gc_product": "헌터라제",
     "competitor": "JCR Pharmaceuticals",
@@ -331,6 +817,32 @@ let DATA = [
     "url": "https://www.jcrpharm.co.jp/en/news/002410.html",
     "summary_ko": "JCR이 UAE에서 BBB 통과 효소대체요법 IZCARGO(pabinafusp alfa)의 품목허가를 획득했다. 일본 외 지역 첫 허가로 중동 희귀질환 시장 진입이 시작됐다.",
     "linked_issue": "BBB 통과 차세대 ERT 등장",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "",
+    "competitor": "멕시코 Birmex·보건부",
+    "comp_product": "",
+    "source_type": "issue",
+    "title": "BIRMEX publica la convocatoria de la licitación consolidada de medicamentos 2027-2028",
+    "date": "2026-07-21",
+    "url": "https://perezmartinez.mx/2026/07/21/birmex-publica-la-convocatoria-de-la-licitacion-consolidada-de-medicamentos-2027-2028/",
+    "summary_ko": "멕시코 Birmex가 2027~2028년 보건부문 의약품 통합구매(compra consolidada) 입찰 공고를 게시했다. 국가보건조달목록(Compendio Nacional) 766개 품목을 대상으로 IMSS·ISSSTE·PEMEX 등 8개 기관 수요를 통합하며, 8월 5일 제안서 개찰·9월 14일 낙찰 예정이고 최저가 이진평가·역입찰 방식에 멕시코산 또는 무역협정 체결국산 요건이 적용된다.",
+    "linked_issue": "조달·급여 정책",
+    "nct_id": null
+  },
+  {
+    "category": "CMO / CDMO",
+    "gc_product": "GC CDMO",
+    "competitor": "Samsung Biologics",
+    "comp_product": "CDMO",
+    "source_type": "news",
+    "title": "Samsung Biologics announces all-cash offer to acquire PolyPeptide, accelerating multi-modality strategy and expanding global network across U.S., Europe, and India",
+    "date": "2026-07-20",
+    "url": "https://samsungbiologics.com/media/company-news/samsung-biologics-announces-all-cash-offer-to-acquire-polypeptide",
+    "summary_ko": "삼성바이오로직스가 스위스 펩타이드 CDMO 폴리펩타이드 그룹을 주당 44.31스위스프랑(지분가치 약 14.6억 스위스프랑, 약 18억 달러)에 전액 현금 공개매수하겠다고 발표했다. GLP-1 등 펩타이드로 모달리티를 확장하고 스웨덴·벨기에·프랑스·미국·인도 생산망을 확보하며, 2026년 말 거래 종결을 목표로 한다.",
+    "linked_issue": "글로벌 캐파 증설·수주",
     "nct_id": null
   },
   {
@@ -347,6 +859,58 @@ let DATA = [
     "nct_id": null
   },
   {
+    "category": "Rare Disease (희귀질환)",
+    "gc_product": "헌터라제",
+    "competitor": "REGENXBIO",
+    "comp_product": "RGX-121 / NAVSUNLI",
+    "source_type": "news",
+    "title": "REGENXBIO Announces Pricing of Public Offering of Common Stock and Pre-funded Warrants",
+    "date": "2026-07-17",
+    "url": "https://www.prnewswire.com/news-releases/regenxbio-announces-pricing-of-public-offering-of-common-stock-and-pre-funded-warrants-302828273.html",
+    "summary_ko": "REGENXBIO가 보통주 10,003,889주(주당 9.00달러)와 선납워런트 1,111,111주를 발행하는 공모를 확정해 총 약 1억 달러 조달을 예고했다. MPS II 유전자치료제 NAVSUNLI(RGX-121)의 BLA 재제출을 앞둔 시점의 자금 확충이다.",
+    "linked_issue": "엘라프라제 표준요법 위협",
+    "nct_id": null
+  },
+  {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루",
+    "competitor": "中 NMPA CDE",
+    "comp_product": "독감백신",
+    "source_type": "issue",
+    "title": "流感病毒疫苗药学研究及评价技术指导原则（征求意见稿）",
+    "date": "2026-07-17",
+    "url": "https://www.cnpharm.com/upload/resources/file/2026/07/17/192180.pdf",
+    "summary_ko": "중국 NMPA 약품심사평가센터(CDE)가 「인플루엔자 바이러스 백신 약학 연구 및 평가 기술지도원칙(의견수렴안)」을 공개하고 의견 수렴에 착수했다. 적용범위·기본원칙·기술요구사항·용어를 규정해 중국 내 독감백신의 제조·품질 심사 기준을 정비하는 내용으로, 같은 기간 로타바이러스 백신 임상시험 지도원칙도 함께 의견수렴 대상에 올랐다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "",
+    "competitor": "브라질 보건부·ANVISA",
+    "comp_product": "혈액·혈장",
+    "source_type": "issue",
+    "title": "Ministério da Saúde atualiza procedimentos hemoterápicos e Anvisa orienta período de transição",
+    "date": "2026-07-16",
+    "url": "https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2026/ministerio-da-saude-atualiza-procedimentos-hemoterapicos-e-anvisa-orienta-periodo-de-transicao",
+    "summary_ko": "브라질 보건부가 국가혈액시스템(SINASAN)의 혈액·수혈 기술규정을 개정한 Portaria GM/MS 11.685/2026을 공포했고, 공포 90일 후인 2026년 9월 30일 발효된다. ANVISA는 전환기 위생감시 지침으로 기술고시(Nota Técnica) 42/2026을 발행했고, 자체 규정 RDC 34/2014 개정 작업을 마무리 중이다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
+    "category": "Plant Export",
+    "gc_product": "GC Plant Engineering",
+    "competitor": "인도네시아 보건부",
+    "comp_product": "혈장분획제제",
+    "source_type": "issue",
+    "title": "Kemenkes Tarik Investasi Raksasa Pabrik Plasma dan Vaksin, Perkuat Ketahanan Kesehatan Nasional",
+    "date": "2026-07-16",
+    "url": "https://www.kemkes.go.id/id/kemenkes-tarik-investasi-raksasa-pabrik-plasma-dan-vaksin-perkuat-ketahanan-kesehatan-nasional",
+    "summary_ko": "인도네시아 보건부가 혈장분획제제 수입 대체를 목표로 플라스마·백신 공장 대형 투자를 유치했다고 발표했다(2023년부터 혈장공장 관련 규제 완화). SK플라즈마가 인도네시아투자청(INA)과 협력한 3억 달러·연 60만 리터 규모의 현지 첫 혈장분획 공장을 2026년 완공해 BPOM 허가 후 2027년 본격 가동 예정이며, 다케다도 더 큰 규모의 혈장제제 공장 투자를 약속했다.",
+    "linked_issue": "공급망·수급 이슈",
+    "nct_id": null
+  },
+  {
     "category": "Plasma Derivative",
     "gc_product": "알리글로 IVIG",
     "competitor": "Grifols",
@@ -357,6 +921,32 @@ let DATA = [
     "url": "https://www.biospace.com/press-releases/grifols-doses-first-patients-in-two-phase-3-trials-to-expand-indications-of-its-flagship-immunoglobulins",
     "summary_ko": "그리폴스가 주력 면역글로불린의 미국 적응증 확대를 위한 임상 3상 2건에서 첫 환자 투여를 개시했다. SIGMA(NCT07582432, 50명)는 혈액암 동반 이차면역결핍 환자 대상 GAMUNEX-C를, XPERT(NCT07540221, 약 40명·미국/유럽 20개 기관)는 CIDP 환자에서 피하주사제 XEMBIFY의 GAMUNEX-C 대비 비열등성을 평가한다.",
     "linked_issue": "SCIG(피하주사) 전환",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "알리글로 IVIG",
+    "competitor": "Grifols",
+    "comp_product": "Gamunex-C/Xembify",
+    "source_type": "news",
+    "title": "Grifols Doses First Patients in Two Phase 3 Trials to Expand Indications of its Flagship Immunoglobulins",
+    "date": "2026-07-16",
+    "url": "https://www.globenewswire.com/news-release/2026/07/16/3328383/0/en/Grifols-Doses-First-Patients-in-Two-Phase-3-Trials-to-Expand-Indications-of-its-Flagship-Immunoglobulins.html",
+    "summary_ko": "그리폴스가 IVIG 'GAMUNEX-C'와 SCIG 'XEMBIFY'의 미국 적응증 확대를 위한 임상 3상 2건(SIGMA·XPERT)에서 첫 환자 투여를 개시했다. SIGMA는 혈액암 동반 2차 면역결핍, XPERT(NCT07540221)는 CIDP에서 XEMBIFY의 GAMUNEX-C 대비 PK 비열등성을 평가한다.",
+    "linked_issue": "SCIG(피하주사) 전환",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "GC알부민20%",
+    "competitor": "中 세제·약가 정책",
+    "comp_product": "알부민·면역글로불린",
+    "source_type": "issue",
+    "title": "China's Top Three Blood Product Makers Warn of Over 50% Profit Drop on Supply Glut, Tax Hike",
+    "date": "2026-07-16",
+    "url": "https://finance.biggo.com/news/d9aa6621-b3fa-471b-8475-a995e441b6ac",
+    "summary_ko": "중국이 2026년 1월 1일부터 혈액제제에 대한 3% 간이 부가세 적용을 폐지하고 13% 표준세율을 적용(희귀질환 목록 제외)해 세부담이 급증했다. 톈탄생물(-51.75%)·태평양솽린바이오(-53~66%)·웨이광바이오(-50~60%) 등 3대 혈액제제 기업이 이익 급감을 예고했고, IVIG 가격은 코로나 당시 1,000위안대에서 500위안 수준으로 반토막났다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
     "nct_id": null
   },
   {
@@ -373,6 +963,45 @@ let DATA = [
     "nct_id": null
   },
   {
+    "category": "Vaccine (백신)",
+    "gc_product": "지씨플루",
+    "competitor": "韓 질병관리청",
+    "comp_product": "독감백신",
+    "source_type": "issue",
+    "title": "질병관리청, 하반기 7대 핵심과제 발표…\"감염병 대응·백신 자급화·AI 질병관리 강화\"",
+    "date": "2026-07-16",
+    "url": "https://www.medipharmhealth.co.kr/news/article.html?no=117981",
+    "summary_ko": "한국 질병관리청이 하반기 7대 핵심과제로 백신·치료제 자급화를 제시하고, 고면역원성 인플루엔자 백신·HPV 9가 백신·고령층 폐렴구균 단백결합백신을 국가예방접종(NIP) 우선 도입 검토 대상으로 선정했다. 코로나19 mRNA 백신은 8월 임상 2상에 착수하고, 품목허가부터 NIP 도입까지 기간 단축과 팬데믹 시 100~200일 개발 체계를 추진한다.",
+    "linked_issue": "조달·급여 정책",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "",
+    "competitor": "韓 식약처",
+    "comp_product": "",
+    "source_type": "issue",
+    "title": "식약처 하반기 정책, 규제지원·공급안정·마약류 감시 '동시 강화'",
+    "date": "2026-07-16",
+    "url": "https://www.kpanews.co.kr/news/articleView.html?idxno=538700",
+    "summary_ko": "한국 식약처가 7월 16일 하반기 업무보고에서 의약품 허가·심사 기간을 기존 420일에서 240일로 단축하는 체계를 상반기에 조기 구축했다고 보고했다. 하반기에는 공급중단된 필수 의료제품의 정부 직접 수입(긴급도입) 확대와 필수의약품 공공 위탁생산으로 공급망을 유지하고, 희귀의약품 지정이 해제된 경우 후발의약품 RMP 제출 면제를 12월부터 시행한다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "",
+    "competitor": "아르헨티나 ANMAT",
+    "comp_product": "혈액제제·백신",
+    "source_type": "issue",
+    "title": "La ANMAT simplifica el marco regulatorio de medicamentos biológicos como vacunas y hemoderivados",
+    "date": "2026-07-15",
+    "url": "https://www.infobae.com/salud/2026/07/15/la-anmat-simplifica-el-marco-regulatorio-de-medicamentos-biologicos-como-vacunas-y-hemoderivados/",
+    "summary_ko": "아르헨티나 ANMAT이 처분(Disposición) 4351/2026으로 백신·혈액제제 등 생물의약품의 등록 후 변경 심사 체계를 품질·안전성·표시 영향도별로 재편하고 유형별 최대 처리기한을 명시했다. FDA 등 해외 참조기관 평가를 활용하는 리라이언스(reliance) 메커니즘을 도입했으며, 관보 게재 후 영업일 30일 뒤 발효된다.",
+    "linked_issue": "현지 허가·규제·약가·입찰 동향",
+    "nct_id": null
+  },
+  {
     "category": "Plasma Derivative",
     "gc_product": "알리글로 IVIG",
     "competitor": "Kedrion Biopharma",
@@ -383,6 +1012,19 @@ let DATA = [
     "url": "https://www.prnewswire.com/news-releases/kedrion-biopharma-advances-rare-disease-scientific-evidence-generation-at-isth-2026-302825209.html",
     "summary_ko": "케드리온이 파리에서 열린 제34회 국제혈전지혈학회(ISTH 2026)에서 1형 플라스미노겐 결핍증(PLGD-1)과 유전성 제10인자 결핍증 관련 신규 임상근거를 발표했다. 증상 발현부터 확진까지 소요기간 하위분석과 성별 질환부담 연구를 공개하며 희귀 혈장분획제제 영역의 과학적 리더십을 강조했다.",
     "linked_issue": "면역글로불린 효능·안전성 근거",
+    "nct_id": null
+  },
+  {
+    "category": "Plasma Derivative",
+    "gc_product": "GC알부민20%",
+    "competitor": "SK Plasma(SK플라즈마)",
+    "comp_product": "알부민·면역글로불린",
+    "source_type": "news",
+    "title": "튀르키예 첫 혈액제제 공장 짓는다…K바이오 플랜트 새 역사",
+    "date": "2026-07-14",
+    "url": "https://www.hankyung.com/article/2026071434631",
+    "summary_ko": "SK플라즈마가 튀르키예 적신월사 합작사 프로투르크와 6,500만 유로(약 1,117억원) 규모 기술수출 계약을 맺고 지분 15%를 확보했다. 연간 혈장 60만ℓ 처리 규모로 알부민·면역글로불린·8인자 제제를 생산하며 2028년 하반기 완공, 2030년 상업생산이 목표다.",
+    "linked_issue": "신흥국 알부민 공급",
     "nct_id": null
   },
   {
@@ -591,19 +1233,6 @@ let DATA = [
     "url": "https://www.biopharminternational.com/view/fda-advisory-panel-convenes-today-to-weigh-moderna-s-mrna-based-flu-vaccine",
     "summary_ko": "FDA 자문위(VRBPAC)가 모더나의 mRNA 독감백신 mFLUSIVA(구 mRNA-1010)를 50세 이상 대상으로 심의했다. PDUFA 목표일은 2026년 8월 5일로 2026-27 시즌 출시 가능성이 있다.",
     "linked_issue": "차세대 mRNA 독감백신",
-    "nct_id": null
-  },
-  {
-    "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
-    "competitor": "튀르키예 정부·Kizilay",
-    "comp_product": "혈장분획제제",
-    "source_type": "issue",
-    "title": "Türkiye launches national plasma fractionation localization project with EUR 500m investment",
-    "date": "2026-06-15",
-    "url": "https://www.hankyung.com/article/2026071434631",
-    "summary_ko": "튀르키예가 적신월사·보건부 주도로 약 5억 유로 규모 국가 혈장분획제제 자급화 사업을 착수했다. 연 60만 L 처리 규모 공장을 2028년 완공해 알부민·IVIG·8인자를 현지 생산하며 수입 대체를 추진한다.",
-    "linked_issue": "현지 허가·규제·약가·입찰 동향",
     "nct_id": null
   },
   {
@@ -1748,19 +2377,6 @@ let DATA = [
     "url": "https://www.cgtlive.com/view/fda-slams-regenxbio-mps-ii-gene-therapy-rgx-121-crl",
     "summary_ko": "FDA가 RGX-121(clemidsogene lanparvovec)의 MPS II 적응증 BLA에 대해 보완요구서한(CRL)을 발부했다. 신경병증형 환자 선정기준, 자연사 대조군 비교성, CSF HS D2S6 대리지표 적절성 등이 지적됐다.",
     "linked_issue": "약가·시장 접근성",
-    "nct_id": null
-  },
-  {
-    "category": "Plasma Derivative",
-    "gc_product": "GC알부민20%",
-    "competitor": "中 NHSA",
-    "comp_product": "혈액제제",
-    "source_type": "issue",
-    "title": "China's Top Three Blood Product Makers Warn of Over 50% Profit Drop on Supply Glut and VBP Pressure",
-    "date": "2026-02-05",
-    "url": "https://finance.biggo.com/news/d9aa6621-b3fa-471b-8475-a995e441b6ac",
-    "summary_ko": "중국 A주 상장 혈액제제 7개사가 2025년 모두 이익이 감소했고 상위 3사는 50% 이상 이익 급감을 경고했다. 물량기반조달(VBP)과 공급 과잉이 원인이며, 채혈량 증가율은 2023년 18.6%에서 2025년 5.6%로 둔화되고 수입 알부민 배치승인 물량도 감소했다.",
-    "linked_issue": "공급망·수급 이슈",
     "nct_id": null
   },
   {
@@ -3227,7 +3843,7 @@ let DATA = [
     "source_type": "news",
     "title": "SK바이오사이언스, 중남미에서 수두백신 추가 공급…PAHO 2027년까지 물량 확보",
     "date": "2025-03-03",
-    "url": "https://metroseoul.co.kr/article/20250303500115",
+    "url": "https://www.metroseoul.co.kr/article/20250303500115",
     "summary_ko": "SK바이오사이언스가 범미보건기구(PAHO)로부터 2027년까지 중남미에 수두백신 스카이바리셀라를 공급한다는 사전 통지를 받았다. 2022년 첫 수주 이후 6년 연속 PAHO 공급 지위를 확보했다.",
     "linked_issue": "공공입찰(PAHO/UNICEF) 경쟁",
     "nct_id": null
@@ -3561,11 +4177,44 @@ let DATA = [
 /*__DATA_END__*/
 
 const SRC={news:{label:"뉴스",color:"var(--news)",bg:"var(--news-bg)"},ir:{label:"IR",color:"var(--ir)",bg:"var(--ir-bg)"},issue:{label:"시장이슈",color:"var(--regulatory)",bg:"var(--regulatory-bg)"}};
-const CAT_ORDER=["Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","Hemophilia (혈우병)","CMO / CDMO","Technology Transfer","Plant Export","Bulk Export"];
-const CAT_LABEL={"Plasma Derivative":"혈액제제","Vaccine (백신)":"백신","Rare Disease (희귀질환)":"희귀질환","Hemophilia (혈우병)":"혈우병","CMO / CDMO":"CMO/CDMO","Technology Transfer":"기술이전","Plant Export":"플랜트 수출","Bulk Export":"벌크 수출"};
-const CAT_COLOR={"Plasma Derivative":"#24557f","Vaccine (백신)":"#16706a","Rare Disease (희귀질환)":"#5d5a86","Hemophilia (혈우병)":"#9e2b45","CMO / CDMO":"#8a6321","Technology Transfer":"#2a6f7d","Plant Export":"#4e6b39","Bulk Export":"#5a6672"};
-const catLabel=c=>CAT_LABEL[c]||c;
-const catColor=c=>CAT_COLOR[c]||"var(--accent)";
+// ── 사업 영역: 기존 8개 분류를 5개로 통합 ─────────────────────────────────
+const CAT_ORDER=["Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","CMO / CDMO","Technology Transfer"];
+const CAT_LABEL={
+  "Plasma Derivative":"혈액제제/혈우병",
+  "Vaccine (백신)":"백신",
+  "Rare Disease (희귀질환)":"헌터증후군/호중구감소증",
+  "CMO / CDMO":"CMO/CDMO",
+  "Technology Transfer":"기술이전/Plant, Bulk"
+};
+// 통합 규칙: 구 분류값 → 신 분류값 (기존 데이터·크롤러 산출물 모두 자동 흡수)
+const CAT_MERGE={
+  "Hemophilia (혈우병)":"Plasma Derivative",   // 혈우병 → 혈액제제/혈우병
+  "Plant Export":"Technology Transfer",        // 플랜트 수출 → 기술이전/Plant, Bulk
+  "Bulk Export":"Technology Transfer"          // 벌크 수출  → 기술이전/Plant, Bulk
+};
+const catKey=c=>CAT_MERGE[c]||c;
+// 영역별 고유색 — 카드 왼쪽 색상 바·필터 점·그룹 헤더가 모두 이 색을 공유
+const CAT_COLOR={
+  "Plasma Derivative":"#24557f",       // 블루
+  "Vaccine (백신)":"#16706a",          // 틸
+  "Rare Disease (희귀질환)":"#5d5a86", // 퍼플
+  "CMO / CDMO":"#8a6321",              // 앰버
+  "Technology Transfer":"#9e2b45"      // 레드
+};
+const CAT_COLOR_DARK={
+  "Plasma Derivative":"#8fb4d8",
+  "Vaccine (백신)":"#6cc6bf",
+  "Rare Disease (희귀질환)":"#a8a4d0",
+  "CMO / CDMO":"#d6b06a",
+  "Technology Transfer":"#e795a6"
+};
+function isDark(){
+  const t=document.documentElement.getAttribute("data-theme");
+  if(t) return t==="dark";
+  return !!(window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches);
+}
+const catLabel=c=>CAT_LABEL[catKey(c)]||catKey(c);
+const catColor=c=>{const k=catKey(c);return (isDark()?CAT_COLOR_DARK[k]:CAT_COLOR[k])||"var(--accent)";};
 const state={q:"",cats:new Set(),comp:"",mode:"news",period:""};
 const gcCat={};
 const pad=n=>String(n).padStart(2,"0");
@@ -3615,10 +4264,15 @@ function renderModes(){
   const nNews=DATA.filter(d=>d.source_type==="news").length;
   const nIr=DATA.filter(d=>d.source_type==="ir").length;
   const el=document.getElementById("kpis");
+  // 분류 제목이 가장 크게 · 건수는 중간 · 주기(주차별/분기별)는 하단 작게 · 분류별 고유색
+  const tab=(mode,ico,name,sub,n,mvar,soft)=>
+    `<button class="modebtn" data-mode="${mode}" aria-pressed="${state.mode===mode}" style="--m:var(${mvar});--msoft:var(${soft})">`+
+      `<div class="mtop"><span class="mico">${ico}</span><span class="mname">${name}</span><span class="mnum">${n}건</span></div>`+
+      `<div class="msub">${sub}</div></button>`;
   el.innerHTML=
-    `<button class="kpi mode${state.mode==="news"?" total":""}" data-mode="news" aria-pressed="${state.mode==="news"}"><span class="lbl"><span class="dot" style="background:${SRC.news.color}"></span>📰 뉴스 기사 <span style="color:var(--ink-3);font-weight:500">· 주차별</span></span><div class="num">${nNews}</div></button>`+
-    `<button class="kpi mode${state.mode==="ir"?" total":""}" data-mode="ir" aria-pressed="${state.mode==="ir"}"><span class="lbl"><span class="dot" style="background:${SRC.ir.color}"></span>📊 경쟁사 IR 자료 <span style="color:var(--ink-3);font-weight:500">· 분기별</span></span><div class="num">${nIr}</div></button>`;
-  el.querySelectorAll(".kpi").forEach(b=>b.onclick=()=>{if(state.mode!==b.dataset.mode){state.mode=b.dataset.mode;state.period="";render();}});
+    tab("news","📰","뉴스 기사","주차별",nNews,"--news","--news-bg2")+
+    tab("ir","📊","경쟁사 IR 자료","분기별",nIr,"--ir","--ir-bg2");
+  el.querySelectorAll(".modebtn").forEach(b=>b.onclick=()=>{if(state.mode!==b.dataset.mode){state.mode=b.dataset.mode;state.period="";render();}});
 }
 
 function renderPeriods(){
@@ -3638,7 +4292,7 @@ function renderPeriods(){
 function renderCats(){
   const src=DATA.filter(d=>d.source_type===state.mode);
   const map={};src.forEach(d=>map[d.category]=(map[d.category]||0)+1);
-  // 정의된 8개 사업 영역을 모두 노출(데이터 없어도 표시), 정의에 없는 값이 있으면 뒤에 추가
+  // 정의된 5개 사업 영역을 모두 노출(데이터 없어도 표시), 정의에 없는 값이 있으면 뒤에 추가
   const cats=[...new Set([...CAT_ORDER,...Object.keys(map)])].sort((a,b)=>catRank(a)-catRank(b)||a.localeCompare(b));
   const el=document.getElementById("catfilter");
   let h=`<button class="pill pill-all" data-c="" aria-pressed="${state.cats.size===0}">전체 <span class="cnt">${src.length}</span></button>`;
@@ -3655,7 +4309,8 @@ function card(d){
   const s=SRC[d.source_type]||{label:d.source_type,color:"var(--ink-3)",bg:"var(--line-2)"};
   const nct=d.nct_id?`<a class="nct" href="https://clinicaltrials.gov/study/${esc(d.nct_id)}" target="_blank" rel="noopener">${esc(d.nct_id)}</a>`:"";
   const issue=d.linked_issue?`<div class="row1"><span class="issue" style="--icol:${catColor(d.category)}">${esc(d.linked_issue)}</span></div>`:"";
-  return `<article class="card" style="--bar:${s.color}">
+  // 카드 왼쪽 색상 바 = 사업 영역 색상 (필터 점·그룹 헤더·이슈 태그와 동일 색 체계)
+  return `<article class="card" style="--bar:${catColor(d.category)}">
     <div class="row1">
       <span class="badge" style="color:${s.color};background:${s.bg}">${s.label}</span>
       <span class="badge" style="color:var(--ink-2);background:var(--line-2)">${esc(d.competitor)}</span>
@@ -3701,17 +4356,25 @@ document.getElementById("reset").addEventListener("click",()=>{
   state.q="";state.cats.clear();state.period="";
   document.getElementById("q").value="";render();
 });
-document.getElementById("themeBtn")?.addEventListener("click",()=>{const r=document.documentElement;const cur=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");r.setAttribute("data-theme",cur==="dark"?"light":"dark");});
+// 테마 전환 시 사업 영역 색상(인라인 지정)을 다시 계산해야 하므로 재렌더
+document.getElementById("themeBtn")?.addEventListener("click",()=>{const r=document.documentElement;const cur=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");r.setAttribute("data-theme",cur==="dark"?"light":"dark");render();});
 
-document.getElementById("covnote").innerHTML=`<b>수집 범위 및 한계</b> — GC 글로벌사업본부 키워드 표의 8개 사업영역 경쟁사 제품을 대상으로, 각 경쟁사의 제품명·성분명·적응증·브랜드 키워드를 조합해 <b>최근 2년</b>의 자료를 수집했습니다. <b>뉴스 기사</b>는 전 세계 공개 뉴스를 <b>주차별</b>로 구성했고, <b>경쟁사 IR 자료</b>는 각 경쟁사가 공식 채널로 공시한 IR 리포트(실적·사업현황)를 <b>분기별</b>로 정리해 요약했습니다. IR은 분기 단위로 공시되므로 최신 분기 자료는 공시 시점에 따라 지연될 수 있습니다. 각국의 <b>규제·허가(승인)·관세·통상·약가/급여·정책·수급</b> 등 시장 이슈는 별도로 분리하지 않고 관련 <b>뉴스 기사(주차별)</b>에 함께 반영했습니다. 모든 요약은 출처에 명시된 사실만 반영하며 각 카드의 '원문 보기'로 검증할 수 있습니다.`;
+document.getElementById("covnote").innerHTML=
+  `<div class="cvtitle">수집 범위 및 한계</div>`+
+  `<ul>`+
+  `<li>5개 사업 영역 시장 및 경쟁 동향 관련하여 키워드를 조합해 <b>최근 2년간</b>의 자료를 수집했습니다.</li>`+
+  `<li><b>뉴스 기사</b>는 전세계 공개된 뉴스 중 관련 내용을 가져와서 <b>주차별</b>로 구성했습니다.</li>`+
+  `<li><b>경쟁사 IR 자료</b>는 각 경쟁사 공식 채널로 공시한 IR 리포트를 <b>분기별</b>로 가져와 요약했습니다.</li>`+
+  `<li>모든 요약은 출처에 명시된 사실만 반영하여 각 카드의 <b>‘원문 보기’</b>로 검증할 수 있습니다.</li>`+
+  `</ul>`;
 
 function normalizeData(){
   DATA.forEach(d=>{
     if(d.source_type==="issue") d.source_type="news";   // 시장 이슈는 별도 분리 없이 주차별 뉴스 기사에 포함
+    d.category=catKey(d.category);                      // 구 8개 분류 → 통합 5개 사업 영역
     if(!gcCat[d.gc_product])gcCat[d.gc_product]=d.category;
     if(d.nct_id===undefined)d.nct_id=null;
   });
-  document.getElementById("totchip").textContent=DATA.length;
 }
 normalizeData();
 render();
