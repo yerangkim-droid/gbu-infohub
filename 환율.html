@@ -3,43 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>실시간 환율 변환 대시보드</title>
+<title>실시간 환율 정보</title>
 <style>
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
   :root {
-    --bg-1: #eef2fb;
-    --bg-2: #e6ebf7;
+    /* 중립 베이스 (인포허브 공통) */
+    --bg-1: #f5f7f9;
+    --bg-2: #f5f7f9;
     --card: #ffffff;
-    --card-soft: #f7f9fe;
-    --border: #e3e8f4;
-    --border-strong: #d3dae9;
-    --ink: #1b2440;
-    --ink-2: #3a445f;
-    --muted: #737e9c;
-    --faint: #9aa3bd;
-    --accent: #3b5bdb;
-    --accent-soft: #eef1fe;
-    --krw: #0f9d76;
-    --krw-soft: #e7f7f1;
-    --usd: #d98324;
-    --usd-soft: #fbf1e3;
-    --warn-bg: #fef1f1;
-    --warn-border: #f3c2c2;
-    --warn-ink: #b23c3c;
-    --shadow-sm: 0 1px 2px rgba(27,36,64,.05), 0 2px 8px rgba(27,36,64,.04);
-    --shadow-md: 0 4px 12px rgba(27,36,64,.07), 0 12px 32px rgba(27,36,64,.06);
-    --radius: 18px;
-    --radius-sm: 12px;
+    --card-soft: #f0f3f6;
+    --border:#e5eaee;
+    --border-strong:#d5dce2;
+    --ink:#111c26;
+    --ink-2:#4f5c6a;
+    --muted: #7c8794;
+    --faint: #8a96a2;
+    /* 대시보드 accent: GC Blue */
+    --accent: #0072ce;
+    --accent-soft: #eaf3fc;
+    /* 보조 배지 (뮤트 통일) */
+    --krw: #16706a;
+    --krw-soft: #e8f2f1;
+    --usd: #8a6321;
+    --usd-soft: #f6f0e6;
+    --eur: #5d5a86;
+    --eur-soft: #eeedf4;
+    --warn-bg: #fdf3f0;
+    --warn-border: #eed0c8;
+    --warn-ink: #a0432f;
+    /* 국내 관례: 상승=빨강(GC Red), 하락=파랑(GC Blue) */
+    --up: #c4002b;   --up-soft: #fbecef;
+    --down: #0072ce; --down-soft: #eaf3fc;
+    --shadow-sm: 0 1px 2px rgba(17,28,38,.04), 0 2px 8px rgba(17,28,38,.04);
+    --shadow-md: 0 2px 8px rgba(22,32,43,.05), 0 8px 24px rgba(22,32,43,.05);
+    --radius: 14px;
+    --radius-sm: 10px;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
     font-family: "Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,system-ui,sans-serif;
-    background:
-      radial-gradient(1200px 600px at 85% -10%, #f0f4ff 0%, transparent 60%),
-      linear-gradient(170deg, var(--bg-1) 0%, var(--bg-2) 100%);
-    background-attachment: fixed;
+    background: var(--bg-1);
     color: var(--ink);
     min-height: 100vh;
     padding: 32px 18px 72px;
@@ -78,10 +83,10 @@
   button.refresh {
     background: var(--accent); color: #fff; border: none; border-radius: 999px;
     padding: 10px 20px; font-size: .86rem; font-weight: 700; cursor: pointer;
-    box-shadow: 0 2px 8px rgba(59,91,219,.28); transition: filter .15s, transform .06s, box-shadow .15s;
+    box-shadow: 0 1px 2px rgba(17,28,38,.10); transition: filter .15s, transform .06s, box-shadow .15s;
     display: inline-flex; align-items: center; gap: 7px;
   }
-  button.refresh:hover { filter: brightness(1.06); box-shadow: 0 4px 14px rgba(59,91,219,.34); }
+  button.refresh:hover { filter: brightness(1.06); box-shadow: 0 2px 8px rgba(22,32,43,.14); }
   button.refresh:active { transform: translateY(1px); }
   button.refresh:disabled { opacity: .55; cursor: default; box-shadow: none; }
 
@@ -115,23 +120,25 @@
   .field { display: flex; flex-direction: column; gap: 8px; }
   .field > label { font-size: .78rem; color: var(--muted); font-weight: 700; letter-spacing: .01em; }
   select {
-    background: var(--card-soft); border: 1.5px solid var(--border-strong); color: var(--ink);
+    background: var(--card-soft); border: 1px solid var(--border-strong); color: var(--ink);
     border-radius: var(--radius-sm); padding: 13px 15px; font-size: 1rem; width: 100%;
     font-family: inherit; font-weight: 600; cursor: pointer; transition: border-color .15s;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23737e9c' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238b96a3' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;
   }
   select:focus { outline: none; border-color: var(--accent); }
 
-  .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .three { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media (max-width: 940px) { .three { grid-template-columns: repeat(2, 1fr); } }
   .amt-box {
-    background: var(--card-soft); border: 1.5px solid var(--border-strong);
+    background: var(--card-soft); border: 1px solid var(--border-strong);
     border-radius: var(--radius-sm); padding: 14px 16px; transition: border-color .15s, box-shadow .15s;
   }
   .amt-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
   .amt-box.krw:focus-within { border-color: var(--krw); box-shadow: 0 0 0 4px var(--krw-soft); }
   .amt-box.usd:focus-within { border-color: var(--usd); box-shadow: 0 0 0 4px var(--usd-soft); }
+  .amt-box.eur:focus-within { border-color: var(--eur); box-shadow: 0 0 0 4px var(--eur-soft); }
   .amt-box .tag {
     font-size: .74rem; font-weight: 700; color: var(--muted); display: flex; align-items: center; gap: 6px;
     margin-bottom: 6px; flex-wrap: wrap; word-break: keep-all;
@@ -142,6 +149,7 @@
   }
   .amt-box.krw .tag .chip { background: var(--krw-soft); color: var(--krw); }
   .amt-box.usd .tag .chip { background: var(--usd-soft); color: var(--usd); }
+  .amt-box.eur .tag .chip { background: var(--eur-soft); color: var(--eur); }
   .amt-box .inline { display: flex; align-items: baseline; gap: 8px; }
   .amt-box .sym { font-size: 1.15rem; font-weight: 700; color: var(--faint); }
   input.amt {
@@ -165,7 +173,7 @@
   .search-wrap { position: relative; flex: 1 1 300px; }
   .search-wrap svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: .5; }
   .filter-row input {
-    background: var(--card-soft); border: 1.5px solid var(--border-strong); color: var(--ink);
+    background: var(--card-soft); border: 1px solid var(--border-strong); color: var(--ink);
     border-radius: 999px; padding: 12px 18px 12px 42px; font-size: .95rem; width: 100%;
     font-family: inherit; transition: border-color .15s;
   }
@@ -186,7 +194,7 @@
   .cont-head {
     padding: 15px 18px; font-weight: 800; font-size: 1.02rem; letter-spacing: -.01em;
     display: flex; justify-content: space-between; align-items: center;
-    background: linear-gradient(180deg, var(--card-soft), #fff); border-bottom: 1px solid var(--border);
+    background: var(--card-soft); border-bottom: 1px solid var(--border);
   }
   .cont-head .emoji { margin-right: 8px; }
   .cont-head .n {
@@ -229,7 +237,14 @@
     background: rgba(255,255,255,.55); border: 1px solid var(--border); border-radius: var(--radius);
     padding: 20px 24px;
   }
-  footer.notes .ftitle { font-weight: 800; color: var(--ink-2); margin-bottom: 6px; font-size: .84rem; }
+  footer.notes .ftitle { font-weight: 800; color: var(--ink-2); margin-bottom: 8px; font-size: .84rem; }
+  /* 불렛 행잉 인덴트: 두 번째 줄부터도 첫 글자에 맞춰 정렬 */
+  footer.notes ul { margin: 0; padding: 0; list-style: none; }
+  footer.notes li { position: relative; padding-left: 15px; margin-bottom: 3px; }
+  footer.notes li:last-child { margin-bottom: 0; }
+  footer.notes li::before {
+    content: "•"; position: absolute; left: 0; top: 0; color: var(--faint); font-weight: 700;
+  }
   footer.notes code {
     background: var(--accent-soft); color: var(--accent); padding: 1px 7px; border-radius: 5px;
     font-size: .82rem; font-weight: 600;
@@ -248,16 +263,29 @@
 
   /* ── 다크 테마 (인포허브 연동) ── */
   html[data-theme="dark"] {
-    --bg-1:#0f1826; --bg-2:#0b1320; --card:#151f30; --card-soft:#111a28;
-    --border:#243449; --border-strong:#30425b; --ink:#e9f0f8; --ink-2:#b6c2d6;
-    --muted:#8593ab; --faint:#63718c; --accent:#7aa2ff; --accent-soft:#7aa2ff1f;
-    --krw:#43d6a3; --krw-soft:#43d6a31f; --usd:#f2b45c; --usd-soft:#f2b45c1f;
-    --warn-bg:#3a1f22; --warn-border:#5c2e33; --warn-ink:#f3b0b0;
+    --bg-1:#0e1317; --bg-2:#0e1317; --card:#161c22; --card-soft:#1b2229;
+    --border:#232b33; --border-strong:#313a43; --ink:#e7edf2; --ink-2:#a6b2bd;
+    --muted:#8a96a2; --faint:#74808b; --accent:#66b2ec; --accent-soft:#66b2ec1f;
+    --krw:#6cc6bf; --krw-soft:#6cc6bf1f; --usd:#d6b06a; --usd-soft:#d6b06a1f;
+    --eur:#a8a4d0; --eur-soft:#a8a4d01f;
+    --warn-bg:#2e2320; --warn-border:#4a3730; --warn-ink:#e8b4a4;
+    --up:#f0798c; --up-soft:#f0798c20; --down:#66b2ec; --down-soft:#66b2ec20;
   }
   html[data-theme="dark"] body {
-    background:
-      radial-gradient(1200px 600px at 85% -10%, #16233a 0%, transparent 60%),
-      linear-gradient(170deg, var(--bg-1) 0%, var(--bg-2) 100%);
+    background: var(--bg-1);
+  }
+  /* OS 다크 모드 추종 (다른 대시보드와 동일 동작). data-theme="light"가 명시되면 미적용 */
+  @media (prefers-color-scheme:dark){
+    html:not([data-theme="light"]) {
+      --bg-1:#0e1317; --bg-2:#0e1317; --card:#161c22; --card-soft:#1b2229;
+      --border:#232b33; --border-strong:#313a43; --ink:#e7edf2; --ink-2:#a6b2bd;
+      --muted:#8a96a2; --faint:#74808b; --accent:#66b2ec; --accent-soft:#66b2ec1f;
+      --krw:#6cc6bf; --krw-soft:#6cc6bf1f; --usd:#d6b06a; --usd-soft:#d6b06a1f;
+      --eur:#a8a4d0; --eur-soft:#a8a4d01f;
+      --warn-bg:#2e2320; --warn-border:#4a3730; --warn-ink:#e8b4a4;
+      --up:#f0798c; --up-soft:#f0798c20; --down:#66b2ec; --down-soft:#66b2ec20;
+    }
+    html:not([data-theme="light"]) .modal-back { background:rgba(0,0,0,.62); }
   }
 
   /* ── 오늘의 환율 그래프 카드 ── */
@@ -265,11 +293,12 @@
   #todayFx .tf-pair { font-size:.9rem; color:var(--muted); font-weight:700; }
   #todayFx .tf-big { font-size:2.2rem; font-weight:800; letter-spacing:-.03em; font-variant-numeric:tabular-nums; color:var(--ink); }
   #todayFx .tf-delta { font-size:.9rem; font-weight:800; font-variant-numeric:tabular-nums; }
-  #todayFx .tf-delta.up { color:var(--krw); }
-  #todayFx .tf-delta.down { color:var(--warn-ink); }
-  .tf-btns { display:grid; grid-template-columns:repeat(auto-fit, minmax(108px,1fr)); gap:10px; margin:18px 0 8px; }
+  #todayFx .tf-delta.up { color:var(--up); }
+  #todayFx .tf-delta.down { color:var(--down); }
+  #todayFx .tf-delta.flat { color:var(--muted); }
+  .tf-btns { display:grid; grid-template-columns:repeat(auto-fit, minmax(122px,1fr)); gap:10px; margin:18px 0 8px; }
   .tf-btn {
-    text-align:left; background:var(--card-soft); border:1.5px solid var(--border-strong);
+    text-align:left; background:var(--card-soft); border:1px solid var(--border-strong);
     border-radius:var(--radius-sm); padding:10px 13px; cursor:pointer; font-family:inherit;
     transition:border-color .13s, background .13s, box-shadow .13s;
   }
@@ -280,18 +309,91 @@
   .tf-btn.active .c { color:var(--accent); }
   .tf-btn .v { font-size:1.05rem; font-weight:800; font-variant-numeric:tabular-nums; color:var(--ink); margin-top:3px; letter-spacing:-.01em; }
   .tf-btn .u { font-size:.66rem; color:var(--faint); font-weight:600; }
-  .tf-chartbox { position:relative; height:180px; margin-top:8px; }
-  .tf-chartbox svg { width:100%; height:100%; display:block; overflow:visible; }
+  /* 기간·간격 선택 (그래프 과거 데이터 범위) */
+  .tf-controls { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:2px 0 4px; }
+  .tf-controls .tf-sep { width:1px; height:18px; background:var(--border-strong); flex:none; }
+  .tf-controls .tf-ranges { margin:0; }
+  .tf-steplabel { font-size:.74rem; font-weight:700; color:var(--faint); }
+  .tf-ranges { display:flex; flex-wrap:wrap; gap:7px; margin:2px 0 4px; }
+  .tf-range {
+    background:var(--card-soft); border:1px solid var(--border-strong); color:var(--muted);
+    border-radius:999px; padding:6px 14px; font-size:.8rem; font-weight:700; cursor:pointer;
+    font-family:inherit; transition:border-color .13s, background .13s, color .13s;
+  }
+  .tf-range:hover { border-color:var(--accent); color:var(--ink-2); }
+  .tf-range.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .tf-range:disabled { opacity:.42; cursor:not-allowed; }
+  .tf-range:disabled:hover { border-color:var(--border-strong); color:var(--muted); }
+  .tf-chartbox { position:relative; height:212px; margin-top:8px; border-radius:var(--radius-sm); }
+  .tf-chartbox.clickable { cursor:pointer; transition:background .15s; }
+  .tf-chartbox.clickable:hover { background:var(--card-soft); }
+  .tf-chartbox svg { width:100%; height:100%; display:block; }
   .tf-msg { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:.9rem; text-align:center; padding:0 20px; }
+  .tf-openhint {
+    position:absolute; top:8px; right:10px; font-size:.72rem; font-weight:700; color:var(--accent);
+    background:var(--accent-soft); padding:4px 10px; border-radius:999px; pointer-events:none;
+    opacity:0; transform:translateY(-2px); transition:opacity .15s, transform .15s; display:inline-flex; align-items:center; gap:4px;
+  }
+  .tf-chartbox.clickable:hover .tf-openhint { opacity:1; transform:translateY(0); }
   .tf-note { font-size:.76rem; color:var(--muted); margin-top:12px; line-height:1.6; }
-  .majors { display:grid; grid-template-columns:repeat(auto-fit, minmax(152px,1fr)); gap:14px; }
+
+  /* ── 국가별 환율 추이 팝업 ── */
+  .modal-back {
+    position:fixed; inset:0; background:rgba(15,20,35,.55); backdrop-filter:blur(3px);
+    display:none; align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  .modal-back.open { display:flex; }
+  html[data-theme="dark"] .modal-back { background:rgba(0,0,0,.62); }
+  .modal {
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    box-shadow:0 24px 64px rgba(15,20,35,.35); width:min(560px, 100%); max-height:90vh; overflow:auto;
+    padding:24px 26px 22px;
+  }
+  .modal-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:4px; }
+  .modal-title { font-size:1.15rem; font-weight:800; letter-spacing:-.01em; display:flex; align-items:center; gap:9px; }
+  .modal-title .ccy { font-size:.72rem; }
+  .modal-close {
+    background:var(--card-soft); border:1px solid var(--border-strong); color:var(--muted);
+    width:32px; height:32px; border-radius:9px; cursor:pointer; font-size:1.1rem; line-height:1; flex:none;
+    display:flex; align-items:center; justify-content:center; transition:color .13s, border-color .13s;
+  }
+  .modal-close:hover { color:var(--ink); border-color:var(--accent); }
+  .modal-rate { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin:14px 0 2px; }
+  .modal-rate .big { font-size:2rem; font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .modal-rate .unit { font-size:.9rem; color:var(--muted); font-weight:700; }
+  .modal-rate .mdelta { font-size:.9rem; font-weight:800; font-variant-numeric:tabular-nums; }
+  .modal-rate .mdelta.up { color:var(--up); } .modal-rate .mdelta.down { color:var(--down); } .modal-rate .mdelta.flat { color:var(--muted); }
+  .modal-usd { font-size:.86rem; color:var(--ink-2); margin-bottom:14px; }
+  .modal-usd b { font-variant-numeric:tabular-nums; }
+  /* 상세 통계 (fxrates 기준) */
+  .modal-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:12px 0 2px; }
+  .modal-stat { background:var(--card-soft); border:1px solid var(--border); border-radius:var(--radius-sm); padding:9px 10px; text-align:center; }
+  .modal-stat .k { font-size:.68rem; color:var(--muted); font-weight:700; }
+  .modal-stat .val { font-size:.92rem; font-weight:800; font-variant-numeric:tabular-nums; margin-top:3px; color:var(--ink); }
+  .modal-stat .val.up { color:var(--up); } .modal-stat .val.down { color:var(--down); }
+  @media (max-width:620px){ .modal-stats { grid-template-columns:repeat(2,1fr); } }
+  .modal-chartbox { position:relative; height:220px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--card-soft); padding:6px 8px; }
+  .modal-chartbox svg { width:100%; height:100%; display:block; }
+  .modal-chartbox .tf-msg { color:var(--muted); }
+  .modal-actions { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+  .modal-btn {
+    flex:1 1 160px; text-align:center; border-radius:var(--radius-sm); padding:12px 16px; font-size:.9rem;
+    font-weight:700; cursor:pointer; font-family:inherit; border:1px solid var(--border-strong);
+    background:var(--card-soft); color:var(--ink); text-decoration:none; transition:border-color .13s, background .13s;
+    display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  }
+  .modal-btn:hover { border-color:var(--accent); }
+  .modal-btn.primary { background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 1px 3px rgba(22,32,43,.12); }
+  .modal-btn.primary:hover { filter:brightness(1.06); }
+  .modal-note { font-size:.75rem; color:var(--muted); margin-top:12px; line-height:1.6; }
+  @media (max-width:620px){ .modal{ padding:20px 18px; } .modal-rate .big{ font-size:1.7rem; } }
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header class="top">
-    <h1>💱 실시간 환율 변환</h1>
+    <h1>실시간 환율 정보</h1>
     <div class="meta">
       <span class="updated" id="updated">환율 불러오는 중…</span>
       <button class="refresh" id="refreshBtn"><span id="refreshIcon">⟳</span> 새로고침</button>
@@ -305,32 +407,32 @@
 
   <!-- 오늘의 환율 (추이 그래프) -->
   <section class="card" id="todayFx">
-    <h2>오늘의 환율</h2>
-    <div class="sub">주요 통화 버튼을 누르면 해당 통화의 최근 40일 추이 그래프로 전환됩니다. 아래 변환기·환율표와 같은 실시간 환율로 연동됩니다.</div>
+    <h2>실시간 주요 환율</h2>
+    <div class="sub">각 통화 버튼 클릭 시 환율 추이 그래프가 전환됩니다.<br>선택 기간(<b>1개월 ~ 1년</b>)의 등락을 표시합니다(상승 <span style="color:var(--up);font-weight:700">빨강</span>, 하락 <span style="color:var(--down);font-weight:700">파랑</span>).<br>그래프 클릭 시 개별 환율 추이를 볼 수 있으며, 하단 버튼 클릭 시 변환기 입력을 통해 환율 계산이 가능합니다.</div>
     <div class="tf-headline">
-      <span class="tf-pair" id="tfPair">1 USD =</span>
+      <span class="tf-pair" id="tfPair">KRW/USD · 1 USD =</span>
       <span class="tf-big" id="tfBig">—</span>
       <span class="tf-delta" id="tfDelta"></span>
     </div>
     <div class="tf-btns" id="tfBtns"></div>
-    <div class="tf-chartbox">
-      <svg id="tfChart" viewBox="0 0 600 180" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <div class="tf-controls">
+      <div class="tf-ranges" id="tfRanges"></div>
+      <span class="tf-sep"></span>
+      <span class="tf-steplabel">표시 간격</span>
+      <div class="tf-ranges" id="tfSteps"></div>
+    </div>
+    <div class="tf-chartbox clickable" id="tfChartBox" title="상세 보기 열기">
+      <svg id="tfChart" viewBox="0 0 600 212" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
       <div class="tf-msg" id="tfMsg" style="display:none;"></div>
+      <span class="tf-openhint">📈 상세 보기</span>
     </div>
     <div class="tf-note" id="tfNote"></div>
-  </section>
-
-  <!-- 주요 통화 변환기 -->
-  <section class="card" id="majorConv">
-    <h2>주요 통화 변환기</h2>
-    <div class="sub">위에 정리한 주요 통화를 원화 기준으로 빠르게 환산합니다. 어느 칸에 입력해도 나머지가 실시간으로 동기화됩니다.</div>
-    <div class="majors" id="majors"></div>
   </section>
 
   <!-- 변환기 -->
   <section class="card" id="converter">
     <h2>변환기</h2>
-    <div class="sub">국가를 선택하고 금액을 입력하면 원화·달러로 자동 환산됩니다. 세 칸 중 어디에 입력해도 나머지가 실시간으로 동기화됩니다.</div>
+    <div class="sub">국가를 선택하고 금액을 입력하면 원화·달러·유로로 자동 환산됩니다. 네 칸 중 어디에 입력해도 나머지가 실시간으로 동기화됩니다.</div>
 
     <div class="conv-country">
       <div class="field">
@@ -352,18 +454,22 @@
         <div class="tag"><span class="chip">USD</span> 미국 달러</div>
         <div class="inline"><span class="sym">$</span><input class="amt" id="usdAmt" type="text" inputmode="decimal" placeholder="0"></div>
       </div>
+      <div class="amt-box eur">
+        <div class="tag"><span class="chip">EUR</span> 유로</div>
+        <div class="inline"><span class="sym">€</span><input class="amt" id="eurAmt" type="text" inputmode="decimal" placeholder="0"></div>
+      </div>
     </div>
     <div class="rate-line" id="rateLine"></div>
   </section>
 
-  <!-- 대륙별 참조 -->
+  <!-- 거래 국가 참조 -->
   <section class="card">
-    <h2>대륙별 환율표</h2>
-    <div class="sub">각 통화 1단위당 원화·달러 환율입니다.</div>
+    <h2>거래 국가 환율표</h2>
+    <div class="sub">각 통화 1단위당 원화·달러 환율입니다. 국가를 클릭하면 <b>환율 추이 그래프 팝업</b>이 열리고, 아래 <b>변환기에도 자동으로 입력</b>됩니다.</div>
     <div class="filter-row">
       <div class="search-wrap">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737e9c" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input id="searchBox" type="text" placeholder="국가명 또는 통화코드 검색 (예: 일본, JPY)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b96a3" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="searchBox" type="text" placeholder="국가명(한글·영문) 또는 통화코드 검색 (예: 일본, Japan, JPY)">
       </div>
       <span class="count" id="countLabel"></span>
     </div>
@@ -371,13 +477,46 @@
   </section>
 
   <footer class="notes">
-    <div class="ftitle">안내</div>
-    <div>• 환율 데이터: <code>open.er-api.com</code> (무료·오픈 API). 화면은 <b>60초마다 자동 재조회</b>하며 상단에 마지막 조회 시점을 실시간 표시합니다. 다만 무료 티어 기준값 자체는 <b>매일 1회 갱신되는 일별 기준환율</b>이라, 장중 실시간 시세와는 차이가 있을 수 있습니다.</div>
-    <div>• 에콰도르는 자국 통화로 미국 달러(USD)를 사용합니다.</div>
-    <div>• 시리아(SYP)·이란(IRR) 등 일부 통화는 공식 고정환율 기준이라 실제 시장 시세와 차이가 있을 수 있습니다.</div>
-    <div>• 참고용 정보이며, 실제 송금·환전 시에는 은행 고시 환율을 확인하세요.</div>
+    <div class="ftitle">참고 사항</div>
+    <ul>
+      <li>최신 환율: <code>fxratesapi.com</code> (분 단위 실시간 시장환율). 일시적 오류 시 <code>open.er-api.com</code>으로 자동 전환됩니다. 화면은 <b>5분마다 자동 재조회</b>하며 상단에 마지막 조회 시점을 실시간 표시합니다.</li>
+      <li>시장 중간값(mid-rate) 기준이라, 은행 <b>고시 환율(매매기준율·현찰 살 때/팔 때)</b>과는 스프레드만큼 차이가 있습니다.</li>
+      <li>추이 그래프: 같은 출처의 <b>일자별 스냅샷을 조합</b>해 재구성하며, 그래프의 <b>기간 버튼(1개월·3개월·6개월·1년)</b>으로 더 과거 데이터까지 볼 수 있습니다.</li>
+      <li>표시 간격을 <b>일 단위</b>로 바꾸면 기간 내 모든 날짜를 조회합니다(요청량이 많아 3개월 이하 기간에서만 사용할 수 있습니다).</li>
+      <li>그래프·국가를 클릭하면 <b>fxratesapi 기준 상세 보기</b>(고·저·평균·기간등락)가 열립니다.</li>
+      <li>은행 마진이 포함된 <b>은행 고시 환율</b>이 필요하면 추가적으로 확인하세요(기준이 달라 값이 다릅니다).</li>
+      <li>에콰도르는 자국 통화로 미국 달러(USD)를 사용합니다.</li>
+      <li>시리아(SYP)·이란(IRR) 등 일부 통화는 공식 고정환율 기준이라 실제 시장 시세와 차이가 있을 수 있습니다.</li>
+      <li>참고용 정보이며, 실제 송금·환전 시에는 은행 고시 환율을 확인하세요.</li>
+    </ul>
   </footer>
 
+</div>
+
+<!-- 국가별 환율 추이 팝업 -->
+<div class="modal-back" id="modalBack">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">—</div>
+      <button class="modal-close" id="modalClose" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-rate">
+      <span class="unit" id="modalUnit">1 · =</span>
+      <span class="big" id="modalBig">—</span>
+      <span class="mdelta" id="modalDelta"></span>
+    </div>
+    <div class="modal-usd" id="modalUsd"></div>
+    <div class="tf-ranges" id="modalRanges"></div>
+    <div class="modal-chartbox" id="modalChartBox">
+      <svg id="modalChart" viewBox="0 0 520 220" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+      <div class="tf-msg" id="modalMsg" style="display:none;"></div>
+    </div>
+    <div class="modal-stats" id="modalStats"></div>
+    <div class="modal-actions">
+      <button class="modal-btn primary" id="modalToConv">변환기에 입력하기</button>
+    </div>
+    <div class="modal-note" id="modalNote"></div>
+  </div>
 </div>
 
 <script>
@@ -387,7 +526,7 @@ window.addEventListener("message", function(e){
     document.documentElement.setAttribute("data-theme", e.data.theme);
 });
 // ── 국가 데이터: { 한글명, 통화코드, 대륙 } ───────────────────────────────
-const COUNTRIES = [
+let COUNTRIES = [
   // 아시아
   ["중국","CNY","아시아"],["일본","JPY","아시아"],["대만","TWD","아시아"],
   ["홍콩","HKD","아시아"],["몽골","MNT","아시아"],["베트남","VND","아시아"],
@@ -401,7 +540,9 @@ const COUNTRIES = [
   ["이란","IRR","중동"],["레바논","LBP","중동"],["시리아","SYP","중동"],
   ["요르단","JOD","중동"],["튀르키예","TRY","중동"],
   // 유럽·CIS
-  ["유로존","EUR","유럽·CIS",true],["네덜란드","EUR","유럽·CIS"],["러시아 연방","RUB","유럽·CIS"],["우크라이나","UAH","유럽·CIS"],
+  // 유로존: 네덜란드(EUR)와 값이 같아 환율표에서는 제외하고 변환기 드롭다운에만 노출 (convOnly)
+  ["유로존","EUR","유럽·CIS",true,true],
+  ["네덜란드","EUR","유럽·CIS"],["러시아 연방","RUB","유럽·CIS"],["우크라이나","UAH","유럽·CIS"],
   ["벨라루스","BYN","유럽·CIS"],["몰도바","MDL","유럽·CIS"],["조지아","GEL","유럽·CIS"],
   ["아르메니아","AMD","유럽·CIS"],
   // 아프리카
@@ -414,11 +555,48 @@ const COUNTRIES = [
   ["브라질","BRL","남미"],["아르헨티나","ARS","남미"],["칠레","CLP","남미"],
   ["콜롬비아","COP","남미"],["페루","PEN","남미"],["우루과이","UYU","남미"],
   ["파라과이","PYG","남미"],["에콰도르","USD","남미"],
-].map(([name, code, cont, top]) => ({ name, code, cont, top: !!top }));
+];
+// 영문 국가명(검색용 별칭 포함) — 검색창에서 영어로도 찾을 수 있게 함
+const EN_NAME = {
+  "중국":"China","일본":"Japan","대만":"Taiwan","홍콩":"Hong Kong","몽골":"Mongolia","베트남":"Vietnam",
+  "태국":"Thailand","말레이시아":"Malaysia","인도네시아":"Indonesia","필리핀":"Philippines",
+  "캄보디아":"Cambodia","미얀마":"Myanmar Burma","브루나이":"Brunei","인도":"India","파키스탄":"Pakistan",
+  "방글라데시":"Bangladesh","네팔":"Nepal","카자흐스탄":"Kazakhstan",
+  "사우디아라비아":"Saudi Arabia","아랍에미리트 연합":"United Arab Emirates UAE","바레인":"Bahrain",
+  "오만":"Oman","예멘":"Yemen","이라크":"Iraq","이란":"Iran","레바논":"Lebanon","시리아":"Syria",
+  "요르단":"Jordan","튀르키예":"Turkey Turkiye",
+  "유로존":"Eurozone Euro Area","네덜란드":"Netherlands Holland Eurozone Euro Area",
+  "러시아 연방":"Russia Russian Federation",
+  "우크라이나":"Ukraine","벨라루스":"Belarus","몰도바":"Moldova","조지아":"Georgia","아르메니아":"Armenia",
+  "리비아":"Libya","튀니지":"Tunisia","모로코":"Morocco","알제리":"Algeria","이집트":"Egypt","케냐":"Kenya",
+  "미국":"United States USA America","멕시코":"Mexico","과테말라":"Guatemala","온두라스":"Honduras",
+  "코스타리카":"Costa Rica","도미니카 공화국":"Dominican Republic",
+  "브라질":"Brazil","아르헨티나":"Argentina","칠레":"Chile","콜롬비아":"Colombia","페루":"Peru",
+  "우루과이":"Uruguay","파라과이":"Paraguay","에콰도르":"Ecuador",
+};
+COUNTRIES = COUNTRIES.map(([name, code, cont, top, convOnly]) =>
+  ({ name, code, cont, top: !!top, convOnly: !!convOnly, en: (EN_NAME[name] || "").toLowerCase() }));
+// 환율표에 표시할 국가 (convOnly 항목 제외)
+const TABLE_COUNTRIES = COUNTRIES.filter(c => !c.convOnly);
 
 const CONT_ORDER = ["아시아","중동","유럽·CIS","아프리카","북·중미","남미"];
-const CONT_EMOJI = { "아시아":"🌏","중동":"🕌","유럽·CIS":"🇪🇺","아프리카":"🌍","북·중미":"🌎","남미":"🏔️" };
-const API_URL = "https://open.er-api.com/v6/latest/USD";
+// 대륙 아이콘 — 지구본은 서로 구분이 어려워 대륙별 랜드마크로 통일
+const CONT_EMOJI = { "아시아":"🏯","중동":"🕌","유럽·CIS":"🏰","아프리카":"🏜️","북·중미":"🗽","남미":"🗿" };
+const API_URL = "https://api.fxratesapi.com/latest?base=USD";     // 실시간 최신(분 단위)
+const HIST_URL = "https://api.fxratesapi.com/historical";          // 과거 단일일자 스냅샷(추이 재구성용)
+const ER_API  = "https://open.er-api.com/v6/latest/USD";           // 폴백(최신 실패 시)
+// 그래프 조회 기간 (과거 데이터 접근)
+const RANGES = [["1개월",30],["3개월",90],["6개월",180],["1년",365]];
+function rangeLabel(days){ const r=RANGES.find(x=>x[1]===days); return r?("최근 "+r[0]):(days+"일"); }
+// 동시 요청 제한 실행기 (historical 다중 호출용)
+async function mapLimit(items, limit, fn){
+  const out = new Array(items.length); let i = 0;
+  async function worker(){ while(i < items.length){ const idx = i++; try{ out[idx] = await fn(items[idx]); }catch(_){ out[idx] = null; } } }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return out;
+}
+async function fetchJson(url){ const r = await fetch(url,{cache:"no-store"}); if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); }
+let fxSource = "fxratesapi";   // 현재 최신값 출처
 
 let RATES = null;   // { CODE: rate relative to USD }, includes KRW & USD(=1)
 
@@ -451,7 +629,7 @@ function parseNum(str) {
 }
 
 // ── API 호출 ───────────────────────────────────────────────────────────
-const AUTO_REFRESH_MS = 60000;   // 60초마다 자동 재조회
+const AUTO_REFRESH_MS = 300000;   // 5분마다 자동 재조회(무료 API 쿼터 보호)
 let fetchedAt = null, lastUpdateUtc = null, nextUpdateUtc = null, isLoading = false;
 
 async function loadRates(silent = false) {
@@ -467,20 +645,30 @@ async function loadRates(silent = false) {
     document.getElementById("banner").style.display = "none";
   }
   try {
-    const res = await fetch(API_URL, { cache: "no-store" });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-    if (data.result !== "success" || !data.rates) throw new Error("API 응답 오류");
-    RATES = data.rates;
+    let primaryErr = null;
+    // 1차: fxratesapi (실시간 분 단위)
+    try {
+      const data = await fetchJson(API_URL);
+      if (data.success === false || !data.rates) throw new Error("API 응답 오류");
+      RATES = data.rates; RATES["USD"] = 1;
+      lastUpdateUtc = data.date ? new Date(data.date) : new Date();
+      fxSource = "fxratesapi";
+    } catch (e1) {
+      primaryErr = e1;
+      // 2차 폴백: open.er-api.com
+      const d2 = await fetchJson(ER_API);
+      if (d2.result !== "success" || !d2.rates) throw primaryErr;
+      RATES = d2.rates; RATES["USD"] = 1;
+      lastUpdateUtc = d2.time_last_update_unix ? new Date(d2.time_last_update_unix * 1000) : new Date();
+      fxSource = "er-api";
+    }
     fetchedAt = new Date();
-    lastUpdateUtc = data.time_last_update_utc ? new Date(data.time_last_update_utc) : fetchedAt;
-    nextUpdateUtc = data.time_next_update_utc ? new Date(data.time_next_update_utc) : null;
+    nextUpdateUtc = null;
     document.getElementById("banner").style.display = "none";
     renderUpdatedLabel();
     renderTables();
     recompute();
     renderTfCard();
-    mRecompute();
   } catch (e) {
     if (!silent) {
       document.getElementById("banner").style.display = "flex";
@@ -509,8 +697,8 @@ function renderUpdatedLabel() {
   if (!fetchedAt) return;
   const rel = relTime(Date.now() - fetchedAt.getTime());
   const tip = [];
-  if (lastUpdateUtc) tip.push("기준환율 갱신: " + lastUpdateUtc.toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" }));
-  if (nextUpdateUtc) tip.push("다음 갱신 예정: " + nextUpdateUtc.toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" }));
+  if (lastUpdateUtc) tip.push("시세 기준시각: " + lastUpdateUtc.toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" }));
+  tip.push("출처: " + (fxSource === "er-api" ? "open.er-api.com (폴백)" : "fxratesapi.com"));
   el.title = tip.join(" · ");
   el.innerHTML = '<span class="livedot"></span> 자동 갱신 · <strong>' + rel + '</strong> 조회';
 }
@@ -554,14 +742,16 @@ function recompute() {
   const code = selectedCode();
   const rLocal = RATES[code];        // 1 USD = rLocal (현지통화)
   const rKrw = RATES["KRW"];         // 1 USD = rKrw 원
+  const rEur = RATES["EUR"];         // 1 USD = rEur 유로
   document.getElementById("localName").textContent = selectedName();
   document.getElementById("localChip").textContent = code;
 
   const localEl = document.getElementById("localAmt");
   const krwEl = document.getElementById("krwAmt");
   const usdEl = document.getElementById("usdAmt");
+  const eurEl = document.getElementById("eurAmt");
 
-  if (!rLocal || !rKrw) return;
+  if (!rLocal || !rKrw || !rEur) return;
 
   // 기준 입력값 → USD 로 환산
   let usd;
@@ -570,6 +760,9 @@ function recompute() {
     usd = isNaN(krw) ? NaN : krw / rKrw;
   } else if (lastEdited === "usd") {
     usd = parseNum(usdEl.value);
+  } else if (lastEdited === "eur") {
+    const eur = parseNum(eurEl.value);
+    usd = isNaN(eur) ? NaN : eur / rEur;
   } else { // local
     const loc = parseNum(localEl.value);
     usd = isNaN(loc) ? NaN : loc / rLocal;
@@ -578,18 +771,22 @@ function recompute() {
   const localVal = usd * rLocal;
   const krwVal = usd * rKrw;
   const usdVal = usd;
+  const eurVal = usd * rEur;
 
   // 기준 필드는 사용자가 입력한 원문 유지, 나머지만 갱신
   if (lastEdited !== "local") localEl.value = isNaN(localVal) ? "" : fmtAuto(localVal);
   if (lastEdited !== "krw")   krwEl.value   = isNaN(krwVal)   ? "" : fmtAuto(krwVal);
   if (lastEdited !== "usd")   usdEl.value   = isNaN(usdVal)   ? "" : fmtAuto(usdVal);
+  if (lastEdited !== "eur")   eurEl.value   = isNaN(eurVal)   ? "" : fmtAuto(eurVal);
 
   // 환율 한 줄 요약
   const perUnitKrw = rKrw / rLocal;   // 현지통화 1단위 = ? KRW
   const perUnitUsd = 1 / rLocal;      // 현지통화 1단위 = ? USD
+  const perUnitEur = rEur / rLocal;   // 현지통화 1단위 = ? EUR
   document.getElementById("rateLine").innerHTML =
     "<span class='lbl'>기준 환율</span> 1 " + code + " = <b>" + fmtAuto(perUnitKrw) +
-    " ₩</b> <span class='dot'>·</span> <b>" + fmtAuto(perUnitUsd) + " $</b>";
+    " ₩</b> <span class='dot'>·</span> <b>" + fmtAuto(perUnitUsd) +
+    " $</b> <span class='dot'>·</span> <b>" + fmtAuto(perUnitEur) + " €</b>";
 }
 
 // ── 대륙별 테이블 렌더 ─────────────────────────────────────────────────
@@ -602,11 +799,13 @@ function renderTables() {
   let shown = 0;
 
   CONT_ORDER.forEach(cont => {
-    let rows = COUNTRIES.filter(c => c.cont === cont)
+    let rows = TABLE_COUNTRIES.filter(c => c.cont === cont)
       .sort((a, b) => (b.top?1:0)-(a.top?1:0) || a.name.localeCompare(b.name, "ko"));
     if (filter) {
       rows = rows.filter(c =>
-        c.name.toLowerCase().includes(filter) || c.code.toLowerCase().includes(filter));
+        c.name.toLowerCase().includes(filter) ||
+        c.code.toLowerCase().includes(filter) ||
+        (c.en && c.en.includes(filter)));
     }
     if (rows.length === 0) return;
     shown += rows.length;
@@ -633,194 +832,433 @@ function renderTables() {
   });
 
   document.getElementById("countLabel").textContent =
-    filter ? (shown + "개 국가 표시") : (COUNTRIES.length + "개 국가");
+    filter ? (shown + "개 국가 표시") : (TABLE_COUNTRIES.length + "개 국가");
 }
 
 // ── 이벤트 바인딩 ──────────────────────────────────────────────────────
 document.getElementById("localAmt").addEventListener("input", () => { lastEdited = "local"; recompute(); });
 document.getElementById("krwAmt").addEventListener("input",   () => { lastEdited = "krw";   recompute(); });
 document.getElementById("usdAmt").addEventListener("input",   () => { lastEdited = "usd";   recompute(); });
+document.getElementById("eurAmt").addEventListener("input",   () => { lastEdited = "eur";   recompute(); });
 document.getElementById("countrySel").addEventListener("change", () => { lastEdited = "local"; recompute(); });
 document.getElementById("searchBox").addEventListener("input", renderTables);
 document.getElementById("refreshBtn").addEventListener("click", loadRates);
 document.getElementById("retryBtn").addEventListener("click", loadRates);
 
-// 표에서 국가 클릭 → 변환기에 설정하고 상단으로 이동
+// 표에서 국가 클릭 → 변환기 자동 입력 + 추이 그래프 팝업
 document.getElementById("continents").addEventListener("click", (e) => {
   const tr = e.target.closest("tr[data-key]");
   if (!tr) return;
-  const sel = document.getElementById("countrySel");
-  sel.value = tr.getAttribute("data-key");
+  const [name, code] = tr.getAttribute("data-key").split("|");
+  // 변환기에 자동 입력 (배경)
+  document.getElementById("countrySel").value = tr.getAttribute("data-key");
   lastEdited = "local";
   const localEl = document.getElementById("localAmt");
   if (isNaN(parseNum(localEl.value))) localEl.value = "1";
   recompute();
-  document.getElementById("converter").scrollIntoView({ behavior: "smooth", block: "start" });
-  localEl.focus({ preventScroll: true });
-  localEl.select();
+  // 추이 그래프 팝업 열기
+  openCountryModal(name, code);
 });
 
-// ── 오늘의 환율: 추이 그래프 카드 ────────────────────────────────────────
-const FRANK = "https://api.frankfurter.dev/v1";
-const TF_CURRENCIES = [
-  { code:"USD", ko:"미국 달러",   flag:"🇺🇸", hist:true },
-  { code:"EUR", ko:"유로",       flag:"🇪🇺", hist:true },
-  { code:"JPY", ko:"일본 엔",    flag:"🇯🇵", hist:true, per:100 },
-  { code:"CNY", ko:"중국 위안",   flag:"🇨🇳", hist:true },
-  { code:"RUB", ko:"러시아 루블", flag:"🇷🇺", hist:false },
+// ── 실시간 주요 환율: 추이 그래프 카드 + 국가별 팝업 ─────────────────────
+// 통화 메타 (이름·국기·기호)
+const CCY_META = {
+  KRW:{ ko:"대한민국 원",   sym:"₩"  },
+  USD:{ ko:"미국 달러",     sym:"$"  },
+  EUR:{ ko:"유로",         sym:"€"  },
+  JPY:{ ko:"일본 엔",      sym:"¥"  },
+  CNY:{ ko:"중국 위안",     sym:"¥"  },
+  RUB:{ ko:"러시아 루블",   sym:"₽"  },
+  EGP:{ ko:"이집트 파운드", sym:"E£" },
+  BRL:{ ko:"브라질 헤알",   sym:"R$" },
+};
+function ccyMeta(code){
+  if(CCY_META[code]) return CCY_META[code];
+  const c = COUNTRIES.find(x => x.code === code);
+  return { ko: c ? c.name : code, sym:"" };
+}
+// 표기 규칙: "기준통화/상대통화" (예: KRW/USD = 1 USD당 원화)
+const TF_PAIRS = [
+  { b:"KRW", q:"USD" },
+  { b:"EGP", q:"EUR" },
+  { b:"RUB", q:"USD" },
+  { b:"CNY", q:"USD" },
+  { b:"JPY", q:"USD" },
+  { b:"BRL", q:"USD" },
 ];
-const tfState = { active:"USD", series:{} };
+const pairKey  = (b,q) => b + "/" + q;
+function parsePair(key){ const [b,q] = key.split("/"); return { b, q }; }
+const tfState = { active: pairKey("KRW","USD"), days:30, daily:false };
+const seriesCache = {};   // "B/Q@days[@d]" -> [{date, value=(1 Q 당 B)}]
+const DAILY_MAX_DAYS = 92;   // 일 단위 조회 허용 상한(요청량 보호)
+const cacheKey = (pair, days, daily) => pair + "@" + days + (daily ? "@d" : "");
 
-function tfKrwPer(code){ // 1 <code> = ? KRW  (RATES: USD 기준)
+// 1 <q> = ? <b>   (RATES: USD 기준)
+function pairRate(b, q){
   if(!RATES) return NaN;
-  const r = RATES[code], krw = RATES["KRW"];
-  return (r && krw) ? krw / r : NaN;
+  const rb = (b==="USD") ? 1 : RATES[b];
+  const rq = (q==="USD") ? 1 : RATES[q];
+  return (rb && rq) ? rb / rq : NaN;
 }
-function tfFmt(n){ return isFinite(n) ? n.toLocaleString("ko-KR",{minimumFractionDigits:1,maximumFractionDigits:1}) : "—"; }
+function tfFmt(n){
+  if(!isFinite(n)) return "—";
+  const a = Math.abs(n);
+  const f = a>=100 ? 1 : a>=10 ? 2 : a>=1 ? 3 : 4;
+  return n.toLocaleString("ko-KR",{ minimumFractionDigits:f, maximumFractionDigits:f });
+}
 function tfYmd(dt){ return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0"); }
-function tfMeta(code){ return TF_CURRENCIES.find(c=>c.code===code); }
 
-function buildTfBtns(){
-  document.getElementById("tfBtns").innerHTML = TF_CURRENCIES.map(c=>{
-    const per = c.per || 1;
-    const unit = (per>1 ? per+" " : "1 ") + c.code;
-    return `<button class="tf-btn${c.hist?"":" disabled"}" data-code="${c.code}" title="${c.hist?c.ko+" 추이 보기":c.ko+" (추이 미제공)"}">`+
-      `<div class="c">${c.flag} ${c.code}${c.hist?"":" *"}</div>`+
-      `<div class="v" data-v="${c.code}">—</div><div class="u">${unit} · 원</div></button>`;
-  }).join("");
-  document.getElementById("tfNote").innerHTML =
-    "* 러시아 루블(RUB)은 ECB 과거 환율 미제공으로 추이 그래프가 없으며 현재값만 표시됩니다. "+
-    "현재 시세 <b>open.er-api.com</b> · 추이 <b>frankfurter.dev</b>(ECB 기준).";
+// 공통: 로딩/오류 메시지
+function showMsg(msgId, svg, html){ const m=document.getElementById(msgId); m.style.display="flex"; m.innerHTML=html; svg.style.opacity=".12"; }
+function hideMsg(msgId, svg){ document.getElementById(msgId).style.display="none"; svg.style.opacity="1"; }
+
+// 추이 재구성: fxratesapi timeseries가 중단되어, 단일일자 historical을 표본 추출해 시계열을 만든다.
+//  · 기간(days)에 걸쳐 균등 표본(최대 16점) → 각 날짜 historical 호출 → 1 code 당 KRW 계산
+//  · 마지막 점은 실시간 최신값(RATES)으로 채워 최신성을 유지
+//  · daily=true면 기간 내 '모든 날짜'를 조회한다(요청량이 많아 DAILY_MAX_DAYS 이하에서만 허용)
+function sampleDates(days, daily){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const set = new Set();
+  if(daily){
+    for(let back=days; back>=0; back--){
+      const d = new Date(today); d.setDate(d.getDate()-back);
+      set.add(tfYmd(d));
+    }
+    return [...set];
+  }
+  const N = days<=31 ? 16 : days<=93 ? 14 : 13;
+  for(let i=0;i<N;i++){
+    const back = Math.round(days * (N-1-i)/(N-1));   // i=0 → days일 전, i=N-1 → 오늘
+    const d = new Date(today); d.setDate(d.getDate()-back);
+    set.add(tfYmd(d));
+  }
+  return [...set];
 }
-function updateTfHeadline(){
-  const c = tfMeta(tfState.active), per = c.per || 1;
-  const v = tfKrwPer(tfState.active) * per;
-  document.getElementById("tfPair").textContent = (per>1 ? per+" " : "1 ") + tfState.active + " =";
-  document.getElementById("tfBig").textContent = isFinite(v) ? "₩"+tfFmt(v) : "—";
-}
-function renderTfCard(){ // RATES 갱신 시: 버튼 현재값 + 헤드라인 + 활성 그래프 색상
-  TF_CURRENCIES.forEach(c=>{
-    const per = c.per || 1, v = tfKrwPer(c.code) * per;
-    const el = document.querySelector(`[data-v="${c.code}"]`);
-    if(el) el.textContent = isFinite(v) ? "₩"+tfFmt(v) : "—";
+async function buildSeries(b, q, days, daily){
+  const todayStr = tfYmd(new Date());
+  const need = [...new Set([b,q].filter(c => c !== "USD"))];
+  const curParam = need.length ? "&currencies=" + need.join(",") : "";
+  const pastDates = sampleDates(days, daily).filter(d => d !== todayStr);
+  const rows = await mapLimit(pastDates, daily ? 8 : 6, async (dt)=>{
+    const d = await fetchJson(`${HIST_URL}?date=${dt}&base=USD${curParam}`);
+    const r = d.rates || {};
+    const rb = (b==="USD") ? 1 : r[b], rq = (q==="USD") ? 1 : r[q];
+    const v = (rb && rq) ? rb/rq : NaN;
+    return isFinite(v) ? { date:dt, value:v } : null;
   });
-  updateTfHeadline();
-  const s = tfState.series[tfState.active];
-  if(s) drawTfChart(s);
+  const arr = rows.filter(Boolean);
+  const live = pairRate(b, q);                 // 실시간 최신값을 오늘 점으로
+  if(isFinite(live)) arr.push({ date:todayStr, value:live });
+  arr.sort((a,b2)=> a.date < b2.date ? -1 : 1);
+  return arr;
 }
-function setTfActive(code){
-  tfState.active = code;
-  document.querySelectorAll(".tf-btn").forEach(b=> b.classList.toggle("active", b.dataset.code===code));
-  updateTfHeadline();
-  const c = tfMeta(code);
-  if(c.hist){ loadTfSeries(code); }
-  else {
-    document.getElementById("tfDelta").textContent = "";
-    showTfMsg("러시아 루블(RUB)은 ECB 과거 환율을 제공하지 않아 추이 그래프가 없습니다. 현재값만 표시됩니다.");
-  }
+// 최신값 갱신 시: 캐시된 시계열들의 '오늘' 점만 실시간 값으로 업데이트(추가 요청 없음)
+function refreshLivePoint(){
+  const todayStr = tfYmd(new Date());
+  Object.keys(seriesCache).forEach(key=>{
+    const arr = seriesCache[key]; if(!arr || !arr.length) return;
+    const p = parsePair(key.split("@")[0]), live = pairRate(p.b, p.q);
+    if(!isFinite(live)) return;
+    if(arr[arr.length-1].date === todayStr) arr[arr.length-1].value = live;
+    else arr.push({ date:todayStr, value:live });
+  });
 }
-async function loadTfSeries(code){
-  if(tfState.series[code]){ drawTfChart(tfState.series[code]); return; }
-  showTfMsg('<span class="spin">⏳</span> 추이 불러오는 중…');
-  try{
-    const end = new Date();
-    const start = new Date(); start.setDate(start.getDate()-40);
-    const res = await fetch(`${FRANK}/${tfYmd(start)}..${tfYmd(end)}?from=${code}&to=KRW`);
-    if(!res.ok) throw new Error("HTTP "+res.status);
-    const d = await res.json();
-    const arr = Object.keys(d.rates||{}).sort().map(k=>({date:k, value:d.rates[k].KRW})).filter(p=>isFinite(p.value));
-    if(arr.length < 2) throw new Error("데이터 부족");
-    tfState.series[code] = arr;
-    if(tfState.active === code) drawTfChart(arr);
-  }catch(e){
-    if(tfState.active === code) showTfMsg("추이 데이터를 불러오지 못했습니다.");
-  }
+
+// 선택 기간 등락 문구
+function deltaText(d, days){
+  const arrow = d.dir==="up" ? "▲" : d.dir==="down" ? "▼" : "■";
+  const sign  = d.diff>0 ? "+" : d.diff<0 ? "−" : "";
+  return `${arrow} ${fmtAuto(Math.abs(d.diff))} (${sign}${Math.abs(d.pct).toFixed(2)}% · ${rangeLabel(days)})`;
 }
-function showTfMsg(html){
-  const m = document.getElementById("tfMsg");
-  m.style.display = "flex"; m.innerHTML = html;
-  document.getElementById("tfChart").style.opacity = ".12";
-}
-function drawTfChart(arr){
-  const svg = document.getElementById("tfChart");
-  document.getElementById("tfMsg").style.display = "none";
-  svg.style.opacity = "1";
-  const W=600,H=180, padL=6,padR=6,padT=16,padB=18;
-  const xs=W-padL-padR, ys=H-padT-padB;
-  const vals=arr.map(p=>p.value), min=Math.min(...vals), max=Math.max(...vals), span=(max-min)||1;
+
+// 공통 라인 차트: 세로축 고/저, 가로축 일자, 마지막 점, 상승=빨강·하락=파랑
+// preserveAspectRatio 왜곡(글자 뭉개짐) 방지를 위해 viewBox를 실제 픽셀폭에 맞춤
+function drawFxChart(svg, arr, opts){
+  opts = opts || {}; const scale = opts.scale || 1;
+  const rect = svg.getBoundingClientRect();
+  const W = rect.width  ? Math.round(rect.width)  : 600;
+  const H = rect.height ? Math.round(rect.height) : 212;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  const sym = opts.sym || "";
+  const padL=10, padR=12, padT=26, padB=40;   // padB: 저점 라벨과 날짜축이 겹치지 않도록 확보
+  const xs=Math.max(1, W-padL-padR), ys=Math.max(1, H-padT-padB);
+  const vals=arr.map(p=>p.value*scale), min=Math.min(...vals), max=Math.max(...vals), span=(max-min)||1;
   const X=i=> padL + xs*(i/(arr.length-1));
   const Y=v=> padT + ys*(1-(v-min)/span);
-  const line=arr.map((p,i)=> (i?"L":"M")+X(i).toFixed(1)+" "+Y(p.value).toFixed(1)).join(" ");
-  const area=line+` L${X(arr.length-1).toFixed(1)} ${(H-padB).toFixed(1)} L${X(0).toFixed(1)} ${(H-padB).toFixed(1)} Z`;
-  const first=arr[0].value, last=arr[arr.length-1].value, rising=last>=first;
-  const cs = getComputedStyle(document.documentElement);
-  const stroke = (rising ? cs.getPropertyValue("--krw") : cs.getPropertyValue("--warn-ink")).trim() || "#3b5bdb";
-  const axis = (cs.getPropertyValue("--faint")).trim() || "#889";
+  const baseY = padT+ys;
+  const line=arr.map((p,i)=> (i?"L":"M")+X(i).toFixed(1)+" "+Y(p.value*scale).toFixed(1)).join(" ");
+  const area=line+` L${X(arr.length-1).toFixed(1)} ${baseY.toFixed(1)} L${X(0).toFixed(1)} ${baseY.toFixed(1)} Z`;
+  const last=vals[vals.length-1], first=vals[0];
+  const diff=last-first, pct=first?diff/first*100:0, dir=diff>0?"up":diff<0?"down":"flat";
+  const cs=getComputedStyle(document.documentElement);
+  const upC   =(cs.getPropertyValue("--up")   ||"#c4002b").trim();
+  const downC =(cs.getPropertyValue("--down") ||"#0072ce").trim();
+  const muted =(cs.getPropertyValue("--muted")||"#7c8794").trim();
+  const axis  =(cs.getPropertyValue("--faint")||"#9aa4b0").trim();
+  const grid  =(cs.getPropertyValue("--border")||"#e4e8ec").trim();
+  const card  =(cs.getPropertyValue("--card") ||"#ffffff").trim();
+  const stroke= dir==="up" ? upC : dir==="down" ? downC : muted;
+  const gid="grad_"+svg.id;
   const lastX=X(arr.length-1), lastY=Y(last);
+  const dfmt = span<0.5 ? 4 : span<5 ? 3 : span<50 ? 2 : span<500 ? 1 : 0;
+  const nf=n=> n.toLocaleString("ko-KR",{minimumFractionDigits:dfmt,maximumFractionDigits:dfmt});
+  const d0=arr[0].date.slice(5).replace("-","/");
+  const dN=arr[arr.length-1].date.slice(5).replace("-","/");
+  const dm=arr[Math.floor((arr.length-1)/2)].date.slice(5).replace("-","/");
+  // 고점·저점 수치를 해당 위치에 직접 표기
+  const iMax=vals.indexOf(max), iMin=vals.indexOf(min);
+  function peakLabel(i, v, kind){
+    const px=X(i), py=Y(v);
+    const anchor = px < padL+46 ? "start" : px > W-padR-46 ? "end" : "middle";
+    const tx = anchor==="start" ? padL : anchor==="end" ? W-padR : px;
+    const ty = kind==="max" ? py-10 : py+18;   // 고점은 위, 저점은 아래
+    const col = kind==="max" ? upC : downC;
+    return `<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="3.2" fill="${col}"/>`+
+      `<text x="${tx.toFixed(1)}" y="${ty.toFixed(1)}" font-size="11" font-weight="800" fill="${col}" `+
+      `text-anchor="${anchor}" paint-order="stroke" stroke="${card}" stroke-width="3.5" stroke-linejoin="round">`+
+      `${kind==="max"?"고":"저"} ${sym}${nf(v)}</text>`;
+  }
+  const peaks = (iMax===iMin) ? "" : peakLabel(iMax,max,"max") + peakLabel(iMin,min,"min");
   svg.innerHTML =
-    `<defs><linearGradient id="tfg" x1="0" y1="0" x2="0" y2="1">`+
+    `<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">`+
       `<stop offset="0" stop-color="${stroke}" stop-opacity="0.20"/>`+
       `<stop offset="1" stop-color="${stroke}" stop-opacity="0"/></linearGradient></defs>`+
-    `<path d="${area}" fill="url(#tfg)"/>`+
+    `<line x1="${padL}" y1="${padT}" x2="${W-padR}" y2="${padT}" stroke="${grid}" stroke-width="1" stroke-dasharray="3 3"/>`+
+    `<line x1="${padL}" y1="${baseY.toFixed(1)}" x2="${W-padR}" y2="${baseY.toFixed(1)}" stroke="${grid}" stroke-width="1"/>`+
+    `<path d="${area}" fill="url(#${gid})"/>`+
     `<path d="${line}" fill="none" stroke="${stroke}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`+
     `<circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="3.8" fill="${stroke}"/>`+
-    `<text x="${padL}" y="11" font-size="10.5" fill="${axis}">고 ${tfFmt(max)}</text>`+
-    `<text x="${padL}" y="${H-5}" font-size="10.5" fill="${axis}">저 ${tfFmt(min)}</text>`+
-    `<text x="${(W-padR).toFixed(1)}" y="11" font-size="10.5" fill="${axis}" text-anchor="end">${arr[0].date.slice(5)} → ${arr[arr.length-1].date.slice(5)}</text>`;
-  const diff=last-first, pct=diff/first*100, el=document.getElementById("tfDelta");
-  el.className = "tf-delta " + (diff>=0?"up":"down");
-  el.textContent = (diff>=0?"▲":"▼")+" "+tfFmt(Math.abs(diff))+" ("+(diff>=0?"+":"−")+Math.abs(pct).toFixed(2)+"% · 40일)";
+    peaks+
+    `<text x="${padL}" y="${H-8}" font-size="10.5" fill="${axis}">${d0}</text>`+
+    `<text x="${(W/2).toFixed(1)}" y="${H-8}" font-size="10.5" fill="${axis}" text-anchor="middle">${dm}</text>`+
+    `<text x="${W-padR}" y="${H-8}" font-size="10.5" fill="${axis}" text-anchor="end">${dN}</text>`;
+  return { min, max, last, first, diff, pct, dir };
+}
+
+function rangeBtnsHtml(activeDays){
+  return RANGES.map(([lbl,d])=>`<button class="tf-range${d===activeDays?" active":""}" data-days="${d}">${lbl}</button>`).join("");
+}
+// 표시 간격(자동 표본 / 일 단위) 버튼
+function stepBtnsHtml(){
+  const blocked = tfState.days > DAILY_MAX_DAYS;
+  const dailyTitle = blocked
+    ? "요청량 제한으로 3개월 이하 기간에서만 사용할 수 있습니다"
+    : "선택 기간의 모든 날짜를 조회합니다 (불러오는 데 시간이 걸릴 수 있습니다)";
+  return `<button class="tf-range${!tfState.daily?" active":""}" data-daily="0" title="기간에 걸쳐 균등 표본을 조회합니다 (빠름)">자동 표본</button>`+
+    `<button class="tf-range${tfState.daily?" active":""}" data-daily="1"${blocked?" disabled":""} title="${dailyTitle}">일 단위</button>`;
+}
+function renderTfSteps(){ document.getElementById("tfSteps").innerHTML = stepBtnsHtml(); }
+function buildTfBtns(){
+  document.getElementById("tfBtns").innerHTML = TF_PAIRS.map(p=>{
+    const mb = ccyMeta(p.b), mq = ccyMeta(p.q), key = pairKey(p.b, p.q);
+    return `<button class="tf-btn" data-pair="${key}" title="1 ${mq.ko}당 ${mb.ko} 추이 보기">`+
+      `<div class="c">${key}</div>`+
+      `<div class="v" data-v="${key}">—</div><div class="u">1 ${p.q} · ${p.b}</div></button>`;
+  }).join("");
+  document.getElementById("tfRanges").innerHTML = rangeBtnsHtml(tfState.days);
+  renderTfSteps();
+  document.getElementById("tfNote").innerHTML =
+    "최신 시세는 <b>fxratesapi.com</b>(분 단위 실시간, 실패 시 open.er-api.com 폴백) 기준이며, "+
+    "추이 그래프는 같은 출처의 <b>일자별 스냅샷</b>을 조합해 표시합니다. 기간 버튼으로 최대 1년까지 조회할 수 있고, "+
+    "<b>표시 간격</b>을 '일 단위'로 바꾸면 기간 내 모든 날짜를 조회합니다(3개월 이하). "+
+    "그래프를 클릭하면 <b>fxratesapi 기준 상세 보기</b>(고·저·평균)가 열립니다.";
+}
+function updateTfHeadline(){
+  const { b, q } = parsePair(tfState.active);
+  const v = pairRate(b, q);
+  document.getElementById("tfPair").textContent = b + "/" + q + " · 1 " + q + " =";
+  document.getElementById("tfBig").textContent = isFinite(v) ? (ccyMeta(b).sym || "") + tfFmt(v) : "—";
+}
+function setTfDelta(d, days){ const el=document.getElementById("tfDelta"); el.className="tf-delta "+d.dir; el.textContent=deltaText(d, days); }
+function updateTfChartLink(key){
+  const { b, q } = parsePair(key);
+  document.getElementById("tfChartBox").onclick = ()=> openPairModal(b, q);
+}
+function renderTfCard(){ // RATES 갱신 시: 버튼 현재값 + 헤드라인 + 활성 그래프 재그리기
+  TF_PAIRS.forEach(p=>{
+    const key = pairKey(p.b, p.q), v = pairRate(p.b, p.q);
+    const el = document.querySelector(`[data-v="${key}"]`);
+    if(el) el.textContent = isFinite(v) ? (ccyMeta(p.b).sym || "") + tfFmt(v) : "—";
+  });
+  updateTfHeadline();
+  refreshLivePoint();
+  const s = seriesCache[cacheKey(tfState.active, tfState.days, tfState.daily)];
+  if(s && s.length>=2){ setTfDelta(drawFxChart(document.getElementById("tfChart"), s), tfState.days); }
+  else { loadTfSeries(tfState.active, tfState.days, tfState.daily); }
+}
+function setTfActive(key){
+  tfState.active = key;
+  document.querySelectorAll(".tf-btn").forEach(b=> b.classList.toggle("active", b.dataset.pair===key));
+  updateTfHeadline();
+  updateTfChartLink(key);
+  loadTfSeries(key, tfState.days, tfState.daily);
+}
+function setTfRange(days){
+  tfState.days = days;
+  // 긴 기간에서는 일 단위 조회를 허용하지 않으므로 자동 표본으로 되돌린다
+  if(days > DAILY_MAX_DAYS) tfState.daily = false;
+  document.querySelectorAll("#tfRanges .tf-range").forEach(b=> b.classList.toggle("active", +b.dataset.days===days));
+  renderTfSteps();
+  loadTfSeries(tfState.active, days, tfState.daily);
+}
+function setTfDaily(daily){
+  if(daily && tfState.days > DAILY_MAX_DAYS) return;
+  tfState.daily = daily;
+  renderTfSteps();
+  loadTfSeries(tfState.active, tfState.days, daily);
+}
+async function loadTfSeries(pair, days, daily){
+  const svg = document.getElementById("tfChart");
+  const { b, q } = parsePair(pair);
+  const key = cacheKey(pair, days, daily);
+  const same = ()=> tfState.active === pair && tfState.days === days && tfState.daily === daily;
+  if(seriesCache[key]){ hideMsg("tfMsg",svg); setTfDelta(drawFxChart(svg, seriesCache[key]), days); return; }
+  showMsg("tfMsg", svg, '<span class="spin">⏳</span> 추이 불러오는 중…' +
+    (daily ? '<br><span style="font-size:.8em">일 단위 조회는 시간이 조금 걸립니다</span>' : ''));
+  try{
+    const arr = await buildSeries(b, q, days, daily);
+    seriesCache[key] = arr;
+    if(!same()) return;
+    if(arr.length < 2) throw new Error("데이터 부족");
+    hideMsg("tfMsg", svg);
+    setTfDelta(drawFxChart(svg, arr), days);
+  }catch(e){
+    if(same()) showMsg("tfMsg", svg, "추이 데이터를 불러오지 못했습니다.");
+  }
 }
 document.getElementById("tfBtns").addEventListener("click", (e)=>{
   const b = e.target.closest(".tf-btn"); if(!b) return;
-  setTfActive(b.dataset.code);
+  setTfActive(b.dataset.pair);
+});
+document.getElementById("tfRanges").addEventListener("click", (e)=>{
+  const b = e.target.closest(".tf-range"); if(!b) return;
+  setTfRange(+b.dataset.days);
+});
+document.getElementById("tfSteps").addEventListener("click", (e)=>{
+  const b = e.target.closest(".tf-range"); if(!b || b.disabled) return;
+  setTfDaily(b.dataset.daily === "1");
 });
 
-// ── 주요 통화 변환기 (원화 기준 다중 환산) ──────────────────────────────
-const MAJORS = [
-  { code:"KRW", ko:"대한민국 원", flag:"🇰🇷", sym:"₩" },
-  { code:"USD", ko:"미국 달러",   flag:"🇺🇸", sym:"$" },
-  { code:"EUR", ko:"유로",       flag:"🇪🇺", sym:"€" },
-  { code:"JPY", ko:"일본 엔",    flag:"🇯🇵", sym:"¥" },
-  { code:"CNY", ko:"중국 위안",   flag:"🇨🇳", sym:"¥" },
-  { code:"RUB", ko:"러시아 루블", flag:"🇷🇺", sym:"₽" },
-];
-let lastMajor = "USD";
-// 1 <code> = ? KRW
-function mPerKrw(code){ return code==="KRW" ? 1 : (RATES ? RATES["KRW"]/RATES[code] : NaN); }
-function buildMajors(){
-  document.getElementById("majors").innerHTML = MAJORS.map(m=>
-    `<div class="amt-box"><div class="tag"><span class="chip">${m.code}</span> ${m.flag} ${m.ko}</div>`+
-    `<div class="inline"><span class="sym">${m.sym}</span>`+
-    `<input class="amt" id="m_${m.code}" type="text" inputmode="decimal" placeholder="0"></div></div>`
-  ).join("");
-  MAJORS.forEach(m=>{
-    document.getElementById("m_"+m.code).addEventListener("input", ()=>{ lastMajor=m.code; mRecompute(); });
-  });
+// ── 국가별 환율 추이 팝업 ────────────────────────────────────────────────
+let modalB = null, modalQ = null, modalDays = 30;
+// '변환기에 입력하기'로 선택할 통화 — 통화쌍에서 원화가 아닌 쪽(예: EGP/EUR → 이집트)
+let modalConvCode = null;
+// 국가표 클릭: 1 <code> = ? KRW → KRW/<code> 통화쌍
+// 변환기 선택은 "국가명|통화코드"로 넘겨 같은 통화의 다른 국가(EUR: 유로존/네덜란드)와 섞이지 않게 함
+function openCountryModal(name, code){ openPairModal("KRW", code, name, name + "|" + code); }
+function openPairModal(b, q, titleName, convCode){
+  modalB = b; modalQ = q; modalDays = 30;
+  modalConvCode = convCode || (b === "KRW" ? q : b);
+  const mb = ccyMeta(b), mq = ccyMeta(q);
+  const title = titleName || (mq.ko + " / " + mb.ko);
+  document.getElementById("modalTitle").innerHTML = `${title} <span class="ccy">${b}/${q}</span>`;
+  const v = pairRate(b, q);
+  document.getElementById("modalUnit").textContent = "1 " + q + " =";
+  document.getElementById("modalBig").textContent = isFinite(v) ? (mb.sym||"")+fmtAuto(v) : "—";
+  // 교차 참고 (달러·원화 환산)
+  const refs = [];
+  if(b !== "USD" && q !== "USD"){ const u = pairRate("USD", q); if(isFinite(u)) refs.push(`≈ <b>$${fmtAuto(u)}</b>`); }
+  if(b !== "KRW" && q !== "KRW"){ const k = pairRate("KRW", q); if(isFinite(k)) refs.push(`<b>₩${fmtAuto(k)}</b>`); }
+  document.getElementById("modalUsd").innerHTML = refs.length ? ("1 "+q+" ") + refs.join(" <span class='dot'>·</span> ") : "";
+  const dEl = document.getElementById("modalDelta"); dEl.className="mdelta"; dEl.textContent="";
+  document.getElementById("modalRanges").innerHTML = rangeBtnsHtml(modalDays);
+  document.getElementById("modalStats").innerHTML = "";
+  document.getElementById("modalNote").innerHTML =
+    "이 상세 화면의 값·그래프는 모두 <b>fxratesapi.com(시장 중간값)</b> 기준입니다.";
+  document.getElementById("modalBack").classList.add("open");
+  loadModalSeries(b, q, modalDays);
 }
-function mRecompute(){
-  if(!RATES) return;
-  const baseKrw = parseNum(document.getElementById("m_"+lastMajor).value) * mPerKrw(lastMajor);
-  MAJORS.forEach(m=>{
-    if(m.code===lastMajor) return;
-    const el = document.getElementById("m_"+m.code);
-    const v = baseKrw / mPerKrw(m.code);
-    el.value = isFinite(v) ? fmtAuto(v) : "";
-  });
+async function loadModalSeries(b, q, days){
+  const svg = document.getElementById("modalChart");
+  const key = cacheKey(pairKey(b,q), days, false);
+  if(seriesCache[key]){ if(seriesCache[key].length>=2){ drawModal(b, q, svg, days); } return; }
+  showMsg("modalMsg", svg, '<span class="spin">⏳</span> 추이 불러오는 중…');
+  try{
+    const arr = await buildSeries(b, q, days);
+    seriesCache[key] = arr;
+    if(modalB !== b || modalQ !== q || modalDays !== days) return;
+    if(arr.length < 2) throw new Error("데이터 부족");
+    drawModal(b, q, svg, days);
+  }catch(e){
+    if(modalB === b && modalQ === q && modalDays === days) showMsg("modalMsg", svg, "추이 데이터를 불러오지 못했습니다.");
+  }
 }
+function drawModal(b, q, svg, days){
+  hideMsg("modalMsg", svg);
+  const arr = seriesCache[cacheKey(pairKey(b,q), days, false)];
+  const d = drawFxChart(svg, arr);
+  const sym = ccyMeta(b).sym || "";
+  const dEl = document.getElementById("modalDelta");
+  dEl.className = "mdelta " + d.dir; dEl.textContent = deltaText(d, days);
+  // fxratesapi 기준 통계
+  const vals = arr.map(p=>p.value);
+  const avg = vals.reduce((a,b2)=>a+b2,0)/vals.length;
+  const stats = [
+    ["기간 고",   sym+fmtAuto(d.max), ""],
+    ["기간 저",   sym+fmtAuto(d.min), ""],
+    ["평균",     sym+fmtAuto(avg),   ""],
+    ["기간 등락", (d.diff>0?"+":d.diff<0?"−":"")+Math.abs(d.pct).toFixed(2)+"%", d.dir]
+  ];
+  document.getElementById("modalStats").innerHTML = stats.map(([k,v,cls])=>
+    `<div class="modal-stat"><div class="k">${k}</div><div class="val ${cls}">${v}</div></div>`).join("");
+}
+document.getElementById("modalRanges").addEventListener("click", (e)=>{
+  const b = e.target.closest(".tf-range"); if(!b || !modalQ) return;
+  modalDays = +b.dataset.days;
+  document.querySelectorAll("#modalRanges .tf-range").forEach(x=> x.classList.toggle("active", +x.dataset.days===modalDays));
+  loadModalSeries(modalB, modalQ, modalDays);
+});
+function closeModal(){ document.getElementById("modalBack").classList.remove("open"); modalB=null; modalQ=null; modalConvCode=null; }
+document.getElementById("modalClose").addEventListener("click", closeModal);
+document.getElementById("modalBack").addEventListener("click", (e)=>{ if(e.target.id==="modalBack") closeModal(); });
+document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
+// 상세 보기 → 변환기에 해당 통화 자동 선택
+// codeOrKey: "USD" 같은 통화코드 또는 "네덜란드|EUR" 같은 정확한 옵션 값
+function setConverterTo(codeOrKey){
+  const sel = document.getElementById("countrySel");
+  const opts = [...sel.options];
+  const opt = opts.find(o => o.value === codeOrKey)
+           || opts.find(o => o.value.split("|")[1] === codeOrKey);
+  if(!opt) return;
+  sel.value = opt.value;
+  lastEdited = "local";
+  const localEl = document.getElementById("localAmt");
+  if(isNaN(parseNum(localEl.value))) localEl.value = "1";
+  recompute();
+}
+document.getElementById("modalToConv").addEventListener("click", ()=>{
+  const code = modalConvCode;
+  closeModal();
+  if(code) setConverterTo(code);
+  const conv = document.getElementById("converter");
+  conv.scrollIntoView({ behavior:"smooth", block:"start" });
+  const localEl = document.getElementById("localAmt");
+  localEl.focus({ preventScroll:true }); localEl.select();
+});
+
+// ── 창 크기 변경 시 활성 그래프 다시 그리기(왜곡 방지) ──────────────────
+let _resizeT;
+window.addEventListener("resize", ()=>{
+  clearTimeout(_resizeT);
+  _resizeT = setTimeout(()=>{
+    const s = seriesCache[cacheKey(tfState.active, tfState.days, tfState.daily)];
+    if(s && s.length>=2) drawFxChart(document.getElementById("tfChart"), s);
+    const ms = modalQ && seriesCache[cacheKey(pairKey(modalB,modalQ), modalDays, false)];
+    if(ms && ms.length>=2 && document.getElementById("modalBack").classList.contains("open"))
+      drawFxChart(document.getElementById("modalChart"), ms);
+  }, 150);
+});
 
 // ── 초기화 ─────────────────────────────────────────────────────────────
 buildCountrySelect();
 buildTfBtns();
-setTfActive("USD");
-buildMajors();
-document.getElementById("m_USD").value = "1";
+setTfActive(pairKey("KRW","USD"));
 loadRates();
 
 // ── 자동 갱신 ────────────────────────────────────────────────────────────
 // 1) 매초 "N초 전 조회" 라벨 갱신
 setInterval(renderUpdatedLabel, 1000);
-// 2) 60초마다 조용히 자동 재조회 (탭이 숨겨져 있으면 건너뜀)
+// 2) 5분마다 조용히 자동 재조회 (탭이 숨겨져 있으면 건너뜀)
 setInterval(() => { if (document.visibilityState !== "hidden") loadRates(true); }, AUTO_REFRESH_MS);
 // 3) 탭으로 돌아왔을 때 마지막 조회가 오래됐으면 즉시 갱신
 document.addEventListener("visibilitychange", () => {

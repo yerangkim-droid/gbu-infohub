@@ -3,12 +3,12 @@
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
   :root{
     /* 중립 베이스 (인포허브 공통) */
-    --paper:#f4f6f8; --card:#ffffff; --ink:#16202b; --ink-2:#55616e; --ink-3:#8b96a3;
-    --line:#e4e8ec; --line-2:#eff2f5;
+    --paper:#f5f7f9; --card:#ffffff; --ink:#111c26; --ink-2:#4f5c6a; --ink-3:#8a96a2;
+    --line:#e5eaee; --line-2:#f0f3f6;
     /* 대시보드 accent: GC Blue Deep */
     --navy:#00426b; --accent:#00426b; --accent-strong:#002b49; --accent-soft:#00426b10;
     --brand1:#00426b; --brand2:#0072ce;
-    --shadow:0 1px 2px rgba(22,32,43,.04),0 2px 8px rgba(22,32,43,.04);
+    --shadow:0 1px 2px rgba(17,28,38,.04),0 2px 8px rgba(17,28,38,.04);
     /* 소스 구분색 (한 톤으로 뮤트 통일) */
     --news:#24557f; --ir:#5d5a86; --clinical:#16706a; --regulatory:#8a6321; --pubmed:#9e2b45; --preprint:#5a6672;
     --news-bg:#24557f12; --ir-bg:#5d5a8612; --news-bg2:#24557f1f; --ir-bg2:#5d5a861f; --clinical-bg:#16706a12; --regulatory-bg:#8a632114; --pubmed-bg:#9e2b4512; --preprint-bg:#5a667214;
@@ -16,23 +16,23 @@
     --fs:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,system-ui,sans-serif;
   }
   @media (prefers-color-scheme:dark){:root{
-    --paper:#0f1418; --card:#171d23; --ink:#e8edf2; --ink-2:#a9b4bf; --ink-3:#77828d;
-    --line:#252d35; --line-2:#1c2329; --accent:#7ab6e8; --accent-strong:#a5cef2; --accent-soft:#7ab6e820;
+    --paper:#0e1317; --card:#161c22; --ink:#e7edf2; --ink-2:#a6b2bd; --ink-3:#74808b;
+    --line:#232b33; --line-2:#1b2229; --accent:#7ab6e8; --accent-strong:#a5cef2; --accent-soft:#7ab6e820;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
     --news:#8fb4d8; --ir:#a8a4d0; --clinical:#6cc6bf; --regulatory:#d6b06a; --pubmed:#e795a6; --preprint:#9aa5b1;
     --news-bg:#8fb4d81c; --ir-bg:#a8a4d01c; --news-bg2:#8fb4d82e; --ir-bg2:#a8a4d02e; --clinical-bg:#6cc6bf1c; --regulatory-bg:#d6b06a1c; --pubmed-bg:#e795a61c; --preprint-bg:#9aa5b11c;
   }}
   :root[data-theme="dark"]{
-    --paper:#0f1418; --card:#171d23; --ink:#e8edf2; --ink-2:#a9b4bf; --ink-3:#77828d;
-    --line:#252d35; --line-2:#1c2329; --accent:#7ab6e8; --accent-strong:#a5cef2; --accent-soft:#7ab6e820;
+    --paper:#0e1317; --card:#161c22; --ink:#e7edf2; --ink-2:#a6b2bd; --ink-3:#74808b;
+    --line:#232b33; --line-2:#1b2229; --accent:#7ab6e8; --accent-strong:#a5cef2; --accent-soft:#7ab6e820;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
     --news:#8fb4d8; --ir:#a8a4d0; --clinical:#6cc6bf; --regulatory:#d6b06a; --pubmed:#e795a6; --preprint:#9aa5b1;
     --news-bg:#8fb4d81c; --ir-bg:#a8a4d01c; --news-bg2:#8fb4d82e; --ir-bg2:#a8a4d02e; --clinical-bg:#6cc6bf1c; --regulatory-bg:#d6b06a1c; --pubmed-bg:#e795a61c; --preprint-bg:#9aa5b11c;
   }
   :root[data-theme="light"]{
-    --paper:#f4f6f8; --card:#ffffff; --ink:#16202b; --ink-2:#55616e; --ink-3:#8b96a3;
-    --line:#e4e8ec; --line-2:#eff2f5; --accent:#00426b; --accent-strong:#002b49; --accent-soft:#00426b10;
-    --shadow:0 1px 2px rgba(22,32,43,.04),0 2px 8px rgba(22,32,43,.04);
+    --paper:#f5f7f9; --card:#ffffff; --ink:#111c26; --ink-2:#4f5c6a; --ink-3:#8a96a2;
+    --line:#e5eaee; --line-2:#f0f3f6; --accent:#00426b; --accent-strong:#002b49; --accent-soft:#00426b10;
+    --shadow:0 1px 2px rgba(17,28,38,.04),0 2px 8px rgba(17,28,38,.04);
     --news:#24557f; --ir:#5d5a86; --clinical:#16706a; --regulatory:#8a6321; --pubmed:#9e2b45; --preprint:#5a6672;
     --news-bg:#24557f12; --ir-bg:#5d5a8612; --news-bg2:#24557f1f; --ir-bg2:#5d5a861f; --clinical-bg:#16706a12; --regulatory-bg:#8a632114; --pubmed-bg:#9e2b4512; --preprint-bg:#5a667214;
   }
@@ -59,7 +59,7 @@
   header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;padding:4px 0 20px;border-bottom:1px solid var(--line)}
   .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
   h1{font-size:clamp(21px,2.2vw,26px);margin:7px 0 0;font-weight:700;letter-spacing:-.02em;line-height:1.25;text-wrap:balance}
-  .sub{color:var(--ink-2);font-size:13.5px;font-weight:400;line-height:1.6;max-width:66ch;margin-top:6px}
+  .sub{color:var(--ink-2);font-size:13.5px;font-weight:400;line-height:1.6;max-width:68ch;margin-top:6px;word-break:keep-all;text-wrap:pretty}
   .chips{display:flex;gap:8px;flex-wrap:wrap}
   .mchip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);font-size:12px;white-space:nowrap}
   .mchip b{color:var(--ink);font-variant-numeric:tabular-nums}
@@ -187,7 +187,7 @@
 <div class="wrap">
   <header class="top">
     <div>
-      <h1>📈 시장 모니터링</h1>
+      <h1>시장 모니터링</h1>
       <div class="sub">5개 사업 영역과 관련하여 글로벌 시장 이슈와 동향을 <b>‘뉴스 기사’</b>, <b>‘경쟁사 IR 자료’</b> 2가지 분류로 구분하여 수집하고 요약한 내용입니다.</div>
     </div>
     <div class="chips">
@@ -236,7 +236,7 @@ window.addEventListener("message", function(e){
 let DATA = [
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "美 관세·통상(CBP)",
     "comp_product": "",
     "source_type": "issue",
@@ -275,7 +275,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Viatris",
     "comp_product": "Influvac",
     "source_type": "ir",
@@ -301,7 +301,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "美 CDC·ACIP",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -327,7 +327,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mFLUSIVA (mRNA-1010)",
     "source_type": "news",
@@ -340,7 +340,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "美 FDA",
     "comp_product": "독감백신(mRNA)",
     "source_type": "issue",
@@ -366,7 +366,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "ir",
@@ -392,7 +392,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "배리셀라",
+    "gc_product": "Barycela",
     "competitor": "MSD/Merck",
     "comp_product": "ProQuad/VARIVAX/M-M-R II",
     "source_type": "ir",
@@ -405,7 +405,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "SK바이오사이언스",
     "comp_product": "스카이셀플루",
     "source_type": "news",
@@ -444,7 +444,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mFLUSIVA (mRNA-1010)",
     "source_type": "ir",
@@ -457,7 +457,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "Gammagard/HYQVIA/Cuvitru",
     "source_type": "ir",
@@ -470,7 +470,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sanofi Pasteur",
     "comp_product": "Fluzone/Flublok",
     "source_type": "ir",
@@ -522,7 +522,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Octapharma",
     "comp_product": "혈장분획제제(Octagam/Panzyga/Cutaquig)",
     "source_type": "news",
@@ -535,7 +535,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "news",
@@ -561,7 +561,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루/배리셀라",
+    "gc_product": "GC Flu / Barycela",
     "competitor": "GSK",
     "comp_product": "Fluarix Tetra/Varilrix",
     "source_type": "ir",
@@ -574,7 +574,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify/Albutein",
     "source_type": "ir",
@@ -587,7 +587,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify/Albutein",
     "source_type": "ir",
@@ -652,7 +652,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "news",
@@ -730,7 +730,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Octapharma",
     "comp_product": "Octagam/Panzyga/Cutaquig",
     "source_type": "news",
@@ -756,7 +756,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Octapharma",
     "comp_product": "Octagam/Panzyga/Cutaquig",
     "source_type": "news",
@@ -847,7 +847,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "news",
@@ -873,7 +873,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "中 NMPA CDE",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -912,7 +912,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "news",
@@ -925,7 +925,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "news",
@@ -951,7 +951,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "멕시코 Birmex",
     "comp_product": "",
     "source_type": "issue",
@@ -964,7 +964,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "韓 질병관리청",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -1003,7 +1003,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Kedrion Biopharma",
     "comp_product": "Gammaked/Gammaplex(혈장분획제제)",
     "source_type": "news",
@@ -1029,7 +1029,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "Gammagard/HYQVIA(PDMP 전반)",
     "source_type": "news",
@@ -1042,7 +1042,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "印 NPPA",
     "comp_product": "면역글로불린",
     "source_type": "issue",
@@ -1055,7 +1055,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv",
     "source_type": "news",
@@ -1068,7 +1068,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "SK바이오사이언스",
     "comp_product": "백신 생산시설(안동 L하우스)",
     "source_type": "news",
@@ -1081,7 +1081,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grand Shuyang Life Sciences (Chengdu)",
     "comp_product": "혈액제제(면역글로불린·알부민)",
     "source_type": "news",
@@ -1107,7 +1107,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Octapharma",
     "comp_product": "Octagam/Panzyga/Cutaquig",
     "source_type": "news",
@@ -1133,7 +1133,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "SK바이오사이언스",
     "comp_product": "스카이셀플루",
     "source_type": "news",
@@ -1146,7 +1146,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sinovac",
     "comp_product": "influenza vaccine",
     "source_type": "news",
@@ -1172,7 +1172,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "관세·통상",
     "comp_product": "",
     "source_type": "issue",
@@ -1185,7 +1185,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "韓 질병관리청",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -1211,7 +1211,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mRNA-1010(mFLUSIVA)",
     "source_type": "news",
@@ -1224,7 +1224,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mFLUSIVA(mRNA-1010)",
     "source_type": "news",
@@ -1276,7 +1276,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu / Barycela",
     "competitor": "Sinovac",
     "comp_product": "인플루엔자·수두 백신",
     "source_type": "ir",
@@ -1289,7 +1289,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu / Barycela",
     "competitor": "Sinovac",
     "comp_product": "Anflu/varicella vaccine",
     "source_type": "ir",
@@ -1302,7 +1302,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen",
     "source_type": "news",
@@ -1315,7 +1315,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "UNICEF",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -1328,7 +1328,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "SK바이오사이언스",
     "comp_product": "스카이셀플루",
     "source_type": "news",
@@ -1341,7 +1341,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "SK바이오사이언스",
     "comp_product": "SKYCellflu",
     "source_type": "news",
@@ -1367,7 +1367,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sinovac",
     "comp_product": "MDCK cell-based influenza vaccine",
     "source_type": "news",
@@ -1393,7 +1393,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "콜롬비아 정부",
     "comp_product": "수두백신",
     "source_type": "issue",
@@ -1419,7 +1419,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu / Barycela",
     "competitor": "SK바이오사이언스",
     "comp_product": "SKYCellflu/SKYVaricella",
     "source_type": "ir",
@@ -1445,7 +1445,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "Gammagard/HYQVIA/Cuvitru",
     "source_type": "ir",
@@ -1458,7 +1458,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "Fluad",
     "source_type": "news",
@@ -1471,7 +1471,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "EU PPTA",
     "comp_product": "혈장분획제제",
     "source_type": "issue",
@@ -1497,7 +1497,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "PAHO",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -1510,7 +1510,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "Flucelvax/Fluad",
     "source_type": "news",
@@ -1523,7 +1523,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "EU 집행위·이사회",
     "comp_product": "혈장분획제제",
     "source_type": "issue",
@@ -1536,7 +1536,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu / Barycela",
     "competitor": "Sinovac",
     "comp_product": "Anflu/varicella vaccine",
     "source_type": "ir",
@@ -1562,7 +1562,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify/Albutein",
     "source_type": "ir",
@@ -1575,7 +1575,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Yimmugo",
     "source_type": "ir",
@@ -1601,7 +1601,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mRNA-1010",
     "source_type": "news",
@@ -1614,7 +1614,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "ASCENIV/BIVIGAM",
     "source_type": "ir",
@@ -1627,7 +1627,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "ir",
@@ -1653,7 +1653,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "TAK-881",
     "source_type": "news",
@@ -1666,7 +1666,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv",
     "source_type": "news",
@@ -1679,7 +1679,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mRNA-1010",
     "source_type": "ir",
@@ -1692,7 +1692,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mRNA-1010/mCombriax",
     "source_type": "ir",
@@ -1705,7 +1705,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루(수두)",
+    "gc_product": "Barycela",
     "competitor": "MSD/Merck",
     "comp_product": "VARIVAX/ProQuad",
     "source_type": "ir",
@@ -1718,7 +1718,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "GSK",
     "comp_product": "Fluarix/Shingrix",
     "source_type": "ir",
@@ -1744,7 +1744,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "EU HaDEA",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -1757,7 +1757,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "혈장 채혈 네트워크",
     "source_type": "news",
@@ -1770,7 +1770,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sanofi Pasteur",
     "comp_product": "Fluzone/Flublok",
     "source_type": "ir",
@@ -1809,7 +1809,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mCombriax(mRNA-1083)",
     "source_type": "news",
@@ -1822,7 +1822,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Kedrion Biopharma",
     "comp_product": "QIVIGY/YIMMUGO",
     "source_type": "ir",
@@ -1848,7 +1848,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mRNA-1010",
     "source_type": "news",
@@ -1861,7 +1861,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "美 정부",
     "comp_product": "",
     "source_type": "issue",
@@ -1874,7 +1874,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "관세·통상",
     "comp_product": "",
     "source_type": "issue",
@@ -1887,7 +1887,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "관세·통상",
     "comp_product": "",
     "source_type": "issue",
@@ -1913,7 +1913,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "재무구조",
     "source_type": "news",
@@ -1926,7 +1926,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "美 CMS",
     "comp_product": "면역글로불린",
     "source_type": "issue",
@@ -1952,7 +1952,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sinovac",
     "comp_product": "백신 협력",
     "source_type": "news",
@@ -2017,7 +2017,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "US Biopharma",
     "source_type": "news",
@@ -2043,7 +2043,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "IDT Biologika",
     "comp_product": "백신 CDMO",
     "source_type": "news",
@@ -2069,7 +2069,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "news",
@@ -2082,7 +2082,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "PAHO/아르헨티나",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -2095,7 +2095,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Kedrion Biopharma",
     "comp_product": "QIVIGY",
     "source_type": "news",
@@ -2108,7 +2108,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "adjuvanted cell-based pandemic vaccine",
     "source_type": "news",
@@ -2121,7 +2121,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "EU",
     "comp_product": "원료 혈장",
     "source_type": "issue",
@@ -2134,7 +2134,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Viatris",
     "comp_product": "Influvac/Influvac Tetra",
     "source_type": "ir",
@@ -2147,7 +2147,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify/Albutein",
     "source_type": "ir",
@@ -2160,7 +2160,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -2186,7 +2186,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "美 FDA",
     "comp_product": "면역글로불린",
     "source_type": "issue",
@@ -2199,7 +2199,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "ir",
@@ -2212,7 +2212,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "ASCENIV/BIVIGAM",
     "source_type": "ir",
@@ -2225,7 +2225,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sanofi Pasteur",
     "comp_product": "Fluzone Southern Hemisphere",
     "source_type": "news",
@@ -2238,7 +2238,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "사우디 NUPCO",
     "comp_product": "",
     "source_type": "issue",
@@ -2251,7 +2251,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mRNA-1010",
     "source_type": "news",
@@ -2264,7 +2264,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Octapharma",
     "comp_product": "Octagam/Panzyga/Cutaquig",
     "source_type": "ir",
@@ -2277,7 +2277,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mRNA-1010",
     "source_type": "ir",
@@ -2290,7 +2290,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "美 FDA",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -2303,7 +2303,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "ir",
@@ -2316,7 +2316,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mRNA-1010",
     "source_type": "news",
@@ -2329,7 +2329,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "인도네시아 보건부",
     "comp_product": "",
     "source_type": "issue",
@@ -2342,7 +2342,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "ir",
@@ -2381,7 +2381,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu / Barycela",
     "competitor": "GSK",
     "comp_product": "Fluarix Tetra/Varilrix",
     "source_type": "ir",
@@ -2394,7 +2394,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "SK바이오사이언스",
     "comp_product": "스카이셀플루/스카이바리셀라",
     "source_type": "ir",
@@ -2407,7 +2407,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "MSD/Merck",
     "comp_product": "VARIVAX/ProQuad",
     "source_type": "ir",
@@ -2433,7 +2433,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "Plasma-Derived Therapies",
     "source_type": "ir",
@@ -2446,7 +2446,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sanofi Pasteur",
     "comp_product": "SP0237(mRNA 독감백신)",
     "source_type": "news",
@@ -2485,7 +2485,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "사우디 Lifera",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -2498,7 +2498,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "GAMMAGARD LIQUID ERC",
     "source_type": "news",
@@ -2511,7 +2511,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu / Barycela",
     "competitor": "Sinovac",
     "comp_product": "varicella + trivalent influenza vaccine",
     "source_type": "news",
@@ -2537,7 +2537,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "인도 정부",
     "comp_product": "혈장분획제제",
     "source_type": "issue",
@@ -2550,7 +2550,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sinovac",
     "comp_product": "인플루엔자 백신",
     "source_type": "news",
@@ -2563,7 +2563,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "美 FDA",
     "comp_product": "혈액제제",
     "source_type": "issue",
@@ -2576,7 +2576,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "ir",
@@ -2589,7 +2589,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "인도네시아 BPOM",
     "comp_product": "",
     "source_type": "issue",
@@ -2602,7 +2602,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "美 국경/혈장 수급",
     "comp_product": "원료 혈장",
     "source_type": "issue",
@@ -2615,7 +2615,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "러시아 정부",
     "comp_product": "",
     "source_type": "issue",
@@ -2641,7 +2641,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "Sinovac",
     "comp_product": "varicella vaccine",
     "source_type": "news",
@@ -2654,7 +2654,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "재무구조",
     "source_type": "news",
@@ -2667,7 +2667,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sinovac",
     "comp_product": "quadrivalent influenza vaccine",
     "source_type": "news",
@@ -2680,7 +2680,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "이집트 정부",
     "comp_product": "면역글로불린·알부민",
     "source_type": "issue",
@@ -2693,7 +2693,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "韓 식약처",
     "comp_product": "",
     "source_type": "issue",
@@ -2719,7 +2719,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "EU 집행위·이사회",
     "comp_product": "",
     "source_type": "issue",
@@ -2784,7 +2784,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "Flucelvax",
     "source_type": "news",
@@ -2797,7 +2797,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Kedrion Biopharma",
     "comp_product": "혈장유래 신약후보",
     "source_type": "news",
@@ -2836,7 +2836,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sinovac",
     "comp_product": "백신 현지 생산",
     "source_type": "news",
@@ -2849,7 +2849,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "news",
@@ -2862,7 +2862,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "Sinovac",
     "comp_product": "varicella vaccine",
     "source_type": "news",
@@ -2875,7 +2875,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "美 CMS",
     "comp_product": "",
     "source_type": "issue",
@@ -2888,7 +2888,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "ASCENIV/BIVIGAM",
     "source_type": "ir",
@@ -2901,7 +2901,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "ir",
@@ -2914,7 +2914,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -2927,7 +2927,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -2940,7 +2940,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "SK바이오사이언스",
     "comp_product": "스카이셀플루/스카이바리셀라",
     "source_type": "ir",
@@ -2953,7 +2953,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "Gammagard/HYQVIA/Cuvitru",
     "source_type": "ir",
@@ -2966,7 +2966,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sinovac",
     "comp_product": "Anflu(trivalent influenza)",
     "source_type": "news",
@@ -2979,7 +2979,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "MSD/Merck",
     "comp_product": "VARIVAX/ProQuad",
     "source_type": "ir",
@@ -2992,7 +2992,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "Sinovac",
     "comp_product": "varicella vaccine",
     "source_type": "news",
@@ -3005,7 +3005,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sanofi Pasteur",
     "comp_product": "Fluzone/Flublok",
     "source_type": "ir",
@@ -3018,7 +3018,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "Flucelvax",
     "source_type": "news",
@@ -3031,7 +3031,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "멕시코 Birmex",
     "comp_product": "",
     "source_type": "issue",
@@ -3070,7 +3070,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "Flucelvax/Fluad",
     "source_type": "news",
@@ -3083,7 +3083,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sinovac",
     "comp_product": "quadrivalent influenza vaccine",
     "source_type": "news",
@@ -3096,7 +3096,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Kedrion Biopharma",
     "comp_product": "YIMMUGO",
     "source_type": "news",
@@ -3109,7 +3109,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Yimmugo",
     "source_type": "news",
@@ -3122,7 +3122,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "혈장분획제제(PDT)",
     "source_type": "news",
@@ -3135,7 +3135,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Kedrion Biopharma",
     "comp_product": "QIVIGY",
     "source_type": "news",
@@ -3148,7 +3148,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "英 NHS",
     "comp_product": "면역글로불린·알부민",
     "source_type": "issue",
@@ -3187,7 +3187,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "러시아 정부",
     "comp_product": "",
     "source_type": "issue",
@@ -3200,7 +3200,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "韓 보건복지부",
     "comp_product": "",
     "source_type": "issue",
@@ -3226,7 +3226,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "ir",
@@ -3239,7 +3239,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "ir",
@@ -3252,7 +3252,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Sichuan Yuanda Shuyang",
     "comp_product": "정맥주사용 인체 면역글로불린",
     "source_type": "news",
@@ -3265,7 +3265,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "브라질 Hemobrás",
     "comp_product": "면역글로불린·알부민",
     "source_type": "issue",
@@ -3291,7 +3291,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Kedrion Biopharma",
     "comp_product": "혈장유래 신약후보",
     "source_type": "news",
@@ -3304,7 +3304,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "ir",
@@ -3317,7 +3317,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "Gammagard/HYQVIA/Cuvitru",
     "source_type": "ir",
@@ -3330,7 +3330,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sanofi Pasteur",
     "comp_product": "Fluzone/Flublok",
     "source_type": "ir",
@@ -3343,7 +3343,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "카자흐스탄 SK-Pharmacia",
     "comp_product": "",
     "source_type": "issue",
@@ -3356,7 +3356,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -3369,7 +3369,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -3382,7 +3382,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "Flucelvax/Fluad",
     "source_type": "news",
@@ -3395,7 +3395,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "GSK",
     "comp_product": "Fluarix Tetra",
     "source_type": "news",
@@ -3421,7 +3421,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Moderna",
     "comp_product": "mRNA-1010",
     "source_type": "news",
@@ -3434,7 +3434,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "베트남 보건부",
     "comp_product": "",
     "source_type": "issue",
@@ -3447,7 +3447,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "GAMMAGARD LIQUID ERC",
     "source_type": "news",
@@ -3460,7 +3460,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "美 CDC/ACIP",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -3473,7 +3473,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "Plasma-Derived Therapies/Elaprase",
     "source_type": "ir",
@@ -3499,7 +3499,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Biotest",
     "source_type": "news",
@@ -3512,7 +3512,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루(수두)",
+    "gc_product": "Barycela",
     "competitor": "Sinovac",
     "comp_product": "수두 백신",
     "source_type": "news",
@@ -3525,7 +3525,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Octapharma",
     "comp_product": "Panzyga",
     "source_type": "news",
@@ -3538,7 +3538,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "美 HHS/CMS",
     "comp_product": "",
     "source_type": "issue",
@@ -3551,7 +3551,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "베트남 보건부",
     "comp_product": "",
     "source_type": "issue",
@@ -3564,7 +3564,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "Sinovac",
     "comp_product": "varicella vaccine",
     "source_type": "news",
@@ -3590,7 +3590,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -3603,7 +3603,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -3616,7 +3616,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "美 백악관",
     "comp_product": "",
     "source_type": "issue",
@@ -3629,7 +3629,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "Gammagard/HYQVIA/Cuvitru",
     "source_type": "ir",
@@ -3642,7 +3642,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "ir",
@@ -3655,7 +3655,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루(수두)",
+    "gc_product": "Barycela",
     "competitor": "MSD/Merck",
     "comp_product": "VARIVAX/ProQuad",
     "source_type": "news",
@@ -3681,7 +3681,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "news",
@@ -3694,7 +3694,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "MSD/Merck",
     "comp_product": "VARIVAX/ProQuad",
     "source_type": "ir",
@@ -3733,7 +3733,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Kedrion Biopharma",
     "comp_product": "Gammaked/Gammaplex",
     "source_type": "ir",
@@ -3746,7 +3746,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "WHO",
     "comp_product": "독감백신",
     "source_type": "issue",
@@ -3759,7 +3759,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sanofi Pasteur",
     "comp_product": "Flublok",
     "source_type": "news",
@@ -3772,7 +3772,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "HYQVIA",
     "source_type": "news",
@@ -3785,7 +3785,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Takeda",
     "comp_product": "HYQVIA",
     "source_type": "news",
@@ -3798,7 +3798,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sanofi Pasteur",
     "comp_product": "Fluzone/Flublok",
     "source_type": "news",
@@ -3811,7 +3811,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Flebogamma 5% DIF",
     "source_type": "news",
@@ -3824,7 +3824,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "SK바이오사이언스",
     "comp_product": "스카이셀플루",
     "source_type": "news",
@@ -3837,7 +3837,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "SK바이오사이언스",
     "comp_product": "스카이바리셀라",
     "source_type": "news",
@@ -3850,7 +3850,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "ir",
@@ -3863,7 +3863,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "중기 가이던스",
     "source_type": "ir",
@@ -3876,7 +3876,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -3889,7 +3889,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -3902,7 +3902,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C",
     "source_type": "news",
@@ -3915,7 +3915,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "ir",
@@ -3928,7 +3928,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Octapharma",
     "comp_product": "Octagam/Panzyga",
     "source_type": "news",
@@ -3941,7 +3941,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "GSK",
     "comp_product": "백신 사업부",
     "source_type": "ir",
@@ -3954,7 +3954,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "Barycela",
     "competitor": "MSD/Merck",
     "comp_product": "VARIVAX/ProQuad",
     "source_type": "ir",
@@ -3967,7 +3967,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Octapharma",
     "comp_product": "Panzyga",
     "source_type": "news",
@@ -4006,7 +4006,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "Sanofi Pasteur",
     "comp_product": "Fluzone/Flublok",
     "source_type": "news",
@@ -4019,7 +4019,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "news",
@@ -4032,7 +4032,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "ADMA Biologics",
     "comp_product": "Asceniv/Bivigam",
     "source_type": "ir",
@@ -4045,7 +4045,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "Grifols",
     "comp_product": "Gamunex-C/Xembify",
     "source_type": "ir",
@@ -4058,7 +4058,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "SK바이오사이언스",
     "comp_product": "스카이셀플루",
     "source_type": "news",
@@ -4071,7 +4071,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "Fluad",
     "source_type": "news",
@@ -4084,7 +4084,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "Flucelvax/Fluad",
     "source_type": "news",
@@ -4097,7 +4097,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "팬데믹 백신",
     "source_type": "news",
@@ -4110,7 +4110,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "IDT Biologika",
     "comp_product": "백신 CDMO",
     "source_type": "news",
@@ -4123,7 +4123,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "Flucelvax/Fluad",
     "source_type": "news",
@@ -4136,7 +4136,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu",
     "competitor": "CSL Seqirus",
     "comp_product": "팬데믹 백신(MF59)",
     "source_type": "news",
@@ -4149,7 +4149,7 @@ let DATA = [
   },
   {
     "category": "Vaccine (백신)",
-    "gc_product": "지씨플루",
+    "gc_product": "GC Flu / Barycela",
     "competitor": "Sinovac",
     "comp_product": "Anflu/varicella vaccine",
     "source_type": "ir",
@@ -4162,7 +4162,7 @@ let DATA = [
   },
   {
     "category": "Plasma Derivative",
-    "gc_product": "알리글로 IVIG",
+    "gc_product": "GC IVIG",
     "competitor": "CSL Behring",
     "comp_product": "Privigen/Hizentra",
     "source_type": "ir",
@@ -4193,6 +4193,11 @@ const CAT_MERGE={
   "Bulk Export":"Technology Transfer"          // 벌크 수출  → 기술이전/Plant, Bulk
 };
 const catKey=c=>CAT_MERGE[c]||c;
+// 유형별 비대상 사업영역 — 해당 유형에서는 필터 칩도 카드도 노출하지 않는다.
+// 기술이전/Plant, Bulk: 지정 경쟁사(SK바이오사이언스·Grifols Engineering·SK플라즈마)가
+// 이 사업 단위로 IR을 공시하지 않는다(SK플라즈마는 비상장). → IR 탭에서 제외.
+const CAT_EXCLUDE={ ir:new Set(["Technology Transfer"]) };
+const catHidden=(mode,c)=>!!(CAT_EXCLUDE[mode] && CAT_EXCLUDE[mode].has(c));
 // 영역별 고유색 — 카드 왼쪽 색상 바·필터 점·그룹 헤더가 모두 이 색을 공유
 const CAT_COLOR={
   "Plasma Derivative":"#24557f",       // 블루
@@ -4252,6 +4257,7 @@ function periodInfo(d){return state.mode==="ir"?quarterInfo(d.date):weekInfo(d.d
 function filtered(){
   return DATA.filter(d=>{
     if(d.source_type!==state.mode) return false;
+    if(catHidden(state.mode, d.category)) return false;
     if(state.period && periodInfo(d).key!==state.period) return false;
     if(state.cats.size && !state.cats.has(d.category)) return false;
     if(state.q){const hay=(d.title+" "+d.summary_ko+" "+d.comp_product+" "+(d.linked_issue||"")+" "+d.competitor).toLowerCase();
@@ -4261,8 +4267,8 @@ function filtered(){
 }
 
 function renderModes(){
-  const nNews=DATA.filter(d=>d.source_type==="news").length;
-  const nIr=DATA.filter(d=>d.source_type==="ir").length;
+  const nNews=DATA.filter(d=>d.source_type==="news" && !catHidden("news",d.category)).length;
+  const nIr=DATA.filter(d=>d.source_type==="ir" && !catHidden("ir",d.category)).length;
   const el=document.getElementById("kpis");
   // 분류 제목이 가장 크게 · 건수는 중간 · 주기(주차별/분기별)는 하단 작게 · 분류별 고유색
   const tab=(mode,ico,name,sub,n,mvar,soft)=>
@@ -4277,7 +4283,7 @@ function renderModes(){
 
 function renderPeriods(){
   const isIr=state.mode==="ir";
-  const src=DATA.filter(d=>d.source_type===state.mode);
+  const src=DATA.filter(d=>d.source_type===state.mode && !catHidden(state.mode,d.category));
   const info=isIr?quarterInfo:weekInfo;
   const map={};
   src.forEach(d=>{const w=info(d.date);(map[w.key]=map[w.key]||{label:w.label,sort:w.sort,n:0}).n++;});
@@ -4290,10 +4296,13 @@ function renderPeriods(){
 }
 
 function renderCats(){
-  const src=DATA.filter(d=>d.source_type===state.mode);
+  const src=DATA.filter(d=>d.source_type===state.mode && !catHidden(state.mode, d.category));
   const map={};src.forEach(d=>map[d.category]=(map[d.category]||0)+1);
   // 정의된 5개 사업 영역을 모두 노출(데이터 없어도 표시), 정의에 없는 값이 있으면 뒤에 추가
-  const cats=[...new Set([...CAT_ORDER,...Object.keys(map)])].sort((a,b)=>catRank(a)-catRank(b)||a.localeCompare(b));
+  // 단, 해당 유형의 비대상 영역(예: IR 탭의 기술이전/Plant, Bulk)은 아예 뺀다
+  const cats=[...new Set([...CAT_ORDER,...Object.keys(map)])]
+    .filter(c=>!catHidden(state.mode, c))
+    .sort((a,b)=>catRank(a)-catRank(b)||a.localeCompare(b));
   const el=document.getElementById("catfilter");
   let h=`<button class="pill pill-all" data-c="" aria-pressed="${state.cats.size===0}">전체 <span class="cnt">${src.length}</span></button>`;
   h+=cats.map(c=>{

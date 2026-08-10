@@ -7,51 +7,53 @@
 <style>
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
   :root{
-    --paper:#f5f8fc; --card:#ffffff; --ink:#132a49; --ink-2:#4a5b73; --ink-3:#8291a6;
-    --line:#e0e7f1; --line-2:#eef3f9;
-    --navy:#0b5c2e; --accent:#007a33; --accent-strong:#005c26; --accent-soft:#007a3314;
+    /* 중립 베이스 (인포허브 공통) */
+    --paper:#f5f7f9; --card:#ffffff; --ink:#111c26; --ink-2:#4f5c6a; --ink-3:#8a96a2;
+    --line:#e5eaee; --line-2:#f0f3f6;
+    /* 대시보드 accent: GC Green */
+    --navy:#005c26; --accent:#007a33; --accent-strong:#005c26; --accent-soft:#007a3312;
     --brand1:#007a33; --brand2:#43b02a;
-    --shadow:0 1px 2px rgba(20,54,95,.06),0 3px 10px rgba(20,54,95,.05);
-    --pop-shadow:0 8px 28px rgba(20,54,95,.20),0 2px 8px rgba(20,54,95,.12);
-    /* 유형별 색상 */
-    --conf:#1d4ed8; --partner:#6d28d9; --regu:#b45309;
-    --conf-bg:#1d4ed814; --partner-bg:#6d28d914; --regu-bg:#b4530916;
+    --shadow:0 1px 2px rgba(17,28,38,.04),0 2px 8px rgba(17,28,38,.04);
+    --pop-shadow:0 6px 24px rgba(17,28,38,.16),0 2px 8px rgba(17,28,38,.10);
+    /* 유형별 색상 (뮤트 통일) */
+    --conf:#24557f; --partner:#5d5a86; --regu:#8a6321;
+    --conf-bg:#24557f12; --partner-bg:#5d5a8612; --regu-bg:#8a632114;
     /* 상태 색상 */
-    --live:#0f766e; --live-bg:#0f766e16; --up:#0072ce; --up-bg:#0072ce16;
-    --sun:#c0392b; --sat:#2563eb;
-    --today-bg:#007a3314;
-    --radius:12px; --radius-sm:8px;
+    --live:#16706a; --live-bg:#16706a14; --up:#5a6672; --up-bg:#5a667214;
+    --sun:#a34a3f; --sat:#48607f;
+    --today-bg:#007a3310;
+    --radius:14px; --radius-sm:10px;
     --fs:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,system-ui,sans-serif;
   }
   @media (prefers-color-scheme:dark){:root{
-    --paper:#0c1420; --card:#131f30; --ink:#e9f0f8; --ink-2:#a6b5c9; --ink-3:#6f7f95;
-    --line:#243449; --line-2:#1a2636; --accent:#6fd39a; --accent-strong:#9ee7bf; --accent-soft:#6fd39a22;
+    --paper:#0e1317; --card:#161c22; --ink:#e7edf2; --ink-2:#a6b2bd; --ink-3:#74808b;
+    --line:#232b33; --line-2:#1b2229; --accent:#5ec98d; --accent-strong:#8fdcb0; --accent-soft:#5ec98d20;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
     --pop-shadow:0 10px 34px rgba(0,0,0,.5),0 3px 12px rgba(0,0,0,.4);
-    --conf:#6ea8fe; --partner:#a78bfa; --regu:#fbbf24;
-    --conf-bg:#6ea8fe1c; --partner-bg:#a78bfa1c; --regu-bg:#fbbf241c;
-    --live:#2dd4bf; --live-bg:#2dd4bf1c; --up:#38bdf8; --up-bg:#38bdf81c;
-    --sun:#f87171; --sat:#60a5fa; --today-bg:#43b02a1c;
+    --conf:#8fb4d8; --partner:#a8a4d0; --regu:#d6b06a;
+    --conf-bg:#8fb4d81c; --partner-bg:#a8a4d01c; --regu-bg:#d6b06a1c;
+    --live:#6cc6bf; --live-bg:#6cc6bf1c; --up:#9aa5b1; --up-bg:#9aa5b11c;
+    --sun:#e88c81; --sat:#8fa8c8; --today-bg:#5ec98d1a;
   }}
   :root[data-theme="dark"]{
-    --paper:#0c1420; --card:#131f30; --ink:#e9f0f8; --ink-2:#a6b5c9; --ink-3:#6f7f95;
-    --line:#243449; --line-2:#1a2636; --accent:#6fd39a; --accent-strong:#9ee7bf; --accent-soft:#6fd39a22;
+    --paper:#0e1317; --card:#161c22; --ink:#e7edf2; --ink-2:#a6b2bd; --ink-3:#74808b;
+    --line:#232b33; --line-2:#1b2229; --accent:#5ec98d; --accent-strong:#8fdcb0; --accent-soft:#5ec98d20;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
     --pop-shadow:0 10px 34px rgba(0,0,0,.5),0 3px 12px rgba(0,0,0,.4);
-    --conf:#6ea8fe; --partner:#a78bfa; --regu:#fbbf24;
-    --conf-bg:#6ea8fe1c; --partner-bg:#a78bfa1c; --regu-bg:#fbbf241c;
-    --live:#2dd4bf; --live-bg:#2dd4bf1c; --up:#38bdf8; --up-bg:#38bdf81c;
-    --sun:#f87171; --sat:#60a5fa; --today-bg:#43b02a1c;
+    --conf:#8fb4d8; --partner:#a8a4d0; --regu:#d6b06a;
+    --conf-bg:#8fb4d81c; --partner-bg:#a8a4d01c; --regu-bg:#d6b06a1c;
+    --live:#6cc6bf; --live-bg:#6cc6bf1c; --up:#9aa5b1; --up-bg:#9aa5b11c;
+    --sun:#e88c81; --sat:#8fa8c8; --today-bg:#5ec98d1a;
   }
   :root[data-theme="light"]{
-    --paper:#f5f8fc; --card:#ffffff; --ink:#132a49; --ink-2:#4a5b73; --ink-3:#8291a6;
-    --line:#e0e7f1; --line-2:#eef3f9; --accent:#007a33; --accent-strong:#005c26; --accent-soft:#007a3314;
-    --shadow:0 1px 2px rgba(20,54,95,.06),0 3px 10px rgba(20,54,95,.05);
-    --pop-shadow:0 8px 28px rgba(20,54,95,.20),0 2px 8px rgba(20,54,95,.12);
-    --conf:#1d4ed8; --partner:#6d28d9; --regu:#b45309;
-    --conf-bg:#1d4ed814; --partner-bg:#6d28d914; --regu-bg:#b4530916;
-    --live:#0f766e; --live-bg:#0f766e16; --up:#0072ce; --up-bg:#0072ce16;
-    --sun:#c0392b; --sat:#2563eb; --today-bg:#007a3314;
+    --paper:#f5f7f9; --card:#ffffff; --ink:#111c26; --ink-2:#4f5c6a; --ink-3:#8a96a2;
+    --line:#e5eaee; --line-2:#f0f3f6; --accent:#007a33; --accent-strong:#005c26; --accent-soft:#007a3312;
+    --shadow:0 1px 2px rgba(17,28,38,.04),0 2px 8px rgba(17,28,38,.04);
+    --pop-shadow:0 6px 24px rgba(17,28,38,.16),0 2px 8px rgba(17,28,38,.10);
+    --conf:#24557f; --partner:#5d5a86; --regu:#8a6321;
+    --conf-bg:#24557f12; --partner-bg:#5d5a8612; --regu-bg:#8a632114;
+    --live:#16706a; --live-bg:#16706a14; --up:#5a6672; --up-bg:#5a667214;
+    --sun:#a34a3f; --sat:#48607f; --today-bg:#007a3310;
   }
 
   *{box-sizing:border-box}
@@ -71,17 +73,44 @@
     border-radius:999px;padding:5px 13px;font-size:12.5px;font-family:inherit}
   #themeBtn:hover{background:rgba(255,255,255,.26);border-color:#fff}
 
-  .wrap{max-width:1200px;margin:0 auto;padding:24px 22px 72px}
+  .wrap{max-width:1120px;margin:0 auto;padding:24px 18px 72px}
 
   header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;padding:4px 0 20px;border-bottom:1px solid var(--line)}
   .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
   h1{font-size:clamp(21px,2.2vw,26px);margin:7px 0 0;font-weight:700;letter-spacing:-.02em;line-height:1.25;text-wrap:balance}
-  .sub{color:var(--ink-2);font-size:13.5px;font-weight:400;line-height:1.6;max-width:62ch;margin-top:8px;word-break:keep-all;text-wrap:pretty}
+  .sub{color:var(--ink-2);font-size:13.5px;font-weight:400;line-height:1.6;max-width:68ch;margin-top:6px;word-break:keep-all;text-wrap:pretty}
   .chips{display:flex;gap:8px;flex-wrap:wrap}
-  .mchip{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:5px 11px;color:var(--ink-2);font-size:12px;white-space:nowrap}
+  .mchip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);font-size:12px;white-space:nowrap}
   .mchip b{color:var(--ink);font-variant-numeric:tabular-nums}
 
+  /* ── 주요 행사 요약 표 ── */
+  .sumtable-wrap{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:var(--radius-sm);margin-top:6px}
+  .sumtable{width:100%;border-collapse:collapse;font-size:12.5px}
+  .sumtable th{position:sticky;top:0;background:var(--card);text-align:left;padding:8px 12px;font-size:11px;font-weight:800;
+    color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em;border-bottom:1.5px solid var(--line);z-index:1}
+  .sumtable td{padding:8px 12px;border-bottom:1px solid var(--line-2);color:var(--ink-2);vertical-align:top;line-height:1.45}
+  .sumtable tbody tr{cursor:pointer;transition:background .12s}
+  .sumtable tbody tr:hover{background:var(--accent-soft)}
+  .sumtable tbody tr:last-child td{border-bottom:none}
+  .sumtable tbody tr.is-past{opacity:.5}
+  .sumtable .s-date{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink)}
+  .sumtable .s-name{font-weight:600;color:var(--ink)}
+  .sumtable .s-abbr{font-weight:800}
+  .sumtable .s-loc{white-space:nowrap}
+  .sumtable .s-st{font-size:10px;font-weight:800;padding:1px 7px;border-radius:999px;margin-left:6px;white-space:nowrap}
+  .sumtable .s-st.past{background:var(--line-2);color:var(--ink-3)}
+  .sumtable .s-st.live{background:var(--live-bg);color:var(--live)}
+  .sumtable .s-st.up{background:var(--up-bg);color:var(--up)}
+  @media (max-width:640px){ .sumtable .s-desc{display:none} }
+
   .seclbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 9px}
+
+  /* 흰 패널 (환율 레이아웃 통일: 상단 콘솔) */
+  .panel{background:var(--card);
+    border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px 18px;margin-bottom:15px}
+  .panel .seclbl:first-child{margin-top:2px}
+  .console{margin-top:18px}
+  .console .filterblock:last-child{margin-bottom:2px}
 
   /* KPI tiles */
   .kpis{display:flex;flex-wrap:wrap;gap:10px}
@@ -105,7 +134,7 @@
   .selwrap label{font-size:12px;color:var(--ink-3);font-weight:600}
   select{padding:9px 30px 9px 12px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--card);color:var(--ink);
     font-size:13px;font-family:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238291a6' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b96a3' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
   select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
   #reset{background:transparent;border:1px solid var(--line);color:var(--ink-2);border-radius:var(--radius-sm);padding:9px 14px;cursor:pointer;font-size:13px;font-family:inherit}
   #reset:hover{border-color:var(--regu);color:var(--regu)}
@@ -128,7 +157,7 @@
   .filterblock .catfilter{margin-top:0;flex:1}
 
   /* ── Calendar toolbar ── */
-  .caltoolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .caltoolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:16px auto 0;max-width:880px}
   .navbtn{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:var(--radius-sm);
     width:34px;height:34px;cursor:pointer;font-size:16px;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:.12s}
   .navbtn:hover{border-color:var(--accent);color:var(--accent)}
@@ -141,16 +170,16 @@
   .legend .lgdot{width:11px;height:11px;border-radius:3px;flex:none}
 
   /* ── Calendar grid ── */
-  .calwrap{margin-top:12px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
-  .calhead{display:grid;grid-template-columns:repeat(7,1fr);background:linear-gradient(180deg,var(--line-2),transparent)}
-  .calhead div{padding:9px 8px;text-align:center;font-size:12px;font-weight:800;color:var(--ink-2);border-bottom:1px solid var(--line)}
+  .calwrap{margin:10px auto 0;max-width:880px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+  .calhead{display:grid;grid-template-columns:repeat(7,1fr);background:var(--line-2)}
+  .calhead div{padding:7px 6px;text-align:center;font-size:11.5px;font-weight:700;color:var(--ink-2);border-bottom:1px solid var(--line)}
   .calhead div.sun{color:var(--sun)}
   .calhead div.sat{color:var(--sat)}
 
   .cal-week{position:relative;border-bottom:1px solid var(--line)}
   .cal-week:last-child{border-bottom:none}
   .cal-bg{position:absolute;inset:0;display:grid;grid-template-columns:repeat(7,1fr);z-index:0}
-  .cal-day{border-right:1px solid var(--line);padding:7px 9px}
+  .cal-day{border-right:1px solid var(--line);padding:5px 7px}
   .cal-day:last-child{border-right:none}
   .cal-day.oth{background:var(--line-2)}
   .cal-day.oth .dnum{color:var(--ink-3);opacity:.5}
@@ -158,17 +187,17 @@
   .cal-day.sat .dnum{color:var(--sat)}
   .cal-day.holiday .dnum{color:var(--sun)}
   .cal-day.today{background:var(--today-bg)}
-  .cal-day .dnum{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
-  .cal-day.today .dnum{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;
-    background:var(--accent);color:#fff;border-radius:7px;padding:0 5px}
-  .cal-day .holname{display:inline-block;font-size:10px;font-weight:800;color:var(--sun);margin-top:3px;line-height:1.4;
-    background:rgba(224,0,43,.12);border-radius:5px;padding:0 6px;
+  .cal-day .dnum{font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
+  .cal-day.today .dnum{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;
+    background:var(--accent);color:#fff;border-radius:6px;padding:0 4px}
+  .cal-day .holname{display:inline-block;font-size:9px;font-weight:700;color:var(--sun);margin-top:2px;line-height:1.35;
+    background:color-mix(in srgb,var(--sun) 10%,transparent);border-radius:5px;padding:0 6px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 2px);vertical-align:top}
 
-  .cal-bars{position:relative;z-index:1;display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:25px;
-    gap:5px 4px;padding:30px 5px 10px;min-height:100px}
+  .cal-bars{position:relative;z-index:1;display:grid;grid-template-columns:repeat(7,1fr);grid-auto-rows:21px;
+    gap:4px 3px;padding:26px 4px 8px;min-height:84px}
   .cal-bar{grid-row:auto;border:none;cursor:pointer;font-family:inherit;text-align:left;
-    border-radius:6px;padding:2px 9px;font-size:12px;font-weight:700;line-height:21px;height:23px;
+    border-radius:5px;padding:1px 7px;font-size:11px;font-weight:700;line-height:18px;height:20px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;transition:filter .12s,transform .06s;
     display:flex;align-items:center;gap:5px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
   .cal-bar:hover{filter:brightness(1.08)}
@@ -235,17 +264,22 @@
 <div class="wrap">
   <header class="top">
     <div>
-      <div class="eyebrow">Global Conference & Event Calendar</div>
-      <h1>글로벌 제약·바이오 학회 / 행사 달력</h1>
-      <div class="sub">전 세계 주요 제약·바이오 학회, 파트너링·투자, 규제·전시 행사를 달력으로. 미국·유럽 필수 포함, 그 외 지역은 대륙별로 분류됩니다. 행사 막대를 클릭하면 상세와 공식 홈페이지를 볼 수 있습니다.</div>
+      <h1>해외 학회/행사 일정</h1>
+      <div class="sub">주요 제약·바이오 학회, 파트너링·투자, 규제·전시 행사를 달력으로. 미국·유럽 필수 포함, 그 외 지역은 대륙별로 분류됩니다. 행사 막대를 클릭하면 상세와 공식 홈페이지를 볼 수 있습니다.</div>
     </div>
     <div class="chips">
+      <span class="mchip">업데이트 <b id="asof">2026-08-10</b></span>
       <span class="mchip">총 <b id="chipTotal">0</b>개 행사</span>
       <span class="mchip">오늘 <b id="chipToday">–</b></span>
-      <span class="mchip" id="holChip">🇰🇷 공휴일 불러오는 중…</span>
     </div>
   </header>
 
+  <section class="panel" id="summaryPanel">
+    <div class="seclbl">다가오는 주요 행사 (일정순 · 행을 클릭하면 달력에서 열림)</div>
+    <div class="sumtable-wrap"><table class="sumtable" id="summaryTable"></table></div>
+  </section>
+
+  <div class="panel console">
   <div class="seclbl">요약 · 클릭하여 필터 / 이동</div>
   <div class="kpis" id="kpis"></div>
 
@@ -265,6 +299,7 @@
     <span class="fl-label">유형</span>
     <div class="catfilter" id="typePills"></div>
   </div>
+  </div>
 
   <div class="caltoolbar">
     <button class="navbtn" id="prevBtn" aria-label="이전 달">‹</button>
@@ -278,7 +313,7 @@
     </div>
   </div>
 
-  <div class="calwrap">
+  <div class="calwrap" id="calArea">
     <div class="calinner">
       <div class="calhead">
         <div class="sun">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="sat">토</div>
@@ -291,9 +326,9 @@
 
   <footer class="notes">
     <div class="ftitle">안내</div>
-    <div>• 일정·URL은 각 주최 측 공식 발표 기준의 내장 데이터입니다. 정적 페이지 특성상 실시간 크롤링이 아니므로, 출장·등록 전 <b>공식 홈페이지에서 최종 확인</b>하시기 바랍니다.</div>
+    <div>• 일정·URL은 각 주최 측 <b>공식 발표 확정 일정</b>만 담은 내장 데이터입니다(잠정·미발표 제외). 출장·등록 전 <b>공식 홈페이지에서 최종 확인</b>하시기 바랍니다.</div>
     <div>• 한국 공휴일은 <code>date.nager.at</code> 공개 API에서 <b>실시간</b>으로 불러와 표시합니다(연도 이동 시 해당 연도 공휴일 자동 반영). 오프라인이면 공휴일이 표시되지 않을 수 있습니다.</div>
-    <div>• 데이터 갱신: <code>data/events.data.js</code> 파일의 <code>DATA_START ~ DATA_END</code> 구간 교체로 정기 갱신 가능(인포허브 홈 화면과 동일 데이터 공유).</div>
+    <div>• 행사 일정은 <b>매월 1일 자동 갱신</b>됩니다 — 각 학회 공식 사이트를 다시 확인해 신규 확정 일정을 추가하고 변경분을 반영합니다(헤더의 <b>업데이트</b> 날짜 기준). 데이터는 <code>data/events.data.js</code>에서 인포허브 홈 화면과 함께 관리됩니다.</div>
   </footer>
 </div>
 
@@ -418,11 +453,10 @@ const HOLIDAY_SUPP = {
 };
 const holidayCache = {};    // year → {"YYYY-MM-DD": name} · null(로드 실패)
 const holidayFetching = {}; // year → true(진행 중)
-let holidayOnline = null;   // null:미확인 / true / false
 function suppFor(year){ return HOLIDAY_SUPP[year] ? Object.assign({}, HOLIDAY_SUPP[year]) : null; }
 function ensureHolidays(year){
   if(holidayCache[year]!==undefined || holidayFetching[year]) return;
-  if(typeof fetch!=="function"){ holidayCache[year]=suppFor(year); holidayOnline=false; setHolidayStatus(); return; }
+  if(typeof fetch!=="function"){ holidayCache[year]=suppFor(year); return; }
   holidayFetching[year]=true;
   fetch(HOLIDAY_API(year), {cache:"force-cache"})
     .then(r=>{ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
@@ -431,13 +465,10 @@ function ensureHolidays(year){
       data.forEach(h=>{ map[h.date]= h.localName || h.name; });
       Object.assign(map, HOLIDAY_SUPP[year]||{}); // 대체공휴일 등 보완 병합(우선)
       holidayCache[year]=map;
-      holidayOnline=true; setHolidayStatus();
       renderCalendar(); // 공휴일 반영해 다시 그림
     })
     .catch(()=>{
       holidayCache[year]=suppFor(year); // 오프라인이어도 대체공휴일은 표시
-      if(holidayOnline!==true) holidayOnline=false;
-      setHolidayStatus();
       renderCalendar();
     })
     .finally(()=>{ holidayFetching[year]=false; });
@@ -446,14 +477,6 @@ function holidayName(d){
   const m=holidayCache[d.getFullYear()];
   return m ? (m[ymd(d)]||null) : null;
 }
-function setHolidayStatus(){
-  const el=document.getElementById("holChip");
-  if(!el) return;
-  if(holidayOnline===true) el.innerHTML='🇰🇷 한국 공휴일 <b>실시간</b>';
-  else if(holidayOnline===false) el.textContent='🇰🇷 공휴일 오프라인';
-  else el.textContent='🇰🇷 공휴일 불러오는 중…';
-}
-
 // ── 필터 (검색·지역·유형) ───────────────────────────────────────────────
 function passFilters(ev){
   if(state.q){
@@ -473,7 +496,10 @@ function filtered(){ return EVENTS.filter(passFilters); }
 // ── KPI (요약 + 연도 이동) ──────────────────────────────────────────────
 function buildKPIs(){
   const host=document.getElementById("kpis");
-  const years=[...new Set(EVENTS.map(e=>e.start.slice(0,4)))].sort();
+  // 데이터에 있는 연도 + 올해부터 2028년까지 항상 이동 가능하도록 노출(빈 연도도 달력 탐색용)
+  const nums=EVENTS.map(e=>Number(e.start.slice(0,4)));
+  const minY=Math.min(TODAY.getFullYear(), ...(nums.length?nums:[TODAY.getFullYear()]));
+  const years=[]; for(let y=minY; y<=2028; y++) years.push(String(y));
   const upcoming=EVENTS.filter(e=>daysUntil(e.start)>=0).length;
   const tiles=[{id:"total", lbl:"총 행사", num:EVENTS.length, color:"var(--accent)", cls:"total"}];
   years.forEach(y=> tiles.push({id:"y"+y, lbl:y+"년 ↗", num:EVENTS.filter(e=>e.start.startsWith(y)).length, color:"var(--conf)"}));
@@ -495,6 +521,36 @@ function onKPI(id){
     renderAll(); return;
   }
   if(/^y\d{4}$/.test(id)){ viewYear=Number(id.slice(1)); viewMonth=1; renderAll(); return; }
+}
+
+// ── 주요 행사 요약 표 (검색란 위, 일정순 전체 목록) ─────────────────────
+function buildSummary(){
+  const host=document.getElementById("summaryTable");
+  if(!host) return;
+  // 지난 행사는 제외하고, 다가오는/진행 행사만 임박순으로 (원본 인덱스 i 유지)
+  const order=EVENTS.map((ev,i)=>({ev,i})).filter(({ev})=>statusOf(ev)!=="past");
+  order.sort((a,b)=> a.ev.start<b.ev.start?-1:1);
+  if(!order.length){ host.innerHTML=`<thead><tr><th>일정</th><th>행사명</th><th>장소</th><th>주요 내용</th></tr></thead><tbody><tr><td colspan="4" style="padding:16px 12px;color:var(--ink-3)">다가오는 행사가 없습니다.</td></tr></tbody>`; return; }
+  const rows=order.map(({ev,i})=>{
+    const st=statusOf(ev);
+    const stTag = st==="past" ? `<span class="s-st past">종료</span>`
+      : st==="live" ? `<span class="s-st live">진행</span>`
+      : `<span class="s-st up">D-${daysUntil(ev.start)}</span>`;
+    const tvar = ev.type==="학회"?"--conf":ev.type==="파트너링"?"--partner":"--regu";
+    const desc = (ev.category||TYPE_LABEL[ev.type]||ev.type) + (ev.venue?` · ${ev.venue}`:"");
+    return `<tr data-ev="${i}" class="${st==='past'?'is-past':''}">`+
+      `<td class="s-date">${fmtRange(ev.start,ev.end)}${stTag}</td>`+
+      `<td class="s-name">${ev.abbr?`<span class="s-abbr" style="color:var(${tvar})">${ev.abbr}</span> `:""}${ev.name}</td>`+
+      `<td class="s-loc">${ev.city?ev.city+", ":""}${ev.country}</td>`+
+      `<td class="s-desc">${desc}</td></tr>`;
+  }).join("");
+  host.innerHTML=`<thead><tr><th>일정</th><th>행사명</th><th>장소</th><th>주요 내용</th></tr></thead><tbody>${rows}</tbody>`;
+  host.querySelectorAll("tbody tr").forEach(tr=> tr.addEventListener("click", (e)=>{
+    e.stopPropagation();               // 문서 클릭 핸들러가 팝업을 즉시 닫는 것 방지(달력 막대와 동일)
+    const ev=EVENTS[Number(tr.dataset.ev)]; if(!ev) return;
+    const d=parseD(ev.start); viewYear=d.getFullYear(); viewMonth=d.getMonth()+1; hidePopup(); renderAll();
+    showPopup(ev, tr);                 // 클릭한 행 위치에 요약 팝업(공식 홈페이지 링크 포함)
+  }));
 }
 
 // ── 지역 pill ────────────────────────────────────────────────────────────
@@ -532,7 +588,9 @@ function syncControls(){
   });
   document.querySelectorAll("#regionPills .pill").forEach(b=> b.setAttribute("aria-pressed", String(b.dataset.region===state.region)));
   document.querySelectorAll("#typePills .pill").forEach(b=> b.setAttribute("aria-pressed", String(b.dataset.type===state.type)));
-  document.getElementById("searchBox").value=state.q;
+  // 입력 중 커서가 튀지 않도록 실제로 달라졌을 때만 반영
+  const sb=document.getElementById("searchBox");
+  if(sb.value.trim()!==state.q) sb.value=state.q;
 }
 
 // ── 달력 그리드 렌더 ─────────────────────────────────────────────────────
@@ -616,9 +674,9 @@ function renderCalendar(){
         style="grid-column:${seg.startCol+1} / span ${seg.span};grid-row:${seg.lane+1}">${label}</button>`;
     });
     // 공휴일 있는 주는 상단 공간을 더 확보해 막대와 겹치지 않게
-    const topPad = weekHasHol ? 50 : 30;
+    const topPad = weekHasHol ? 44 : 26;
     const laneCount = segs.reduce((m,s)=> Math.max(m, s.lane+1), 0);
-    const minH = topPad + Math.max(laneCount,1)*29 + 8;
+    const minH = topPad + Math.max(laneCount,1)*25 + 6;
     html+=`<div class="cal-week"><div class="cal-bg">${bg}</div>`+
       `<div class="cal-bars" style="padding-top:${topPad}px;min-height:${minH}px">${bars}</div></div>`;
   });
@@ -628,6 +686,16 @@ function renderCalendar(){
 }
 
 // ── 팝업 ─────────────────────────────────────────────────────────────────
+let popupAnchor=null;   // 현재 팝업이 붙어 있는 요소(스크롤 시 따라 이동)
+function positionPopup(){
+  const pop=document.getElementById("popup");
+  if(!pop.classList.contains("show") || !popupAnchor || !popupAnchor.isConnected) return;
+  const r=popupAnchor.getBoundingClientRect();
+  const pw=pop.offsetWidth, ph=pop.offsetHeight, gap=8, vw=window.innerWidth, vh=window.innerHeight;
+  let left=r.left; if(left+pw > vw-12) left=vw-12-pw; if(left<12) left=12;
+  let top=r.bottom+gap; if(top+ph > vh-12) top=r.top-gap-ph; if(top<12) top=12;
+  pop.style.left=left+"px"; pop.style.top=top+"px";
+}
 function showPopup(ev, anchor){
   const pop=document.getElementById("popup");
   const st=statusOf(ev);
@@ -653,14 +721,14 @@ function showPopup(ev, anchor){
     ${note}${link}`;
   pop.querySelector(".pu-close").addEventListener("click", hidePopup);
   pop.classList.add("show");
-  // 위치: 앵커 아래, 화면 경계 플립
-  const r=anchor.getBoundingClientRect();
-  const pw=pop.offsetWidth, ph=pop.offsetHeight, gap=8, vw=window.innerWidth, vh=window.innerHeight;
-  let left=r.left; if(left+pw > vw-12) left=vw-12-pw; if(left<12) left=12;
-  let top=r.bottom+gap; if(top+ph > vh-12) top=r.top-gap-ph; if(top<12) top=12;
-  pop.style.left=left+"px"; pop.style.top=top+"px";
+  // 위치: 앵커 아래, 화면 경계 플립 (스크롤 중에도 앵커를 따라감)
+  popupAnchor=anchor;
+  positionPopup();
 }
-function hidePopup(){ document.getElementById("popup").classList.remove("show"); }
+function hidePopup(){ document.getElementById("popup").classList.remove("show"); popupAnchor=null; }
+// 스크롤·리사이즈 시 팝업이 앵커에서 떨어지지 않도록 재배치
+window.addEventListener("scroll", positionPopup, true);
+window.addEventListener("resize", positionPopup);
 
 // ── 전체 렌더 ────────────────────────────────────────────────────────────
 function renderAll(){
@@ -687,6 +755,40 @@ function renderAll(){
     + (ctx.length?` <span class="ctx">· ${ctx.join(" · ")}</span>`:"");
 }
 
+// ── 검색 → 해당 월 이동 + 행사 팝업 ─────────────────────────────────────
+// 달력에 그려진 막대 중 해당 이벤트의 버튼 찾기
+function findBarEl(ev){
+  return [...document.querySelectorAll(".cal-bar")].find(b => barMap[b.dataset.bar] === ev) || null;
+}
+// 검색 결과 중 대표 행사: 아직 끝나지 않은 첫 행사, 없으면 가장 최근 지난 행사
+function pickSearchTarget(list){
+  return list.find(e => statusOf(e) !== "past") || list[list.length-1] || null;
+}
+function jumpToSearchMatch(){
+  if(!state.q) return;
+  const list=filtered();
+  if(!list.length) return;
+  const target=pickSearchTarget(list);
+  if(!target) return;
+  const d=parseD(target.start);
+  viewYear=d.getFullYear(); viewMonth=d.getMonth()+1;   // 해당 행사가 있는 달로 이동
+  renderAll();
+  const el=findBarEl(target);
+  if(!el) return;
+  el.scrollIntoView({behavior:"smooth", block:"center"});
+  showPopup(target, el);   // 스크롤이 끝나면 positionPopup이 따라붙음
+}
+let searchTimer=null;
+function onSearchInput(value, immediate){
+  state.q=(value||"").trim();
+  clearTimeout(searchTimer);
+  hidePopup();
+  if(!state.q){ renderAll(); return; }
+  renderAll();                                  // 필터는 즉시 반영
+  if(immediate) jumpToSearchMatch();            // Enter: 바로 이동
+  else searchTimer=setTimeout(jumpToSearchMatch, 300);   // 타이핑 중 깜빡임 방지
+}
+
 // ── 이동 ─────────────────────────────────────────────────────────────────
 function shiftMonth(delta){
   let m=viewMonth+delta, y=viewYear;
@@ -695,8 +797,12 @@ function shiftMonth(delta){
 }
 
 // ── 이벤트 바인딩 ────────────────────────────────────────────────────────
-document.getElementById("searchBox").addEventListener("input", (e)=>{ state.q=e.target.value.trim(); hidePopup(); renderAll(); });
+document.getElementById("searchBox").addEventListener("input", (e)=> onSearchInput(e.target.value));
+document.getElementById("searchBox").addEventListener("keydown", (e)=>{
+  if(e.key==="Enter"){ e.preventDefault(); onSearchInput(e.target.value, true); }
+});
 document.getElementById("reset").addEventListener("click", ()=>{
+  clearTimeout(searchTimer);
   state.q=""; state.region="all"; state.type="all";
   viewYear=TODAY.getFullYear(); viewMonth=TODAY.getMonth()+1; hidePopup(); renderAll();
 });
@@ -705,6 +811,8 @@ document.getElementById("nextBtn").addEventListener("click", ()=> shiftMonth(1))
 document.getElementById("todayBtn").addEventListener("click", ()=>{
   viewYear=TODAY.getFullYear(); viewMonth=TODAY.getMonth()+1; hidePopup(); renderAll();
 });
+// 행사 일정 갱신은 작업 스케줄러 `GC학회일정_월간갱신`(매월 1일 00:00)이
+// _auto/update_events.ps1 을 실행해 처리한다(공휴일은 페이지 로드 시 자동 재조회).
 document.getElementById("themeBtn")?.addEventListener("click", ()=>{
   const cur=document.documentElement.getAttribute("data-theme");
   const next = cur==="dark" ? "light" : cur==="light" ? "dark" :
@@ -718,8 +826,8 @@ document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") hidePopup(); })
 // ── 초기화 ──────────────────────────────────────────────────────────────
 document.getElementById("chipTotal").textContent=EVENTS.length;
 document.getElementById("chipToday").textContent=fmtToday(TODAY);
-setHolidayStatus();
 buildKPIs();
+buildSummary();
 buildRegionPills();
 buildTypePills();
 renderAll();

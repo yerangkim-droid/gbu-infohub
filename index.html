@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" data-theme="light">
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,21 +7,42 @@
 <style>
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
   :root{
-    --paper:#eef2f7; --card:#ffffff; --card-2:#f5f8fc;
-    --ink:#0d1f33; --ink-2:#3f5064; --ink-3:#76899d;
-    --line:#dce4ef;
-    --gc-deep-blue:#002b49; --gc-green:#007a33;
-    --c-fx:#3b5bdb; --c-news:#0072ce; --c-compet:#6d28d9; --c-events:#007a33; --c-acad:#9f1239;
-    --shadow-sm:0 1px 2px rgba(0,43,73,.05),0 3px 10px rgba(0,43,73,.05);
-    --brandgrad:linear-gradient(100deg,#002b49 0%,#005c9e 48%,#007a33 100%);
+    /* ── 중립 베이스 (4개 대시보드 공통) · 그레이는 GC Blue 쪽으로 아주 살짝 기울임 ── */
+    --paper:#f5f7f9; --card:#ffffff;
+    --ink:#111c26; --ink-2:#4f5c6a; --ink-3:#8a96a2;
+    --line:#e5eaee; --line-strong:#d5dce2;
+    /* ── GC CI (gcbiopharmadesign.com) ── */
+    --gc-red:#e4002b; --gc-green:#007a33; --gc-blue:#0072ce;
+    /* 대시보드 accent — CI 3색에서 파생한 4톤 (원색 2 + 심화 2) */
+    --a-fx:#0072ce;        /* GC Blue 원색 */
+    --a-market:#00426b;    /* GC Blue 심화 */
+    --a-events:#007a33;    /* GC Green 원색 */
+    --a-academic:#a8102c;  /* GC Red 심화 — 원색은 경고로 읽혀 톤다운 */
+    --shadow-sm:0 1px 2px rgba(17,28,38,.04),0 1px 8px rgba(17,28,38,.04);
     --fs:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,system-ui,sans-serif;
   }
-  html[data-theme="dark"]{
-    --paper:#0c141d; --card:#141f2b; --card-2:#101a24;
-    --ink:#e8eef5; --ink-2:#a7b6c6; --ink-3:#6f8195;
-    --line:#243343;
-    --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 3px 10px rgba(0,0,0,.28);
+  /* OS 다크 모드 추종 (대시보드와 동일 동작). data-theme="light" 명시 시 미적용 */
+  @media (prefers-color-scheme:dark){
+    html:not([data-theme="light"]){
+      --paper:#0e1317; --card:#161c22;
+      --ink:#e7edf2; --ink-2:#a6b2bd; --ink-3:#74808b;
+      --line:#232b33; --line-strong:#313a43;
+      --gc-red:#f0798c; --gc-green:#5ec98d; --gc-blue:#66b2ec;
+      /* 다크 --a-market: 원래 #7ab6e8 였으나 --a-fx 와 거의 같아, 4색 칩이 동시에 보이는
+         메뉴바에서 구분되도록 한 단계 더 짙은 파랑으로 조정(라이트의 '네이비=심화' 역할 유지) */
+      --a-fx:#66b2ec; --a-market:#4a90c8; --a-events:#5ec98d; --a-academic:#f0798c;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 1px 8px rgba(0,0,0,.26);
+    }
   }
+  html[data-theme="dark"]{
+    --paper:#0e1317; --card:#161c22;
+    --ink:#e7edf2; --ink-2:#a6b2bd; --ink-3:#74808b;
+    --line:#232b33; --line-strong:#313a43;
+    --gc-red:#f0798c; --gc-green:#5ec98d; --gc-blue:#66b2ec;
+    --a-fx:#66b2ec; --a-market:#4a90c8; --a-events:#5ec98d; --a-academic:#f0798c;   /* market: 위 주석 참고 */
+    --shadow-sm:0 1px 2px rgba(0,0,0,.3),0 1px 8px rgba(0,0,0,.26);
+  }
+
   *{box-sizing:border-box}
   html,body{margin:0;height:100%}
   body{
@@ -29,73 +50,126 @@
     -webkit-font-smoothing:antialiased; display:flex; flex-direction:column; min-height:100vh;
   }
 
-  /* ── 브랜드 바 ── */
-  .brandbar{ background:var(--gc-deep-blue); color:#fff; border-bottom:1px solid rgba(255,255,255,.08); position:sticky; top:0; z-index:50; }
-  .brandbar-inner{ max-width:1240px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:13px; }
-  .logochip{
-    width:34px; height:34px; border-radius:8px; background:#fff; color:var(--gc-deep-blue);
-    display:flex; align-items:center; justify-content:center;
-    font-weight:800; font-size:.92rem; letter-spacing:-.03em; flex:none;
+  /* ── 상단 고정 헤더 ── */
+  .topstack{
+    position:sticky; top:0; z-index:50;
+    background:var(--card); border-bottom:1px solid var(--line); box-shadow:var(--shadow-sm);
   }
-  .btitle{ display:flex; flex-direction:column; gap:2px; }
-  .btitle .kr{ font-weight:650; font-size:1.02rem; letter-spacing:-.01em; }
-  .btitle .en{ font-size:.66rem; opacity:.55; letter-spacing:.13em; font-weight:500; text-transform:uppercase; }
-  .spacer{ flex:1; }
-  .themebtn{
-    background:transparent; color:rgba(255,255,255,.82); border:1px solid rgba(255,255,255,.22);
-    border-radius:8px; padding:7px 13px; font-size:.8rem; font-weight:600; cursor:pointer;
-    display:inline-flex; align-items:center; gap:7px; transition:border-color .15s, color .15s; font-family:inherit;
-  }
-  .themebtn:hover{ border-color:rgba(255,255,255,.5); color:#fff; }
+  /* GC Gradation(Red→Green) — 브랜드를 표시하는 유일한 장식 요소 */
+  .ciline{ height:3px; background:linear-gradient(90deg,var(--gc-red) 0%,#8f4a2c 46%,var(--gc-green) 100%); }
 
-  /* ── 메뉴바 ── */
-  .navbar{ background:var(--card); border-bottom:1px solid var(--line); position:sticky; top:63px; z-index:40; }
-  .navbar-inner{ max-width:1240px; margin:0 auto; padding:0 18px; display:flex; gap:4px; overflow-x:auto; }
-  .navitem{
-    appearance:none; background:none; border:none; font-family:inherit; cursor:pointer;
-    padding:14px 4px 12px; margin:0 12px; font-size:.9rem; font-weight:600; color:var(--ink-3); white-space:nowrap;
-    letter-spacing:-.01em; border-bottom:2px solid transparent; transition:color .14s, border-color .14s;
+  /* 브랜드와 메뉴를 한 줄로 합쳐 상단 크롬을 줄이고 본문 영역을 넓힘 */
+  .bar-inner{
+    max-width:1200px; margin:0 auto; padding:0 22px;
+    display:flex; align-items:center; column-gap:14px; row-gap:0; flex-wrap:wrap;
   }
-  .navitem:first-child{ margin-left:4px; }
-  .navitem .ico{ display:none; }
-  .navitem:hover{ color:var(--ink); }
-  .navitem.active{ color:var(--ink); border-bottom-color:var(--gc-green); font-weight:700; }
+  .brand{ display:flex; align-items:center; gap:13px; padding:13px 0; flex:none; }
+  .brandlogo{ height:26px; width:auto; display:block; }
+  .brand-divider{ width:1px; height:18px; background:var(--line-strong); }
+  .btitle{ margin:0; font-weight:600; font-size:.97rem; letter-spacing:-.018em; color:var(--ink); white-space:nowrap; }
+
+  /* ── 메뉴 (대시보드별 CI 컬러 칩 — 4색 상시 노출) ── */
+  .tabs{
+    margin-left:auto; display:flex; align-items:center; gap:7px; padding:7px 0;
+    overflow-x:auto; scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .navitem{
+    appearance:none; border:none; font-family:inherit; cursor:pointer;
+    padding:8px 14px; border-radius:999px;
+    background:var(--tab-tint); color:var(--tab-ink);
+    font-size:.875rem; font-weight:600; line-height:1.35;
+    white-space:nowrap; letter-spacing:-.012em;
+    transition:background-color .15s, color .15s;
+  }
+  .navitem:hover{ background:var(--tab-tint-hover); }
+  .navitem:focus-visible{ outline:2px solid var(--tab); outline-offset:2px; }
+  /* 활성 탭 — 해당 대시보드 CI 컬러로 꽉 채움 */
+  .navitem.active{ background:var(--tab); color:var(--tab-on); font-weight:700; }
+  .navitem.active:hover{ background:var(--tab); }
+
+  /* 대시보드별 CI 컬러 — 비활성은 틴트 배경 + CI색 글씨, 활성은 채움 + 흰 글씨 */
+  .navitem[data-route="fx"]{
+    --tab:var(--a-fx);       --tab-ink:#005ea8; --tab-tint:#e8f2fb; --tab-tint-hover:#d6e8f7; --tab-on:#ffffff;
+  }
+  .navitem[data-route="competitor"]{
+    --tab:var(--a-market);   --tab-ink:#00426b; --tab-tint:#e4ecf2; --tab-tint-hover:#d3e0ea; --tab-on:#ffffff;
+  }
+  .navitem[data-route="events"]{
+    --tab:var(--a-events);   --tab-ink:#006129; --tab-tint:#e5f2ea; --tab-tint-hover:#d2e8db; --tab-on:#ffffff;
+  }
+  .navitem[data-route="academic"]{
+    --tab:var(--a-academic); --tab-ink:#96122a; --tab-tint:#f8e8eb; --tab-tint-hover:#f2d7dc; --tab-on:#ffffff;
+  }
+  /* 다크 모드 칩 — 틴트는 어둡게, 글씨는 밝은 CI색 / 활성은 밝은 채움 + 어두운 글씨 */
+  @media (prefers-color-scheme:dark){
+    html:not([data-theme="light"]) .navitem[data-route="fx"]{
+      --tab-ink:#8ec7f2; --tab-tint:#1b2b39; --tab-tint-hover:#233648; --tab-on:#0e1317;
+    }
+    html:not([data-theme="light"]) .navitem[data-route="competitor"]{
+      --tab-ink:#7fb4dc; --tab-tint:#1a2733; --tab-tint-hover:#213141; --tab-on:#0e1317;
+    }
+    html:not([data-theme="light"]) .navitem[data-route="events"]{
+      --tab-ink:#84d7a8; --tab-tint:#162b21; --tab-tint-hover:#1d382b; --tab-on:#0e1317;
+    }
+    html:not([data-theme="light"]) .navitem[data-route="academic"]{
+      --tab-ink:#f59fad; --tab-tint:#331d24; --tab-tint-hover:#402530; --tab-on:#0e1317;
+    }
+  }
+  html[data-theme="dark"] .navitem[data-route="fx"]{
+    --tab-ink:#8ec7f2; --tab-tint:#1b2b39; --tab-tint-hover:#233648; --tab-on:#0e1317;
+  }
+  html[data-theme="dark"] .navitem[data-route="competitor"]{
+    --tab-ink:#7fb4dc; --tab-tint:#1a2733; --tab-tint-hover:#213141; --tab-on:#0e1317;
+  }
+  html[data-theme="dark"] .navitem[data-route="events"]{
+    --tab-ink:#84d7a8; --tab-tint:#162b21; --tab-tint-hover:#1d382b; --tab-on:#0e1317;
+  }
+  html[data-theme="dark"] .navitem[data-route="academic"]{
+    --tab-ink:#f59fad; --tab-tint:#331d24; --tab-tint-hover:#402530; --tab-on:#0e1317;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .navitem{ transition:none; }
+  }
 
   /* ── 콘텐츠 ── */
   .stage{ flex:1; position:relative; display:flex; }
   .frameWrap{ flex:1; position:relative; }
   .frameWrap iframe{ position:absolute; inset:0; width:100%; height:100%; border:none; background:var(--paper); }
 
-  @media (max-width:620px){
-    .brandbar-inner{ padding:11px 15px; } .btitle .kr{ font-size:.96rem; } .btitle .en{ display:none; }
-    .navbar{ top:57px; } .navitem{ padding:12px 3px 10px; margin:0 9px; font-size:.86rem; }
+  /* 좁은 화면: 브랜드 줄과 메뉴 줄을 분리 */
+  @media (max-width:840px){
+    .bar-inner{ padding:0 14px; }
+    .brand{ padding:11px 0 9px; gap:10px; }
+    .brandlogo{ height:23px; }
+    .btitle{ font-size:.9rem; }
+    .tabs{ margin-left:0; width:100%; border-top:1px solid var(--line); padding:8px 0; gap:6px; }
+    .navitem{ padding:7px 12px; font-size:.84rem; }
   }
 </style>
 </head>
 <body>
 
-  <!-- 브랜드 바 -->
-  <header class="brandbar">
-    <div class="brandbar-inner">
-      <div class="logochip">GC</div>
-      <div class="btitle">
-        <span class="kr">GC 글로벌사업본부 인포허브</span>
-        <span class="en">GLOBAL BUSINESS UNIT · INFO HUB</span>
+  <!-- 상단 고정 헤더 (브랜드 + 메뉴) -->
+  <div class="topstack">
+    <div class="ciline"></div>
+    <header class="bar">
+      <div class="bar-inner">
+        <div class="brand">
+          <img class="brandlogo" src="GC녹십자_logo.png" alt="GC녹십자">
+          <span class="brand-divider"></span>
+          <h1 class="btitle">글로벌 사업본부 인포 허브</h1>
+        </div>
+        <nav class="tabs" id="nav" aria-label="대시보드">
+          <button class="navitem" data-route="fx">실시간 환율</button>
+          <button class="navitem" data-route="competitor">시장 동향</button>
+          <button class="navitem" data-route="events">학회 일정</button>
+          <button class="navitem" data-route="academic">학술 동향</button>
+        </nav>
       </div>
-      <div class="spacer"></div>
-      <button class="themebtn" id="themeBtn"><span id="themeIco">🌙</span> <span id="themeTxt">다크</span></button>
-    </div>
-  </header>
-
-  <!-- 메뉴바 -->
-  <nav class="navbar">
-    <div class="navbar-inner" id="nav">
-      <button class="navitem" data-route="fx"><span class="ico">💱</span>실시간 환율</button>
-      <button class="navitem" data-route="competitor"><span class="ico">📈</span>시장동향</button>
-      <button class="navitem" data-route="events"><span class="ico">📅</span>학회일정</button>
-      <button class="navitem" data-route="academic"><span class="ico">📚</span>학술동향</button>
-    </div>
-  </nav>
+    </header>
+  </div>
 
   <!-- 콘텐츠 (iframe) -->
   <div class="stage">
@@ -109,7 +183,7 @@ const ROUTES = {
   fx:        { file:"환율.html" },
   competitor:{ file:"경쟁동향_대시보드.html" },
   events:    { file:"글로벌학회일정_대시보드.html" },
-  academic: { file:"글로벌학술동향_대시보드.html" },
+  academic:  { file:"글로벌학술동향_대시보드.html" },
 };
 const DEFAULT_ROUTE = "fx";
 const frames = {};
@@ -124,13 +198,16 @@ function ensureFrame(route){
   const f = document.createElement("iframe");
   f.title = route;
   f.src = ROUTES[route].file;
-  f.addEventListener("load", ()=> postThemeTo(f));
   frameWrap.appendChild(f);
   frames[route] = f;
   return f;
 }
 function showRoute(route){
-  document.querySelectorAll(".navitem").forEach(b=> b.classList.toggle("active", b.dataset.route===route));
+  document.querySelectorAll(".navitem").forEach(b=>{
+    const on = b.dataset.route===route;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-current", on ? "page" : "false");
+  });
   const target = ensureFrame(route);
   Object.values(frames).forEach(f=> f.style.display = (f===target ? "block" : "none"));
 }
@@ -141,29 +218,8 @@ document.getElementById("nav").addEventListener("click", e=>{
 });
 window.addEventListener("hashchange", ()=> showRoute(currentRoute()));
 
-/* ═══════════════ 테마 ═══════════════ */
-const THEME_KEY = "gbu-theme";
-function applyTheme(t){
-  document.documentElement.setAttribute("data-theme", t);
-  document.getElementById("themeIco").textContent = t==="dark" ? "☀️" : "🌙";
-  document.getElementById("themeTxt").textContent = t==="dark" ? "라이트" : "다크";
-  try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
-  Object.values(frames).forEach(postThemeTo);
-}
-function postThemeTo(frame){
-  const t = document.documentElement.getAttribute("data-theme");
-  try{ frame.contentWindow.postMessage({type:"gbu-theme", theme:t}, "*"); }catch(e){}
-}
-document.getElementById("themeBtn").addEventListener("click", ()=>{
-  const cur = document.documentElement.getAttribute("data-theme");
-  applyTheme(cur==="dark" ? "light" : "dark");
-});
-
 /* ═══════════════ 초기화 ═══════════════ */
 (function init(){
-  let t="light";
-  try{ t=localStorage.getItem(THEME_KEY)||"light"; }catch(e){}
-  applyTheme(t);
   if(!location.hash) location.replace("#"+DEFAULT_ROUTE);
   showRoute(currentRoute());
 })();
