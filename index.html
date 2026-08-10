@@ -7,6 +7,8 @@
 <style>
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
   :root{
+    /* 브라우저 기본색(버튼 글자·스크롤바 등)도 OS 테마를 따르게 — 없으면 색 미지정 요소에 검정 폴백 */
+    color-scheme:light dark;
     /* ── 중립 베이스 (4개 대시보드 공통) · 그레이는 GC Blue 쪽으로 아주 살짝 기울임 ── */
     --paper:#f5f7f9; --card:#ffffff;
     --ink:#111c26; --ink-2:#4f5c6a; --ink-3:#8a96a2;
@@ -35,6 +37,7 @@
     }
   }
   html[data-theme="dark"]{
+    color-scheme:dark;
     --paper:#0e1317; --card:#161c22;
     --ink:#e7edf2; --ink-2:#a6b2bd; --ink-3:#74808b;
     --line:#232b33; --line-strong:#313a43;
@@ -64,6 +67,8 @@
     display:flex; align-items:center; column-gap:14px; row-gap:0; flex-wrap:wrap;
   }
   .brand{ display:flex; align-items:center; gap:13px; padding:13px 0; flex:none; }
+  /* 다크 모드에서는 'GC녹십자' 워드마크(남색)가 어두운 헤더에 묻히므로 흰 판 위에 올린다.
+     CI 적·녹 심볼 색을 그대로 살리려고 filter 로 반전시키지 않았다(아래 다크 블록 참고). */
   .brandlogo{ height:26px; width:auto; display:block; }
   .brand-divider{ width:1px; height:18px; background:var(--line-strong); }
   .btitle{ margin:0; font-weight:600; font-size:.97rem; letter-spacing:-.018em; color:var(--ink); white-space:nowrap; }
@@ -115,6 +120,12 @@
     html:not([data-theme="light"]) .navitem[data-route="academic"]{
       --tab-ink:#f59fad; --tab-tint:#331d24; --tab-tint-hover:#402530; --tab-on:#0e1317;
     }
+    html:not([data-theme="light"]) .brandlogo{
+      background:#ffffff; padding:5px 9px; border-radius:7px; box-sizing:content-box;
+    }
+  }
+  html[data-theme="dark"] .brandlogo{
+    background:#ffffff; padding:5px 9px; border-radius:7px; box-sizing:content-box;
   }
   html[data-theme="dark"] .navitem[data-route="fx"]{
     --tab-ink:#8ec7f2; --tab-tint:#1b2b39; --tab-tint-hover:#233648; --tab-on:#0e1317;

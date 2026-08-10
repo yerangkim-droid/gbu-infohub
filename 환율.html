@@ -7,6 +7,9 @@
 <style>
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
   :root {
+    /* 브라우저 기본색(버튼 글자·스크롤바 등)도 OS 테마를 따르게 한다.
+       이게 없으면 색을 명시하지 않은 요소에 검정 폴백이 들어가 다크 모드에서 안 보인다. */
+    color-scheme: light dark;
     /* 중립 베이스 (인포허브 공통) */
     --bg-1: #f5f7f9;
     --bg-2: #f5f7f9;
@@ -97,7 +100,7 @@
     margin-bottom: 22px; font-size: .9rem; align-items: center; justify-content: space-between; gap: 14px;
   }
   .banner button {
-    background: #fff; color: var(--warn-ink); border: 1px solid var(--warn-border);
+    background: var(--card); color: var(--warn-ink); border: 1px solid var(--warn-border);
     border-radius: 8px; padding: 7px 14px; cursor: pointer; font-size: .82rem; font-weight: 600;
   }
 
@@ -233,8 +236,9 @@
 
   /* ── Footer ── */
   footer.notes {
+    /* 배경은 반드시 토큰으로 — 흰색을 직접 박으면 다크 모드에서 흰 판 위에 흐린 글자가 얹혀 안 보인다. */
     margin-top: 34px; font-size: .8rem; color: var(--muted); line-height: 1.85;
-    background: rgba(255,255,255,.55); border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--card-soft); border: 1px solid var(--border); border-radius: var(--radius);
     padding: 20px 24px;
   }
   footer.notes .ftitle { font-weight: 800; color: var(--ink-2); margin-bottom: 8px; font-size: .84rem; }
@@ -263,6 +267,7 @@
 
   /* ── 다크 테마 (인포허브 연동) ── */
   html[data-theme="dark"] {
+    color-scheme: dark;
     --bg-1:#0e1317; --bg-2:#0e1317; --card:#161c22; --card-soft:#1b2229;
     --border:#232b33; --border-strong:#313a43; --ink:#e7edf2; --ink-2:#a6b2bd;
     --muted:#8a96a2; --faint:#74808b; --accent:#66b2ec; --accent-soft:#66b2ec1f;
