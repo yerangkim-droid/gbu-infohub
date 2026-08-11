@@ -232,13 +232,13 @@
             <th scope="row">시장 동향</th>
             <td>평일 = 최근 4주<br>월요일 = 최근 2년 전체 재수집</td>
             <td>공개 뉴스 · 경쟁사 공식 IR · 규제기관 발표</td>
-            <td>8개 사업영역 × 경쟁사 + 제품 + 기간</td>
+            <td>7개 사업영역 × 경쟁사 + 제품 + 적응증 + 기간</td>
           </tr>
           <tr>
             <th scope="row">학회 일정</th>
             <td>올해 ~ 3년 후<br><span class="num">2026 ~ 2029</span></td>
             <td>행사 주최 측 공식 사이트</td>
-            <td>고정 감시 45개 행사 + 신규 발굴</td>
+            <td>고정 감시 47개 행사 + 신규 발굴</td>
           </tr>
           <tr>
             <th scope="row">학술 동향</th>
@@ -272,12 +272,60 @@
 
       <dt>키워드</dt>
       <dd>
-        <div>8개 사업영역별로 <strong>경쟁사명 + 제품명 + 기간</strong>을 조합합니다.
-        <span class="en">(예: "Octapharma Octagam news June 2026")</span></div>
-        <span class="sub">검색은 실제 브랜드명으로 — 알리글로 · ALYGLO, 지씨플루 · GC FLU, 배리셀라 · Barycela, 그린진에프, 그린에이트</span>
-        <span class="sub">고면역글로불린은 제제별로 구분 — HBIG(B형간염) · TIG(파상풍) · VZIG(수두대상포진)</span>
+        <div>7개 사업영역별로 <strong>경쟁사명 + 제품명 + 적응증 + 기간</strong>을 조합합니다.
+        <span class="en">(예: "Octapharma Octagam news June 2026", "Gamunex-C CIDP reimbursement 2026")</span></div>
+        <span class="sub">검색은 실제 브랜드명으로 — 알리글로 · ALYGLO, 지씨플루 · GC FLU, 배리셀라 · Barycela</span>
+        <span class="sub">적응증은 <strong>GC 제품 허가사항 기준</strong> 표준 키워드를 씁니다(아래 적응증 표 참고)</span>
+      </dd>
+
+      <dt>제목</dt>
+      <dd>
+        <div>영문 · 외국어 기사는 <strong>제목을 한국어로 옮겨</strong> 카드에 표시합니다. 원제는 데이터에 그대로 보존되며 "원문 보기" 링크로 확인합니다.</div>
+        <span class="sub">회사 · 기관명은 국내 통용 표기로(옥타파마 · 그리폴스 · 美 FDA), 제품 브랜드명은 원문 표기 유지(Octagam · HyQvia · Privigen)</span>
       </dd>
     </dl>
+
+    <h3>적응증 키워드 — GC 제품 허가사항 기준</h3>
+    <div class="scroll">
+      <table>
+        <caption>각 뉴스 · 학술 자료에서 적응증이 특정되면 카드에 키워드로 표시됩니다.</caption>
+        <thead>
+          <tr><th scope="col">구분</th><th scope="col">적응증</th><th scope="col">영문 검색어</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">GC IVIG<br><span class="sub">국내 허가 · 아이비글로불린에스엔주 10%</span></th>
+            <td>저 · 무감마글로불린혈증<br>중증 감염증(항생제 병용)<br>ITP(특발성 혈소판감소성 자반증)<br>길랑-바레 증후군<br>가와사키병</td>
+            <td class="en">hypogammaglobulinemia · agammaglobulinemia · severe infection · immune thrombocytopenic purpura(ITP) · Guillain-Barré syndrome(GBS) · Kawasaki disease</td>
+          </tr>
+          <tr>
+            <th scope="row">GC IVIG<br><span class="sub">미국 허가 · 알리글로(FDA 2023-12)</span></th>
+            <td>PID(원발성 면역결핍증)</td>
+            <td class="en">primary humoral immunodeficiency(PI) · CVID · X-linked agammaglobulinemia · Wiskott-Aldrich syndrome · SCID</td>
+          </tr>
+          <tr>
+            <th scope="row">GC IVIG<br><span class="sub">허가 외 · 임상 근거 축적 중</span></th>
+            <td>자가면역뇌염</td>
+            <td class="en">autoimmune encephalitis · anti-NMDAR encephalitis</td>
+          </tr>
+          <tr>
+            <th scope="row">GC알부민20%</th>
+            <td>저알부민혈증<br>간경변 복수</td>
+            <td class="en">hypoalbuminemia · cirrhotic ascites · large-volume paracentesis · hepatorenal syndrome</td>
+          </tr>
+          <tr>
+            <th scope="row">경쟁사 확장 적응증<br><span class="sub">GC 미허가 · 시장 감시용</span></th>
+            <td>CIDP<br>MMN(다초점 운동신경병증)<br>이차성 면역결핍(SID)<br>중증근무력증 · 피부근염<br>SCIG 피하 전환</td>
+            <td class="en">CIDP · multifocal motor neuropathy · secondary immunodeficiency · myasthenia gravis · dermatomyositis · subcutaneous immunoglobulin switch (HyQvia · Privigen · Gamunex-C · Hizentra)</td>
+          </tr>
+          <tr>
+            <th scope="row">그 외 GC 제품</th>
+            <td>인플루엔자 예방(지씨플루)<br>수두 예방(배리셀라)<br>MPS II 헌터증후군(헌터라제)<br>호중구감소증 CIN · FN 예방(뉴라펙)</td>
+            <td class="en">influenza prevention · varicella prevention · Hunter syndrome(MPS II) · chemotherapy-induced/febrile neutropenia</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <h3>사업영역별 감시 대상</h3>
     <div class="scroll">
@@ -297,24 +345,19 @@
             <td class="en">Alburx · Albutein</td>
           </tr>
           <tr>
-            <th scope="row">혈액제제 — 고면역글로불린<br><span class="sub">HBIG · TIG · VZIG</span></th>
-            <td>Grifols · Kamada · Kedrion · Biotest · CSL Behring · Emergent BioSolutions</td>
-            <td class="en">HyperHEP B · HyperTET · HyperRAB · HepaGam B · VARIZIG · Nabi-HB · Hepatect CP · Zutectra · hyperimmune globulin</td>
-          </tr>
-          <tr>
             <th scope="row">백신 — 독감 · 수두</th>
             <td>Sanofi Pasteur · GSK · CSL Seqirus · MSD · Viatris · Abbott · Sinovac · SK바이오사이언스 · IDT Biologika · Moderna</td>
             <td class="en">Fluzone · Flublok · Fluarix · Flucelvax · Fluad · Influvac · VARIVAX · ProQuad · Varilrix</td>
           </tr>
           <tr>
-            <th scope="row">희귀질환 — 헌터증후군</th>
+            <th scope="row">희귀질환 — 헌터증후군<br><span class="sub">헌터라제</span></th>
             <td>Takeda · JCR Pharmaceuticals · Denali · REGENXBIO · Generium</td>
             <td class="en">Elaprase · IZCARGO(JR-141) · DNL310 · RGX-121 · Clotilia</td>
           </tr>
           <tr>
-            <th scope="row">혈우병<br><span class="sub">그린진에프 · 그린에이트</span></th>
-            <td>Roche · Takeda · Sanofi · Sobi · Bayer · Octapharma · CSL Behring · Grifols · Novo Nordisk · BioMarin</td>
-            <td class="en">Hemlibra · NXT007 · Advate · Adynovate · Eloctate · Altuviiio · Kogenate · Jivi · Nuwiq · Wilate · Afstyla · Voncento · Fanhdi · Alphanate · Esperoct · Alhemo · Roctavian</td>
+            <th scope="row">희귀질환 — 호중구감소증<br><span class="sub">뉴라펙</span></th>
+            <td>Amgen · Hanmi · Spectrum · Evive · Acrotech · G1 Therapeutics</td>
+            <td class="en">Neulasta(pegfilgrastim) 및 바이오시밀러 · Rolvedon(eflapegrastim) · Ryzneuta(efbemalenograstim alfa) · Cosela(trilaciclib)</td>
           </tr>
           <tr>
             <th scope="row">CMO / CDMO</th>
@@ -356,8 +399,9 @@
 
       <dt>키워드</dt>
       <dd>
-        <div>고정 감시 목록 <strong>45개 행사</strong>를 매번 확인한 뒤, 주목 영역의 누락 행사를 추가로 발굴합니다.</div>
+        <div>고정 감시 목록 <strong>47개 행사</strong>를 매번 확인한 뒤, 주목 영역의 누락 행사를 추가로 발굴합니다.</div>
         <span class="sub">주목 영역 — 혈액제제 · 혈우병 · 백신 · 헌터증후군 · 호중구감소증 · CDMO · 플랜트/기술이전 · 규제실무 · 파트너링</span>
+        <span class="sub">※ 제품 수집에서는 혈우병을 제외했지만, <strong>학회 감시는 유지</strong>합니다 — EAHAD · WFH는 혈액제제 네트워킹과 파트너링의 장이기도 합니다.</span>
       </dd>
     </dl>
 
@@ -369,8 +413,9 @@
         </thead>
         <tbody>
           <tr>
-            <th scope="row">산업 · 학술 학회 <span class="num">23</span></th>
-            <td class="en">EAHAD · WFH · ISTH · ISBT · AABB · ASH · EHA · IPFA/EBA · PPTA · World Vaccine Congress · Options for the Control of Influenza · IDWeek · ESCMID Global · CROI · WORLDSymposium · SSIEM · AACR · ASCO · ESMO · MASCC/ISOO · ASGCT · ESGCT · PPB</td>
+            <th scope="row">산업 · 학술 학회 <span class="num">25</span></th>
+            <td class="en">EAHAD · WFH · ISTH · ISBT · AABB · ASH · EHA · IPFA/EBA · PPTA · World Vaccine Congress · Options for the Control of Influenza · IDWeek · ESCMID Global · CROI · WORLDSymposium · SSIEM · <strong>ICIEM</strong> · <strong>SIMD</strong> · AACR · ASCO · ESMO · MASCC/ISOO · ASGCT · ESGCT · PPB
+              <span class="sub">ICIEM(국제 선천성대사질환학회)은 <strong>4년 주기</strong>입니다 — 15차는 2025년 9월 교토에서 이미 열렸고, 16차는 2029년 9월 예정이나 공식 확정 일정이 나오기 전에는 표시되지 않습니다. 그 사이 해는 매년 열리는 SIMD Annual Meeting으로 감시합니다.</span></td>
           </tr>
           <tr>
             <th scope="row">파트너링 · 투자 <span class="num">8</span></th>
@@ -433,10 +478,10 @@
         </thead>
         <tbody>
           <tr>
-            <th scope="row">혈액제제 · 혈우병</th>
-            <td>알리글로<br>GC알부민20%<br>HBIG · TIG · VZIG<br>그린진에프<br>그린에이트</td>
-            <td class="en">IVIG/SCIG (HyQvia · Privigen · Hizentra · Gammagard · Gamunex-C · Xembify · Asceniv · Bivigam · Panzyga · Octagam · Cutaquig) · 고면역글로불린 (HyperHEP B · Nabi-HB · HepaGam B · HyperTET · VariZIG · Hepatect CP) · human albumin · emicizumab · NXT007 · factor VIII (Advate · Adynovate · Elocta · Jivi · Esperoct · Altuviiio) · 유전자치료 · fitusiran · concizumab · marstacimab</td>
-            <td>PID · CIDP · ITP · 저알부민혈증 · 간경변 복수 · 혈우병 A · 인자 억제제 · B형간염 수직감염·간이식 후 재감염 예방 · 파상풍 예방 · 면역저하자·신생아 수두 노출 후 예방</td>
+            <th scope="row">혈액제제</th>
+            <td>알리글로<br>GC알부민20%</td>
+            <td class="en">IVIG/SCIG (HyQvia · Privigen · Hizentra · Gammagard · Gamunex-C · Xembify · Asceniv · Bivigam · Panzyga · Octagam · Cutaquig · QIVIGY · Yimmugo) · human albumin(재조합 알부민 포함)</td>
+            <td><strong>GC 허가</strong> — 저·무감마글로불린혈증 · 중증 감염증(항생제 병용) · ITP · 길랑-바레 증후군 · 가와사키병 · PID(원발성 면역결핍증) · 자가면역뇌염 · 저알부민혈증 · 간경변 복수<br><strong>경쟁사 확장</strong> — CIDP · MMN · 이차성 면역결핍(SID) · 중증근무력증 · 피부근염 · SCIG 피하 전환</td>
           </tr>
           <tr>
             <th scope="row">백신</th>
