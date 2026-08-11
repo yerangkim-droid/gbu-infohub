@@ -5527,7 +5527,7 @@ const srcShort=s=>(SRC[s]?SRC[s].label+" ("+SRC[s].db+")":s);
 const SRC_ORDER=["pubmed","preprint","clinical","chembl"];
 const CAT_ORDER=["plasma","vaccine","rare"];
 const CAT_LABEL={plasma:"혈액제제/혈우병",vaccine:"백신",rare:"헌터증후군/호중구감소증"};
-const CAT_SUB={plasma:"면역글로불린 · 알부민 · 혈우병 A",vaccine:"인플루엔자 · 수두 백신",rare:"MPS II · G-CSF(호중구감소증)"};
+const CAT_SUB={plasma:"면역글로불린 · 고면역글로불린(HBIG·TIG·VZIG) · 알부민 · 혈우병 A",vaccine:"인플루엔자 · 수두 백신",rare:"MPS II · G-CSF(호중구감소증)"};
 const CAT_COLOR={plasma:"#24557f",vaccine:"#16706a",rare:"#5d5a86"};
 const PERIODS=[{k:"",label:"전체"},{k:"3m",label:"최근 3개월"},{k:"6m",label:"최근 6개월"},{k:"12m",label:"최근 12개월"}];
 const TARGETS=[{k:"",label:"전체"},{k:"gc",label:"GC 제품"},{k:"comp",label:"경쟁·동일적응증"}];
@@ -5638,7 +5638,10 @@ function card(d){
 function render(){
   renderKpis();renderPeriod();renderTarget();renderCats();
   const list=filtered();
-  list.sort((a,b)=>(catRank(a.category)-catRank(b.category))||((b.is_gc?1:0)-(a.is_gc?1:0))||((a.drug||"").localeCompare(b.drug||""))||((b.date||"").localeCompare(a.date||"")));
+  // 사업영역별로 섹션을 나누므로 category 가 1순위. 그 안에서는 **최신순(date 내림차순)**이 기본이고,
+  // 같은 날짜일 때만 GC 제품 우선 → 약물명 순으로 정렬한다.
+  // (이전에는 is_gc·drug 가 date 보다 앞서서 섹션 안이 최신순으로 보이지 않았다)
+  list.sort((a,b)=>(catRank(a.category)-catRank(b.category))||((b.date||"").localeCompare(a.date||""))||((b.is_gc?1:0)-(a.is_gc?1:0))||((a.drug||"").localeCompare(b.drug||"")));
   document.getElementById("count").innerHTML=`<b>${list.length}</b> / ${DATA.length}건 표시`;
   const res=document.getElementById("results");
   if(!list.length){res.innerHTML=`<div class="empty">조건에 맞는 항목이 없습니다. 필터를 조정해 보세요.</div>`;return;}

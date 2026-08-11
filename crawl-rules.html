@@ -162,6 +162,10 @@
   .spec dd{ margin:0; background:var(--card); padding:12px 15px; font-size:.9rem; }
   .spec dd > * + *{ margin-top:5px; }
   .spec .sub{ display:block; color:var(--ink-3); font-size:.83rem; }
+  /* 표의 행 머리글(th)에 들어가는 보조 표기 — 굵기를 풀고 톤을 낮춘다 */
+  table th .sub{ display:block; color:var(--ink-3); font-size:.8rem; font-weight:500; letter-spacing:0; }
+  /* 학술 표의 'GC 제품' 열 — 제품명이 단어 중간에서 끊기지 않게 한다 */
+  section.d-academic table td:first-of-type{ white-space:nowrap; }
 
   /* ── 원칙 목록 ── */
   .rules{
@@ -211,7 +215,7 @@
       <strong>어떤 키워드로</strong> 수집하는지 정리한 문서입니다. 실시간 환율은 크롤링이 아닌 시세 API 조회라 제외했습니다.
     </p>
     <div class="meta">
-      <span>기준일 2026-08-10</span>
+      <span>기준일 2026-08-11</span>
       <span>대시보드 <a href="https://infohub-site.vercel.app">infohub-site.vercel.app</a></span>
     </div>
   </header>
@@ -270,7 +274,8 @@
       <dd>
         <div>8개 사업영역별로 <strong>경쟁사명 + 제품명 + 기간</strong>을 조합합니다.
         <span class="en">(예: "Octapharma Octagam news June 2026")</span></div>
-        <span class="sub">검색은 실제 브랜드명으로 — 알리글로 · ALYGLO, 지씨플루 · GC FLU, 배리셀라 · Barycela</span>
+        <span class="sub">검색은 실제 브랜드명으로 — 알리글로 · ALYGLO, 지씨플루 · GC FLU, 배리셀라 · Barycela, 그린진에프, 그린에이트</span>
+        <span class="sub">고면역글로불린은 제제별로 구분 — HBIG(B형간염) · TIG(파상풍) · VZIG(수두대상포진)</span>
       </dd>
     </dl>
 
@@ -292,6 +297,11 @@
             <td class="en">Alburx · Albutein</td>
           </tr>
           <tr>
+            <th scope="row">혈액제제 — 고면역글로불린<br><span class="sub">HBIG · TIG · VZIG</span></th>
+            <td>Grifols · Kamada · Kedrion · Biotest · CSL Behring · Emergent BioSolutions</td>
+            <td class="en">HyperHEP B · HyperTET · HyperRAB · HepaGam B · VARIZIG · Nabi-HB · Hepatect CP · Zutectra · hyperimmune globulin</td>
+          </tr>
+          <tr>
             <th scope="row">백신 — 독감 · 수두</th>
             <td>Sanofi Pasteur · GSK · CSL Seqirus · MSD · Viatris · Abbott · Sinovac · SK바이오사이언스 · IDT Biologika · Moderna</td>
             <td class="en">Fluzone · Flublok · Fluarix · Flucelvax · Fluad · Influvac · VARIVAX · ProQuad · Varilrix</td>
@@ -302,9 +312,9 @@
             <td class="en">Elaprase · IZCARGO(JR-141) · DNL310 · RGX-121 · Clotilia</td>
           </tr>
           <tr>
-            <th scope="row">혈우병</th>
-            <td>Roche</td>
-            <td class="en">Hemlibra · NXT007</td>
+            <th scope="row">혈우병<br><span class="sub">그린진에프 · 그린에이트</span></th>
+            <td>Roche · Takeda · Sanofi · Sobi · Bayer · Octapharma · CSL Behring · Grifols · Novo Nordisk · BioMarin</td>
+            <td class="en">Hemlibra · NXT007 · Advate · Adynovate · Eloctate · Altuviiio · Kogenate · Jivi · Nuwiq · Wilate · Afstyla · Voncento · Fanhdi · Alphanate · Esperoct · Alhemo · Roctavian</td>
           </tr>
           <tr>
             <th scope="row">CMO / CDMO</th>
@@ -424,9 +434,9 @@
         <tbody>
           <tr>
             <th scope="row">혈액제제 · 혈우병</th>
-            <td>알리글로<br>GC알부민20%<br>그린진에프</td>
-            <td class="en">IVIG/SCIG (HyQvia · Privigen · Hizentra · Gammagard · Gamunex-C · Xembify · Asceniv · Bivigam · Panzyga · Octagam · Cutaquig) · human albumin · emicizumab · NXT007 · factor VIII · 유전자치료 · fitusiran · concizumab · marstacimab</td>
-            <td>PID · CIDP · ITP · 저알부민혈증 · 간경변 복수 · 혈우병 A · 인자 억제제</td>
+            <td>알리글로<br>GC알부민20%<br>HBIG · TIG · VZIG<br>그린진에프<br>그린에이트</td>
+            <td class="en">IVIG/SCIG (HyQvia · Privigen · Hizentra · Gammagard · Gamunex-C · Xembify · Asceniv · Bivigam · Panzyga · Octagam · Cutaquig) · 고면역글로불린 (HyperHEP B · Nabi-HB · HepaGam B · HyperTET · VariZIG · Hepatect CP) · human albumin · emicizumab · NXT007 · factor VIII (Advate · Adynovate · Elocta · Jivi · Esperoct · Altuviiio) · 유전자치료 · fitusiran · concizumab · marstacimab</td>
+            <td>PID · CIDP · ITP · 저알부민혈증 · 간경변 복수 · 혈우병 A · 인자 억제제 · B형간염 수직감염·간이식 후 재감염 예방 · 파상풍 예방 · 면역저하자·신생아 수두 노출 후 예방</td>
           </tr>
           <tr>
             <th scope="row">백신</th>
