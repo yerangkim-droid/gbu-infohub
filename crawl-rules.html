@@ -164,6 +164,8 @@
   .spec .sub{ display:block; color:var(--ink-3); font-size:.83rem; }
   /* 표의 행 머리글(th)에 들어가는 보조 표기 — 굵기를 풀고 톤을 낮춘다 */
   table th .sub{ display:block; color:var(--ink-3); font-size:.8rem; font-weight:500; letter-spacing:0; }
+  /* 본문 칸(td)의 보조 표기 — 앞 문장과 한 줄로 붙지 않게 줄을 바꾼다 */
+  table td .sub{ display:block; margin-top:6px; color:var(--ink-3); font-size:.82rem; }
   /* 학술 표의 'GC 제품' 열 — 제품명이 단어 중간에서 끊기지 않게 한다 */
   section.d-academic table td:first-of-type{ white-space:nowrap; }
 
@@ -215,7 +217,7 @@
       <strong>어떤 키워드로</strong> 수집하는지 정리한 문서입니다. 실시간 환율은 크롤링이 아닌 시세 API 조회라 제외했습니다.
     </p>
     <div class="meta">
-      <span>기준일 2026-08-11</span>
+      <span>기준일 2026-08-12</span>
       <span>대시보드 <a href="https://infohub-site.vercel.app">infohub-site.vercel.app</a></span>
     </div>
   </header>
@@ -231,8 +233,8 @@
           <tr>
             <th scope="row">시장 동향</th>
             <td>평일 = 최근 4주<br>월요일 = 최근 2년 전체 재수집</td>
-            <td>공개 뉴스 · 경쟁사 공식 IR · 규제기관 발표</td>
-            <td>7개 사업영역 × 경쟁사 + 제품 + 적응증 + 기간</td>
+            <td>공개 뉴스(국내 제약 전문지 포함) · 경쟁사 공식 IR · 규제기관 발표</td>
+            <td>8개 사업영역 × 경쟁사 + 제품 + 적응증 + 기간</td>
           </tr>
           <tr>
             <th scope="row">학회 일정</th>
@@ -266,16 +268,25 @@
       <dt>소스</dt>
       <dd>
         <div>전 세계 공개 뉴스(영문 포함)</div>
+        <div><strong>국내 제약 전문지</strong> — 히트뉴스 · 데일리팜 · 메디코파마뉴스 · 약업신문 · 이데일리 제약바이오 · 바이오스펙테이터 · 더바이오 · 청년의사
+          <span class="sub">영문 경쟁사명으로만 검색하면 결과가 회사 보도자료에 쏠려 국내 매체의 시장 해설 · 업계 구도 기사가 빠집니다. 한국어 검색어로 별도 검색합니다.</span></div>
         <div>경쟁사 공식 뉴스룸 · IR(Investor Relations) 페이지 · SEC 공시</div>
         <div>규제기관 · 정부 · 국제기구 발표 — <span class="en">FDA · EMA · PMDA · NMPA · MFDS · WHO · PAHO · UNICEF</span></div>
       </dd>
 
       <dt>키워드</dt>
       <dd>
-        <div>7개 사업영역별로 <strong>경쟁사명 + 제품명 + 적응증 + 기간</strong>을 조합합니다.
+        <div>8개 사업영역별로 <strong>경쟁사명 + 제품명 + 적응증 + 기간</strong>을 조합합니다.
         <span class="en">(예: "Octapharma Octagam news June 2026", "Gamunex-C CIDP reimbursement 2026")</span></div>
         <span class="sub">검색은 실제 브랜드명으로 — 알리글로 · ALYGLO, 지씨플루 · GC FLU, 배리셀라 · Barycela</span>
         <span class="sub">적응증은 <strong>GC 제품 허가사항 기준</strong> 표준 키워드를 씁니다(아래 적응증 표 참고)</span>
+        <span class="sub">한국어 검색어도 함께 — 혈장분획제제 시장 · 면역글로불린 공급 · 국내 CDMO 수주 · 백신 입찰 조달 · 헌터증후군 급여 · 직판 전환 실적</span>
+      </dd>
+
+      <dt>자사</dt>
+      <dd>
+        <div><strong>GC녹십자 자사 기사도 함께 수집</strong>합니다 — 자사 단독 기사(실적 · 허가 · 수출 계약)와 <strong>자사가 경쟁사와 함께 언급된 비교 · 업계 기사</strong> 둘 다 대상입니다.</div>
+        <span class="sub">검색어 — 알리글로 · ALYGLO · GC녹십자 면역글로불린 · GC알부민 · 지씨플루 · 배리셀라 · 헌터라제 · 뉴라펙 · GC Biopharma</span>
       </dd>
 
       <dt>제목</dt>
@@ -362,7 +373,8 @@
           <tr>
             <th scope="row">CMO / CDMO</th>
             <td>삼성바이오로직스 · 삼성바이오에피스 · 셀트리온 · 알테오젠 · Vetter · Lonza · Catalent · WuXi Biologics · Fujifilm Diosynth · Boehringer Ingelheim</td>
-            <td>수주 · 캐파 증설 · 바이오시밀러 · 무균충전</td>
+            <td>수주 · 캐파 증설 · 위탁생산 · 무균충전
+              <span class="sub">셀트리온 · 삼성바이오에피스의 <strong>자사 제품 판매 · 허가 · 직판</strong> 기사는 아래 '직판 · 바이오시밀러' 영역으로 분류합니다.</span></td>
           </tr>
           <tr>
             <th scope="row">기술이전 · 플랜트 · 벌크 수출</th>
@@ -370,9 +382,16 @@
             <td>신흥국 백신 자급화 · 혈액제제 플랜트 턴키 · 원액 벌크</td>
           </tr>
           <tr>
+            <th scope="row">직판 · 바이오시밀러<br><span class="sub">2026-08 신설 · 알리글로 미국 직판 벤치마크</span></th>
+            <td>SK바이오팜 · 셀트리온 · 삼성바이오에피스 · 삼성에피스홀딩스</td>
+            <td>직판 법인 운영 · 시장 접근(PBM 처방집 등재 · 유럽 공공입찰 · 보험 급여) · 물류 · 통관 · 분기 실적 · 바이오시밀러 허가 및 특허 소송
+              <span class="sub">같은 기업이라도 CDMO 수주 · 위탁생산 관점 기사는 <strong>CMO / CDMO</strong>로, 자사 제품의 판매 · 허가 · 실적 관점 기사는 이 영역으로 분류합니다.</span></td>
+          </tr>
+          <tr>
             <th scope="row">시장 이슈</th>
-            <td>주요 5개 시장(미국 · EU · 일본 · 중국 · 한국) + GC 진출 · 거래 대상국</td>
-            <td>허가 · 규제 · 약가 · 급여 · 관세 · 통상 · 조달 · 입찰 · 공급망 · 생물보안</td>
+            <td>주요 5개 시장(미국 · EU · 일본 · 중국 · 한국) + GC 진출 · 거래 대상국<br>산업 구도 분석은 <strong>업계 구도</strong> 또는 비교 대상 기업들</td>
+            <td>허가 · 규제 · 약가 · 급여 · 관세 · 통상 · 조달 · 입찰 · 공급망 · 생물보안
+              <span class="sub"><strong>산업 구조 · 경쟁 구도를 다룬 분석 · 전망 기사</strong>도 시장 이슈로 수집합니다 — 개별 기업 활동이 아니라 여러 기업 · 시장 전체를 견주어 보는 기사(예: "中 규제에 국내 CDMO 반사이익", "차세대 CDMO 경쟁력 비교", "혈장 패권주의 속 한국은")입니다.</span></td>
           </tr>
         </tbody>
       </table>
@@ -516,7 +535,8 @@
           </tr>
           <tr>
             <th scope="row">중복 제거</th>
-            <td>시장 동향은 URL, 학술 동향은 PMID · NCT · URL, 학회 일정은 약칭 + 시작일 기준으로 자동 처리됩니다.</td>
+            <td>시장 동향은 URL, 학술 동향은 PMID · NCT · URL, 학회 일정은 약칭 + 시작일 기준으로 자동 처리됩니다.
+              <span class="sub">같은 사건은 원출처 1건만 남기지만, 국내 매체가 자체 취재 · 분석을 더한 해설 기사는 원출처와 <strong>별개 항목으로 함께</strong> 싣습니다.</span></td>
           </tr>
           <tr>
             <th scope="row">누적</th>
