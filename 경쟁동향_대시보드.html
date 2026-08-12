@@ -182,7 +182,7 @@
   <header class="top">
     <div>
       <h1>시장 모니터링</h1>
-      <div class="sub">5개 사업 영역과 관련하여 글로벌 시장 이슈와 동향을 <b>‘뉴스 기사’</b>, <b>‘경쟁사 IR 자료’</b> 2가지 분류로 구분하여 수집하고 요약한 내용입니다.</div>
+      <div class="sub">6개 사업 영역과 관련하여 글로벌 시장 이슈와 동향을 <b>‘뉴스 기사’</b>, <b>‘경쟁사 IR 자료’</b> 2가지 분류로 구분하여 수집하고 요약한 내용입니다.</div>
     </div>
     <div class="chips">
       <span class="mchip">수집기간 <b>최근 2년</b></span>
@@ -4372,14 +4372,17 @@ let DATA = [
 /*__DATA_END__*/
 
 const SRC={news:{label:"뉴스",color:"var(--news)",bg:"var(--news-bg)"},ir:{label:"IR",color:"var(--ir)",bg:"var(--ir-bg)"},issue:{label:"시장이슈",color:"var(--regulatory)",bg:"var(--regulatory-bg)"}};
-// ── 사업 영역: 기존 8개 분류를 5개로 통합 ─────────────────────────────────
-const CAT_ORDER=["Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","CMO / CDMO","Technology Transfer"];
+// ── 사업 영역: 기존 8개 분류를 통합 + 직판/시밀러 신설 = 6개 ────────────────
+const CAT_ORDER=["Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","CMO / CDMO","Technology Transfer","Direct Sales / Biosimilar"];
 const CAT_LABEL={
   "Plasma Derivative":"혈액제제",
   "Vaccine (백신)":"백신",
   "Rare Disease (희귀질환)":"헌터증후군/호중구감소증",
   "CMO / CDMO":"CMO/CDMO",
-  "Technology Transfer":"기술이전/Plant, Bulk"
+  "Technology Transfer":"기술이전/Plant, Bulk",
+  // 2026-08 신설 — GC IVIG 미국 직판 전략 벤치마크(SK바이오팜·셀트리온·삼성바이오에피스).
+  // 수동 Bi-weekly 아카이브에는 있었으나 크롤 범위 밖이라 111건이 빠져 있던 축이다.
+  "Direct Sales / Biosimilar":"직판/바이오시밀러"
 };
 // 통합 규칙: 구 분류값 → 신 분류값 (기존 데이터·크롤러 산출물 모두 자동 흡수)
 // ※ 혈우병(Hemophilia)은 2026-08 수집 대상에서 제외 — merge.js 단계에서 걸러지므로 여기 매핑도 없앴다.
@@ -4399,14 +4402,16 @@ const CAT_COLOR={
   "Vaccine (백신)":"#16706a",          // 틸
   "Rare Disease (희귀질환)":"#5d5a86", // 퍼플
   "CMO / CDMO":"#8a6321",              // 앰버
-  "Technology Transfer":"#9e2b45"      // 레드
+  "Technology Transfer":"#9e2b45",     // 레드
+  "Direct Sales / Biosimilar":"#3f6b3f" // 그린 — 기존 5색(블루·틸·퍼플·앰버·레드)과 가장 멀다
 };
 const CAT_COLOR_DARK={
   "Plasma Derivative":"#8fb4d8",
   "Vaccine (백신)":"#6cc6bf",
   "Rare Disease (희귀질환)":"#a8a4d0",
   "CMO / CDMO":"#d6b06a",
-  "Technology Transfer":"#e795a6"
+  "Technology Transfer":"#e795a6",
+  "Direct Sales / Biosimilar":"#93c793"
 };
 function isDark(){
   const t=document.documentElement.getAttribute("data-theme");
@@ -4493,7 +4498,7 @@ function renderPeriods(){
 function renderCats(){
   const src=DATA.filter(d=>d.source_type===state.mode && !catHidden(state.mode, d.category));
   const map={};src.forEach(d=>map[d.category]=(map[d.category]||0)+1);
-  // 정의된 5개 사업 영역을 모두 노출(데이터 없어도 표시), 정의에 없는 값이 있으면 뒤에 추가
+  // 정의된 6개 사업 영역을 모두 노출(데이터 없어도 표시), 정의에 없는 값이 있으면 뒤에 추가
   // 단, 해당 유형의 비대상 영역(예: IR 탭의 기술이전/Plant, Bulk)은 아예 뺀다
   const cats=[...new Set([...CAT_ORDER,...Object.keys(map)])]
     .filter(c=>!catHidden(state.mode, c))
@@ -4575,7 +4580,7 @@ document.getElementById("reset").addEventListener("click",()=>{
 document.getElementById("covnote").innerHTML=
   `<div class="cvtitle">수집 범위 및 한계</div>`+
   `<ul>`+
-  `<li>5개 사업 영역 시장 및 경쟁 동향 관련하여 키워드를 조합해 <b>최근 2년간</b>의 자료를 수집했습니다.</li>`+
+  `<li>6개 사업 영역 시장 및 경쟁 동향 관련하여 키워드를 조합해 <b>최근 2년간</b>의 자료를 수집했습니다.</li>`+
   `<li><b>뉴스 기사</b>는 전세계 공개된 뉴스 중 관련 내용을 가져와서 <b>주차별</b>로 구성했습니다. 영문 · 외국어 기사의 제목은 <b>한국어로 번역해 표시</b>하며, 원제는 <b>‘원문 보기’</b> 링크에서 확인할 수 있습니다.</li>`+
   `<li><b>경쟁사 IR 자료</b>는 각 경쟁사 공식 채널로 공시한 IR 리포트를 <b>분기별</b>로 가져와 요약했습니다.</li>`+
   `<li>모든 요약은 출처에 명시된 사실만 반영하여 각 카드의 <b>‘원문 보기’</b>로 검증할 수 있습니다.</li>`+
@@ -4584,7 +4589,7 @@ document.getElementById("covnote").innerHTML=
 function normalizeData(){
   DATA.forEach(d=>{
     if(d.source_type==="issue") d.source_type="news";   // 시장 이슈는 별도 분리 없이 주차별 뉴스 기사에 포함
-    d.category=catKey(d.category);                      // 구 8개 분류 → 통합 5개 사업 영역
+    d.category=catKey(d.category);                      // 구 8개 분류 → 통합 6개 사업 영역
     if(!gcCat[d.gc_product])gcCat[d.gc_product]=d.category;
     if(d.nct_id===undefined)d.nct_id=null;
   });
