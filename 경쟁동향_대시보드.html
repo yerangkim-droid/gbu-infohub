@@ -4372,17 +4372,18 @@ let DATA = [
 /*__DATA_END__*/
 
 const SRC={news:{label:"뉴스",color:"var(--news)",bg:"var(--news-bg)"},ir:{label:"IR",color:"var(--ir)",bg:"var(--ir-bg)"},issue:{label:"시장이슈",color:"var(--regulatory)",bg:"var(--regulatory-bg)"}};
-// ── 사업 영역: 기존 8개 분류를 통합 + 직판/시밀러 신설 = 6개 ────────────────
-const CAT_ORDER=["Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","CMO / CDMO","Technology Transfer","Direct Sales / Biosimilar"];
+// ── 사업 영역: 기존 8개 분류를 통합 + 해외 직판 신설 = 6개 ─────────────────
+const CAT_ORDER=["Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","CMO / CDMO","Technology Transfer","Direct Sales"];
 const CAT_LABEL={
   "Plasma Derivative":"혈액제제",
   "Vaccine (백신)":"백신",
   "Rare Disease (희귀질환)":"헌터증후군/호중구감소증",
   "CMO / CDMO":"CMO/CDMO",
   "Technology Transfer":"기술이전/Plant, Bulk",
-  // 2026-08 신설 — GC IVIG 미국 직판 전략 벤치마크(SK바이오팜·셀트리온·삼성바이오에피스).
-  // 수동 Bi-weekly 아카이브에는 있었으나 크롤 범위 밖이라 111건이 빠져 있던 축이다.
-  "Direct Sales / Biosimilar":"직판/바이오시밀러"
+  // 2026-08 신설 — GC 알리글로 미국 직판 전략 벤치마크. 대상은 SK바이오팜 한 곳뿐이다.
+  // 바이오시밀러(셀트리온·삼성바이오에피스·알테오젠)는 여기가 아니라 CMO / CDMO 에 둔다 —
+  // 같은 회사 기사가 '시밀러냐 직판이냐'로 갈리는 것을 막기 위한 규칙(2026-08-12 결정).
+  "Direct Sales":"해외 직판"
 };
 // 통합 규칙: 구 분류값 → 신 분류값 (기존 데이터·크롤러 산출물 모두 자동 흡수)
 // ※ 혈우병(Hemophilia)은 2026-08 수집 대상에서 제외 — merge.js 단계에서 걸러지므로 여기 매핑도 없앴다.
@@ -4403,7 +4404,7 @@ const CAT_COLOR={
   "Rare Disease (희귀질환)":"#5d5a86", // 퍼플
   "CMO / CDMO":"#8a6321",              // 앰버
   "Technology Transfer":"#9e2b45",     // 레드
-  "Direct Sales / Biosimilar":"#3f6b3f" // 그린 — 기존 5색(블루·틸·퍼플·앰버·레드)과 가장 멀다
+  "Direct Sales":"#3f6b3f"             // 그린 — 기존 5색(블루·틸·퍼플·앰버·레드)과 가장 멀다
 };
 const CAT_COLOR_DARK={
   "Plasma Derivative":"#8fb4d8",
@@ -4411,7 +4412,7 @@ const CAT_COLOR_DARK={
   "Rare Disease (희귀질환)":"#a8a4d0",
   "CMO / CDMO":"#d6b06a",
   "Technology Transfer":"#e795a6",
-  "Direct Sales / Biosimilar":"#93c793"
+  "Direct Sales":"#93c793"
 };
 function isDark(){
   const t=document.documentElement.getAttribute("data-theme");
