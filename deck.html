@@ -310,6 +310,11 @@
   .blegend{display:flex;align-items:center;gap:18px;padding:10px 0 2px;font-size:.77rem;color:var(--ink-3)}
   .blegend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 
+  /* 섹션 구분 소제목 — 수치 블록과 정성 블록을 가른다 */
+  .qhead{display:flex;align-items:center;gap:11px;font-size:.85rem;font-weight:700;
+    letter-spacing:-.02em;color:var(--ink-3);margin-bottom:11px}
+  .qhead::after{content:"";flex:1;height:1px;background:var(--line-strong)}
+
   /* ── 3단계 순환 (배포 → 의견 → 반영) ── */
   .flow3{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:14px;align-items:stretch}
   .fstep{background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -812,24 +817,24 @@
 <section class="slide" data-accent="green">
   <div class="slide-in" style="justify-content:center">
     <div class="eyebrow"><span class="sn">4</span>기대효과</div>
-    <h2 class="title">연 220시간이 37시간으로</h2>
-    <p class="lead"><b>실제로 하던 정기 업무 두 건</b>과, <b>원래는 하지 못하던 모니터링 두 건</b>을 나눠 산출했습니다.</p>
+    <h2 class="title">실제로 하던 두 업무에서 연 66시간</h2>
+    <p class="lead">시간으로 환산한 것은 <b>GSP팀이 실제로 수행하던 격주 엑셀과 경쟁사 IR 정리</b>뿐입니다. 나머지 세 영역은 정기 업무가 아니었기에 <b>정성적 효과로 정리</b>했습니다.</p>
 
     <div class="stats">
       <div class="stat" style="--accent:var(--gc-green)">
-        <div class="n">183<small>h/년</small></div>
-        <div class="k">연간 절감 · 약 23 인일</div>
-        <div class="s">220h → 37h</div>
+        <div class="n">66<small>h/년</small></div>
+        <div class="k">연간 절감 · 약 8 인일</div>
+        <div class="s">88h → 22h</div>
       </div>
       <div class="stat" style="--accent:var(--gc-green)">
-        <div class="n">15.3<small>h/월</small></div>
+        <div class="n">5.5<small>h/월</small></div>
         <div class="k">월간 절감</div>
-        <div class="s">18.3h → 3.1h</div>
+        <div class="s">7.3h → 1.8h</div>
       </div>
       <div class="stat" style="--accent:var(--gc-green)">
-        <div class="n">83<small>%</small></div>
+        <div class="n">75<small>%</small></div>
         <div class="k">절감률</div>
-        <div class="s">사람이 직접 하던 시간 기준</div>
+        <div class="s">실제 수행하던 두 업무 기준</div>
       </div>
       <div class="stat" style="--accent:var(--gc-green)">
         <div class="n">535<small>건</small></div>
@@ -842,38 +847,46 @@
       <div class="blegend">
         <span><i style="background:var(--ink-2)"></i>앞으로도 사람이 하는 시간</span>
         <span><i style="background:var(--gc-green)"></i>자동화로 줄어든 시간</span>
-        <span style="margin-left:auto">막대 전체 = 과거 연간 투입 시간</span>
+        <span style="margin-left:auto">막대 전체 = 과거 연간 투입 시간 · 실측치</span>
       </div>
 
       <div class="bar-row">
-        <div class="bl"><b>시장 뉴스 · 격주 엑셀</b><span>실제 수행 · 월 2회 × 3시간</span></div>
-        <div class="btrack"><div class="bbar" style="width:75%"><span class="bkeep" style="width:25%"></span><span class="bsave" style="width:75%"></span></div></div>
+        <div class="bl"><b>시장 뉴스 · 격주 엑셀</b><span>월 2회 × 3시간</span></div>
+        <div class="btrack"><div class="bbar" style="width:100%"><span class="bkeep" style="width:25%"></span><span class="bsave" style="width:75%"></span></div></div>
         <div class="bnum">72<small>h</small> → <b>18</b><small>h</small></div>
         <div class="bcut">−54h</div>
       </div>
       <div class="bar-row">
-        <div class="bl"><b>경쟁사 IR · MI 세미나</b><span>실제 수행 · 상·하반기 각 8시간</span></div>
-        <div class="btrack"><div class="bbar" style="width:16.7%"><span class="bkeep" style="width:25%"></span><span class="bsave" style="width:75%"></span></div></div>
+        <div class="bl"><b>경쟁사 IR · MI 세미나</b><span>상·하반기 각 8시간</span></div>
+        <div class="btrack"><div class="bbar" style="width:22.2%"><span class="bkeep" style="width:25%"></span><span class="bsave" style="width:75%"></span></div></div>
         <div class="bnum">16<small>h</small> → <b>4</b><small>h</small></div>
         <div class="bcut">−12h</div>
       </div>
-      <div class="bar-row">
-        <div class="bl"><b>학술 · 임상 개별 검색</b><span>신규 · 월 8건 × 1시간 (가정)</span></div>
-        <div class="btrack"><div class="bbar" style="width:100%"><span class="bkeep" style="width:10.4%"></span><span class="bsave" style="width:89.6%"></span></div></div>
-        <div class="bnum">96<small>h</small> → <b>10</b><small>h</small></div>
-        <div class="bcut">−86h</div>
-      </div>
-      <div class="bar-row">
-        <div class="bl"><b>학회 일정 확인</b><span>신규 · 월 2회 × 1.5시간 (가정)</span></div>
-        <div class="btrack"><div class="bbar" style="width:37.5%"><span class="bkeep" style="width:13.9%"></span><span class="bsave" style="width:86.1%"></span></div></div>
-        <div class="bnum">36<small>h</small> → <b>5</b><small>h</small></div>
-        <div class="bcut">−31h</div>
-      </div>
     </div>
+    <div class="hint" style="margin-top:7px">남는 시간은 <b>시사점 해석이 여전히 사람 몫</b>이기 때문입니다. 인건비 환산은 제외했습니다.</div>
 
-    <div class="callout mt-s">
-      <div class="assume">
-        <b>산출 기준</b> · 격주 엑셀은 <b>실제 투입 시간(월 2회 × 3시간 = 연 72h)</b>을, 경쟁사 IR은 <b>상·하반기 각 8시간(연 16h)</b>을 근거로 했습니다. 향후에도 남는 1/4은 <b>시사점 해석이 여전히 사람 몫</b>이기 때문입니다. 학술·학회는 실측 이력이 없어 빈도와 건당 시간을 가정했습니다. 인건비 환산은 제외했습니다.
+    <div class="qhead mt">시간으로 환산하지 않은 기대효과</div>
+    <div class="pcards p3">
+      <div class="pcard" style="--c:var(--a-academic)">
+        <div class="top"></div>
+        <div class="bd">
+          <div class="nm"><i></i>학술 동향</div>
+          <p>사람마다 달랐던 검색 기준이 <b>하나로 통일</b>되고, 결과가 계속 쌓입니다. 담당자가 바뀌어도 기준과 이력이 남습니다.</p>
+        </div>
+      </div>
+      <div class="pcard" style="--c:var(--a-events)">
+        <div class="top"></div>
+        <div class="bd">
+          <div class="nm"><i></i>학회 일정</div>
+          <p>40여 곳을 각자 확인하던 것을 한 화면에 모아, <b>놓치는 일정과 중복 확인</b>이 줄어듭니다.</p>
+        </div>
+      </div>
+      <div class="pcard" style="--c:var(--a-fx)">
+        <div class="top"></div>
+        <div class="bd">
+          <div class="nm"><i></i>실시간 환율</div>
+          <p>통화별로 매번 조회하지 않고 <b>추이까지 한 번에</b> 봅니다. 필요할 때 바로 확인할 수 있습니다.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -968,8 +981,8 @@
           <p>영역을 넓힐수록 <b>수집 기준과 규칙집도 함께 키워야</b> 합니다. 만들어 두고 방치하면 금방 낡습니다.</p>
         </div>
         <div class="job">
-          <div class="job-t">발목을 잡은 건 AI가 아니라 환경이었습니다</div>
-          <p>AI가 코드를 써 주는 것과, <b>그 코드가 사내 PC에서 매일 도는 것</b>은 다른 문제였습니다.</p>
+          <div class="job-t">쓰는 사람이 많아질수록 좋아집니다</div>
+          <p>어떤 키워드가 빠졌는지는 <b>실제로 쓰는 사람이 가장 먼저 발견합니다.</b> 의견이 모일수록 수집 기준이 정교해집니다.</p>
         </div>
       </div>
     </div>
