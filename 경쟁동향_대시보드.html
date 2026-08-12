@@ -57,6 +57,14 @@
 
   .seclbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 9px}
   .seclbl .hint{font-size:11.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-3);margin-left:9px;opacity:.95}
+  /* 라벨 + '여러 개 선택' 토글을 한 줄 양끝에 배치 */
+  .seclbl-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .multitoggle{
+    display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;
+    font-size:11.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-2);
+  }
+  .multitoggle input{accent-color:var(--accent);width:13px;height:13px;margin:0;cursor:pointer}
+  .multitoggle:hover{color:var(--ink)}
 
   /* ── 분류 탭 (뉴스 기사 / 경쟁사 IR 자료) ── */
   .modetabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:12px;margin-top:2px}
@@ -204,7 +212,10 @@
       <button id="reset" type="button">초기화</button>
     </div>
 
-    <div class="seclbl">사업 영역 <span class="hint">여러 영역을 동시에 선택할 수 있습니다 · 선택된 영역을 다시 누르면 해제 · ‘전체’를 누르면 초기화</span></div>
+    <div class="seclbl seclbl-row">
+      <span>사업 영역 <span class="hint" id="cathint"></span></span>
+      <label class="multitoggle"><input type="checkbox" id="catmulti"> 여러 개 선택</label>
+    </div>
     <div class="catfilter" id="catfilter"></div>
   </div>
 
@@ -4421,7 +4432,9 @@ function isDark(){
 }
 const catLabel=c=>CAT_LABEL[catKey(c)]||catKey(c);
 const catColor=c=>{const k=catKey(c);return (isDark()?CAT_COLOR_DARK[k]:CAT_COLOR[k])||"var(--accent)";};
-const state={q:"",cats:new Set(),comp:"",mode:"news",period:""};
+// multi=false: 사업 영역을 한 번에 하나만 선택(다른 걸 누르면 이전 선택은 해제).
+// '여러 개 선택' 체크박스를 켜면 예전처럼 여러 영역을 동시에 켤 수 있다.
+const state={q:"",cats:new Set(),comp:"",mode:"news",period:"",multi:false};
 const gcCat={};
 const pad=n=>String(n).padStart(2,"0");
 function catRank(c){const i=CAT_ORDER.indexOf(c);return i<0?99:i;}
@@ -4512,7 +4525,25 @@ function renderCats(){
     return `<button class="pill" data-c="${esc(c)}" aria-pressed="${state.cats.has(c)}"><span class="pdot" style="background:${catColor(c)}"></span>${esc(catLabel(c))} <span class="cnt">${n}</span></button>`;
   }).join("");
   el.innerHTML=h;
-  el.querySelectorAll(".pill:not([disabled])").forEach(b=>b.onclick=()=>{const c=b.dataset.c;if(!c){state.cats.clear();}else{state.cats.has(c)?state.cats.delete(c):state.cats.add(c);}render();});
+  el.querySelectorAll(".pill:not([disabled])").forEach(b=>b.onclick=()=>{
+    const c=b.dataset.c;
+    if(!c){                      // '전체' — 항상 초기화
+      state.cats.clear();
+    }else if(state.multi){       // 다중 선택 — 누른 것만 토글
+      state.cats.has(c)?state.cats.delete(c):state.cats.add(c);
+    }else{                       // 단일 선택 — 이미 그것만 켜져 있으면 해제, 아니면 그것만 남긴다
+      const onlyThis = state.cats.size===1 && state.cats.has(c);
+      state.cats.clear();
+      if(!onlyThis) state.cats.add(c);
+    }
+    render();
+  });
+}
+function updateCatHint(){
+  const el=document.getElementById("cathint"); if(!el) return;
+  el.textContent = state.multi
+    ? "여러 영역을 동시에 선택할 수 있습니다 · 선택된 영역을 다시 누르면 해제 · ‘전체’를 누르면 초기화"
+    : "한 번에 한 영역만 선택됩니다 · 다시 누르면 해제 · 여러 영역을 함께 보려면 ‘여러 개 선택’을 켜세요";
 }
 
 function card(d){
@@ -4576,6 +4607,17 @@ document.getElementById("reset").addEventListener("click",()=>{
   state.q="";state.cats.clear();state.period="";
   document.getElementById("q").value="";render();
 });
+document.getElementById("catmulti").addEventListener("change",e=>{
+  state.multi=e.target.checked;
+  // 다중 → 단일로 되돌릴 때 여러 개가 켜져 있으면, 화면 표시 순서상 첫 영역만 남긴다
+  // (전부 지워버리면 방금 보던 결과가 통째로 바뀌어 버린다)
+  if(!state.multi && state.cats.size>1){
+    const first=[...state.cats].sort((a,b)=>catRank(a)-catRank(b))[0];
+    state.cats.clear(); state.cats.add(first);
+  }
+  updateCatHint(); render();
+});
+updateCatHint();
 // 테마 전환 시 사업 영역 색상(인라인 지정)을 다시 계산해야 하므로 재렌더
 
 document.getElementById("covnote").innerHTML=
