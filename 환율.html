@@ -413,7 +413,7 @@
   <!-- 오늘의 환율 (추이 그래프) -->
   <section class="card" id="todayFx">
     <h2>실시간 주요 환율</h2>
-    <div class="sub">각 통화 버튼 클릭 시 환율 추이 그래프가 전환됩니다.<br>선택 기간(<b>1개월 ~ 1년</b>)의 등락을 표시합니다(상승 <span style="color:var(--up);font-weight:700">빨강</span>, 하락 <span style="color:var(--down);font-weight:700">파랑</span>).<br>그래프 클릭 시 개별 환율 추이를 볼 수 있으며, 하단 버튼 클릭 시 변환기 입력을 통해 환율 계산이 가능합니다.</div>
+    <div class="sub">각 통화 버튼 클릭 시 환율 추이 그래프가 전환됩니다.<br>선택 기간(<b>1개월 ~ 5년</b>)의 등락을 표시합니다(상승 <span style="color:var(--up);font-weight:700">빨강</span>, 하락 <span style="color:var(--down);font-weight:700">파랑</span>). 회색 점선은 <b>선택 기간의 평균</b>입니다.<br>그래프 클릭 시 개별 환율 추이를 볼 수 있으며, 하단 버튼 클릭 시 변환기 입력을 통해 환율 계산이 가능합니다.</div>
     <div class="tf-headline">
       <span class="tf-pair" id="tfPair">KRW/USD · 1 USD =</span>
       <span class="tf-big" id="tfBig">—</span>
@@ -486,7 +486,8 @@
     <ul>
       <li>최신 환율: <code>fxratesapi.com</code> (분 단위 실시간 시장환율). 일시적 오류 시 <code>open.er-api.com</code>으로 자동 전환됩니다. 화면은 <b>5분마다 자동 재조회</b>하며 상단에 마지막 조회 시점을 실시간 표시합니다.</li>
       <li>시장 중간값(mid-rate) 기준이라, 은행 <b>고시 환율(매매기준율·현찰 살 때/팔 때)</b>과는 스프레드만큼 차이가 있습니다.</li>
-      <li>추이 그래프: 같은 출처의 <b>일자별 스냅샷을 조합</b>해 재구성하며, 그래프의 <b>기간 버튼(1개월·3개월·6개월·1년)</b>으로 더 과거 데이터까지 볼 수 있습니다.</li>
+      <li>추이 그래프: 같은 출처의 <b>일자별 스냅샷을 조합</b>해 재구성하며, 그래프의 <b>기간 버튼(1개월·3개월·6개월·1년·3년·5년)</b>으로 더 과거 데이터까지 볼 수 있습니다. 기간이 길수록 표본 간격이 넓어집니다(3년 약 68일·5년 약 107일 간격).</li>
+      <li>그래프의 <b>회색 점선은 선택 기간의 평균</b>입니다 — 표본 지점들의 단순 평균이라 표본 간격이 넓은 장기 구간에서는 근사값입니다.</li>
       <li>표시 간격을 <b>일 단위</b>로 바꾸면 기간 내 모든 날짜를 조회합니다(요청량이 많아 3개월 이하 기간에서만 사용할 수 있습니다).</li>
       <li>그래프·국가를 클릭하면 <b>fxratesapi 기준 상세 보기</b>(고·저·평균·기간등락)가 열립니다.</li>
       <li>은행 마진이 포함된 <b>은행 고시 환율</b>이 필요하면 추가적으로 확인하세요(기준이 달라 값이 다릅니다).</li>
@@ -591,7 +592,7 @@ const API_URL = "https://api.fxratesapi.com/latest?base=USD";     // 실시간 �
 const HIST_URL = "https://api.fxratesapi.com/historical";          // 과거 단일일자 스냅샷(추이 재구성용)
 const ER_API  = "https://open.er-api.com/v6/latest/USD";           // 폴백(최신 실패 시)
 // 그래프 조회 기간 (과거 데이터 접근)
-const RANGES = [["1개월",30],["3개월",90],["6개월",180],["1년",365]];
+const RANGES = [["1개월",30],["3개월",90],["6개월",180],["1년",365],["3년",1095],["5년",1825]];
 function rangeLabel(days){ const r=RANGES.find(x=>x[1]===days); return r?("최근 "+r[0]):(days+"일"); }
 // 동시 요청 제한 실행기 (historical 다중 호출용)
 async function mapLimit(items, limit, fn){
@@ -931,7 +932,9 @@ function sampleDates(days, daily){
     }
     return [...set];
   }
-  const N = days<=31 ? 16 : days<=93 ? 14 : 13;
+  // 표본 점수 = historical 호출 횟수다. 기간이 길수록 점을 조금 더 늘리되(해상도),
+  // 요청량이 폭증하지 않게 상한을 둔다. 3년 16점≈68일 간격, 5년 18점≈107일 간격.
+  const N = days<=31 ? 16 : days<=93 ? 14 : days<=366 ? 13 : days<=1100 ? 16 : 18;
   for(let i=0;i<N;i++){
     const back = Math.round(days * (N-1-i)/(N-1));   // i=0 → days일 전, i=N-1 → 오늘
     const d = new Date(today); d.setDate(d.getDate()-back);
@@ -988,6 +991,7 @@ function drawFxChart(svg, arr, opts){
   const padL=10, padR=12, padT=26, padB=40;   // padB: 저점 라벨과 날짜축이 겹치지 않도록 확보
   const xs=Math.max(1, W-padL-padR), ys=Math.max(1, H-padT-padB);
   const vals=arr.map(p=>p.value*scale), min=Math.min(...vals), max=Math.max(...vals), span=(max-min)||1;
+  const avg=vals.reduce((a,b2)=>a+b2,0)/vals.length;   // 선택 기간 평균 — 그래프에 점선으로 표기
   const X=i=> padL + xs*(i/(arr.length-1));
   const Y=v=> padT + ys*(1-(v-min)/span);
   const baseY = padT+ys;
@@ -1007,9 +1011,13 @@ function drawFxChart(svg, arr, opts){
   const lastX=X(arr.length-1), lastY=Y(last);
   const dfmt = span<0.5 ? 4 : span<5 ? 3 : span<50 ? 2 : span<500 ? 1 : 0;
   const nf=n=> n.toLocaleString("ko-KR",{minimumFractionDigits:dfmt,maximumFractionDigits:dfmt});
-  const d0=arr[0].date.slice(5).replace("-","/");
-  const dN=arr[arr.length-1].date.slice(5).replace("-","/");
-  const dm=arr[Math.floor((arr.length-1)/2)].date.slice(5).replace("-","/");
+  // 여러 해에 걸친 기간(1년·3년·5년)에서는 MM/DD 만 찍으면 어느 해인지 알 수 없다
+  // (예: 5년 그래프의 양끝이 똑같이 08/14). 해가 바뀌는 기간이면 YY/MM 으로 바꾼다.
+  const multiYear = arr[0].date.slice(0,4) !== arr[arr.length-1].date.slice(0,4);
+  const axLabel = s => multiYear ? s.slice(2,7).replace("-","/") : s.slice(5).replace("-","/");
+  const d0=axLabel(arr[0].date);
+  const dN=axLabel(arr[arr.length-1].date);
+  const dm=axLabel(arr[Math.floor((arr.length-1)/2)].date);
   // 고점·저점 수치를 해당 위치에 직접 표기
   const iMax=vals.indexOf(max), iMin=vals.indexOf(min);
   function peakLabel(i, v, kind){
@@ -1024,6 +1032,16 @@ function drawFxChart(svg, arr, opts){
       `${kind==="max"?"고":"저"} ${sym}${nf(v)}</text>`;
   }
   const peaks = (iMax===iMin) ? "" : peakLabel(iMax,max,"max") + peakLabel(iMin,min,"min");
+  // 평균선 — 고·저 라벨과 겹치지 않게 값 라벨은 오른쪽 끝에 붙이고, 마지막 점 근처면 왼쪽으로 피한다.
+  const avgY = Y(avg);
+  const avgNearLast = Math.abs(avgY - lastY) < 14;
+  const avgTx = avgNearLast ? padL : W-padR;
+  const avgLine =
+    `<line x1="${padL}" y1="${avgY.toFixed(1)}" x2="${W-padR}" y2="${avgY.toFixed(1)}" `+
+      `stroke="${muted}" stroke-width="1.2" stroke-dasharray="5 4" opacity=".75"/>`+
+    `<text x="${avgTx.toFixed(1)}" y="${(avgY-5).toFixed(1)}" font-size="10.5" font-weight="700" fill="${muted}" `+
+      `text-anchor="${avgNearLast?"start":"end"}" paint-order="stroke" stroke="${card}" stroke-width="3.5" `+
+      `stroke-linejoin="round">평균 ${sym}${nf(avg)}</text>`;
   svg.innerHTML =
     `<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">`+
       `<stop offset="0" stop-color="${stroke}" stop-opacity="0.20"/>`+
@@ -1031,13 +1049,14 @@ function drawFxChart(svg, arr, opts){
     `<line x1="${padL}" y1="${padT}" x2="${W-padR}" y2="${padT}" stroke="${grid}" stroke-width="1" stroke-dasharray="3 3"/>`+
     `<line x1="${padL}" y1="${baseY.toFixed(1)}" x2="${W-padR}" y2="${baseY.toFixed(1)}" stroke="${grid}" stroke-width="1"/>`+
     `<path d="${area}" fill="url(#${gid})"/>`+
+    avgLine+
     `<path d="${line}" fill="none" stroke="${stroke}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>`+
     `<circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="3.8" fill="${stroke}"/>`+
     peaks+
     `<text x="${padL}" y="${H-8}" font-size="10.5" fill="${axis}">${d0}</text>`+
     `<text x="${(W/2).toFixed(1)}" y="${H-8}" font-size="10.5" fill="${axis}" text-anchor="middle">${dm}</text>`+
     `<text x="${W-padR}" y="${H-8}" font-size="10.5" fill="${axis}" text-anchor="end">${dN}</text>`;
-  return { min, max, last, first, diff, pct, dir };
+  return { min, max, avg, last, first, diff, pct, dir };
 }
 
 function rangeBtnsHtml(activeDays){
@@ -1064,7 +1083,8 @@ function buildTfBtns(){
   renderTfSteps();
   document.getElementById("tfNote").innerHTML =
     "최신 시세는 <b>fxratesapi.com</b>(분 단위 실시간, 실패 시 open.er-api.com 폴백) 기준이며, "+
-    "추이 그래프는 같은 출처의 <b>일자별 스냅샷</b>을 조합해 표시합니다. 기간 버튼으로 최대 1년까지 조회할 수 있고, "+
+    "추이 그래프는 같은 출처의 <b>일자별 스냅샷</b>을 조합해 표시합니다. 기간 버튼으로 최대 5년까지 조회할 수 있고, "+
+    "회색 점선은 <b>선택 기간의 평균</b>입니다. "+
     "<b>표시 간격</b>을 '일 단위'로 바꾸면 기간 내 모든 날짜를 조회합니다(3개월 이하). "+
     "그래프를 클릭하면 <b>fxratesapi 기준 상세 보기</b>(고·저·평균)가 열립니다.";
 }
@@ -1195,9 +1215,8 @@ function drawModal(b, q, svg, days){
   const sym = ccyMeta(b).sym || "";
   const dEl = document.getElementById("modalDelta");
   dEl.className = "mdelta " + d.dir; dEl.textContent = deltaText(d, days);
-  // fxratesapi 기준 통계
-  const vals = arr.map(p=>p.value);
-  const avg = vals.reduce((a,b2)=>a+b2,0)/vals.length;
+  // fxratesapi 기준 통계 — 평균은 그래프에 그린 평균선과 같은 값을 쓴다(따로 계산하면 어긋난다)
+  const avg = d.avg;
   const stats = [
     ["기간 고",   sym+fmtAuto(d.max), ""],
     ["기간 저",   sym+fmtAuto(d.min), ""],
