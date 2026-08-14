@@ -4811,7 +4811,21 @@ function renderKpis(){
       `<div class="org">${SRC[s].org}</div></button>`;
   });
   const el=document.getElementById("kpis");el.innerHTML=h;
-  el.querySelectorAll(".kpi").forEach(b=>b.onclick=()=>{const s=b.dataset.src;if(!s)state.srcs.clear();else state.srcs.has(s)?state.srcs.delete(s):state.srcs.add(s);render();});
+  // 분류(학술 논문 · 임상 연구 · 기전) 선택 — 기본은 한 번에 하나만.
+  // '여러 개 선택'(#catmulti)을 켜야 여러 분류를 동시에 켤 수 있다.
+  el.querySelectorAll(".kpi").forEach(b=>b.onclick=()=>{
+    const s=b.dataset.src;
+    if(!s){                      // '전체' — 항상 초기화
+      state.srcs.clear();
+    }else if(state.multi){       // 다중 선택 — 누른 것만 토글
+      state.srcs.has(s)?state.srcs.delete(s):state.srcs.add(s);
+    }else{                       // 단일 선택 — 이미 그것만 켜져 있으면 해제, 아니면 그것만 남긴다
+      const onlyThis = state.srcs.size===1 && state.srcs.has(s);
+      state.srcs.clear();
+      if(!onlyThis) state.srcs.add(s);
+    }
+    render();
+  });
 }
 
 function renderPeriod(){
@@ -4843,17 +4857,11 @@ function renderCats(){
     return `<button class="pill" data-c="${esc(c)}" aria-pressed="${state.cats.has(c)}"><span class="pdot" style="background:${catColor(c)}"></span>${esc(catLabel(c))} <span class="cnt">${n}</span></button>`;
   }).join("");
   el.innerHTML=h;
+  // 사업 영역은 라벨 그대로 항상 복수 선택 — '여러 개 선택' 토글은 위쪽 분류(KPI) 전용이다.
   el.querySelectorAll(".pill").forEach(b=>b.onclick=()=>{
     const c=b.dataset.c;
-    if(!c){                      // '전체' — 항상 초기화
-      state.cats.clear();
-    }else if(state.multi){       // 다중 선택 — 누른 것만 토글
-      state.cats.has(c)?state.cats.delete(c):state.cats.add(c);
-    }else{                       // 단일 선택 — 이미 그것만 켜져 있으면 해제, 아니면 그것만 남긴다
-      const onlyThis = state.cats.size===1 && state.cats.has(c);
-      state.cats.clear();
-      if(!onlyThis) state.cats.add(c);
-    }
+    if(!c) state.cats.clear();   // '전체' — 초기화
+    else state.cats.has(c)?state.cats.delete(c):state.cats.add(c);
     render();
   });
 }
@@ -4932,9 +4940,9 @@ document.getElementById("catmulti").addEventListener("change",e=>{
   state.multi=e.target.checked;
   // 다중 → 단일로 되돌릴 때 여러 개가 켜져 있으면, 화면 표시 순서상 첫 분류만 남긴다
   // (전부 지워버리면 방금 보던 결과가 통째로 바뀌어 버린다)
-  if(!state.multi && state.cats.size>1){
-    const first=[...state.cats].sort((a,b)=>catRank(a)-catRank(b))[0];
-    state.cats.clear(); state.cats.add(first);
+  if(!state.multi && state.srcs.size>1){
+    const first=[...state.srcs].sort((a,b)=>SRC_ORDER.indexOf(a)-SRC_ORDER.indexOf(b))[0];
+    state.srcs.clear(); state.srcs.add(first);
   }
   updateCatHint(); render();
 });
