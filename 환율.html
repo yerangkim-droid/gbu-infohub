@@ -317,6 +317,8 @@
   /* 기간·간격 선택 (그래프 과거 데이터 범위) */
   .tf-controls { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:2px 0 4px; }
   .tf-controls .tf-sep { width:1px; height:18px; background:var(--border-strong); flex:none; }
+  /* 대비 통화 묶음 — 국가표에서 연 팝업에서만 보인다(상단 추이 카드 팝업에서는 숨김) */
+  .tf-basewrap { display:inline-flex; align-items:center; gap:10px; }
   .tf-controls .tf-ranges { margin:0; }
   .tf-steplabel { font-size:.74rem; font-weight:700; color:var(--faint); }
   .tf-ranges { display:flex; flex-wrap:wrap; gap:7px; margin:2px 0 4px; }
@@ -470,7 +472,7 @@
   <!-- 거래 국가 참조 -->
   <section class="card">
     <h2>거래 국가 환율표</h2>
-    <div class="sub">각 통화 1단위당 원화·달러 환율입니다. 국가를 클릭하면 <b>환율 추이 그래프 팝업</b>이 열리고, 아래 <b>변환기에도 자동으로 입력</b>됩니다.<br>팝업에서 <b>기준 통화</b>를 원(₩)·달러($)·유로(€)로 바꿔 같은 통화의 대비 추이를 볼 수 있습니다.</div>
+    <div class="sub">각 통화 1단위당 원화·달러 환율입니다. 국가를 클릭하면 <b>환율 추이 그래프 팝업</b>이 열리고, 아래 <b>변환기에도 자동으로 입력</b>됩니다.<br>팝업에서 <b>대비 통화</b>를 원(₩)·달러($)·유로(€)로 바꿔 볼 수 있습니다.</div>
     <div class="filter-row">
       <div class="search-wrap">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b96a3" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -513,9 +515,11 @@
     </div>
     <div class="modal-usd" id="modalUsd"></div>
     <div class="tf-controls">
-      <span class="tf-steplabel">기준 통화</span>
-      <div class="tf-ranges" id="modalBases"></div>
-      <span class="tf-sep"></span>
+      <span class="tf-basewrap" id="modalBaseWrap">
+        <span class="tf-steplabel">대비 통화</span>
+        <div class="tf-ranges" id="modalBases"></div>
+        <span class="tf-sep"></span>
+      </span>
       <span class="tf-steplabel">기간</span>
       <div class="tf-ranges" id="modalRanges"></div>
     </div>
@@ -1172,15 +1176,19 @@ document.getElementById("tfSteps").addEventListener("click", (e)=>{
 
 // ── 국가별 환율 추이 팝업 ────────────────────────────────────────────────
 let modalB = null, modalQ = null, modalDays = 30;
-// 국가표는 원화 기준으로 열리지만, 같은 통화를 달러·유로 대비로도 볼 수 있게 기준통화를 바꾼다.
-// 기간 버튼과 같은 방식(버튼 → 통화쌍 재조회)이라 그래프·통계·평균선이 모두 그대로 따라온다.
+// 국가표에서 연 팝업(KRW/<그 나라 통화>)에서만 대비 통화를 원·달러·유로로 바꾼다.
+// 기간 버튼과 같은 방식(버튼 → 통화쌍 재조회)이라 그래프·통계·평균선이 그대로 따라온다.
+//
+// ※ 상단 '실시간 주요 환율' 카드에서 연 팝업(KRW/USD·EGP/EUR …)에는 이 버튼을 넣지 않는다.
+//   그 통화쌍들은 쌍 자체가 이미 "무엇을 무엇 대비로 볼지"를 정해 둔 것이라
+//   대비 통화를 갈아끼우면 쌍의 의미가 흐려진다(사용자 결정, 2026-08-14).
 const MODAL_BASES = [["₩ 원","KRW"],["$ 달러","USD"],["€ 유로","EUR"]];
-let modalTitleName = null;
+let modalTitleName = null, modalHasBases = false;
 function baseBtnsHtml(activeBase, quote){
   return MODAL_BASES.map(([lbl,code])=>{
-    const same = (code === quote);   // 같은 통화끼리는 항상 1이라 비교가 무의미하다
+    const same = (code === quote);   // 자기 자신과는 비교할 수 없다(항상 1)
     return `<button class="tf-range${code===activeBase?" active":""}" data-base="${code}"`+
-      (same?` disabled title="${quote} 자체가 기준 통화라 비교할 수 없습니다"`:` title="1 ${quote} 당 ${code} 기준으로 봅니다"`)+
+      (same?` disabled title="${quote} 자체가 그 나라 통화라 비교할 수 없습니다"`:` title="1 ${quote} 를 ${code} 대비로 봅니다"`)+
       `>${lbl} 대비</button>`;
   }).join("");
 }
@@ -1188,7 +1196,8 @@ function baseBtnsHtml(activeBase, quote){
 let modalConvCode = null;
 // 국가표 클릭: 1 <code> = ? KRW → KRW/<code> 통화쌍
 // 변환기 선택은 "국가명|통화코드"로 넘겨 같은 통화의 다른 국가(EUR: 유로존/네덜란드)와 섞이지 않게 함
-function openCountryModal(name, code){ openPairModal("KRW", code, name, name + "|" + code); }
+// 국가표: 그 나라 통화(q)를 원화(b) 대비로 연다 — 여기서만 대비 통화 버튼을 보여 준다
+function openCountryModal(name, code){ openPairModal("KRW", code, name, name + "|" + code, true); }
 // 제목·현재값·교차참고는 기준통화를 바꿀 때도 다시 그려야 하므로 따로 뺀다
 function renderModalHead(){
   const b = modalB, q = modalQ;
@@ -1204,12 +1213,14 @@ function renderModalHead(){
   if(b !== "KRW" && q !== "KRW"){ const k = pairRate("KRW", q); if(isFinite(k)) refs.push(`<b>₩${fmtAuto(k)}</b>`); }
   document.getElementById("modalUsd").innerHTML = refs.length ? ("1 "+q+" ") + refs.join(" <span class='dot'>·</span> ") : "";
 }
-function openPairModal(b, q, titleName, convCode){
+function openPairModal(b, q, titleName, convCode, withBases){
   modalB = b; modalQ = q; modalDays = 30; modalTitleName = titleName || null;
+  modalHasBases = !!withBases;
   modalConvCode = convCode || (b === "KRW" ? q : b);
   renderModalHead();
   const dEl = document.getElementById("modalDelta"); dEl.className="mdelta"; dEl.textContent="";
-  document.getElementById("modalBases").innerHTML = baseBtnsHtml(b, q);
+  document.getElementById("modalBaseWrap").style.display = modalHasBases ? "" : "none";
+  document.getElementById("modalBases").innerHTML = modalHasBases ? baseBtnsHtml(b, q) : "";
   document.getElementById("modalRanges").innerHTML = rangeBtnsHtml(modalDays);
   document.getElementById("modalStats").innerHTML = "";
   document.getElementById("modalNote").innerHTML =
@@ -1252,9 +1263,9 @@ function drawModal(b, q, svg, days){
 }
 // 기준통화 전환 — 통화쌍만 바꿔 같은 기간을 다시 조회한다(캐시는 쌍별로 따로 잡힌다)
 document.getElementById("modalBases").addEventListener("click", (e)=>{
-  const btn = e.target.closest(".tf-range"); if(!btn || btn.disabled || !modalQ) return;
+  const btn = e.target.closest(".tf-range"); if(!btn || btn.disabled || !modalQ || !modalHasBases) return;
   const base = btn.dataset.base; if(base === modalB) return;
-  modalB = base;
+  modalB = base;   // 그 나라 통화(q)는 두고 대비 통화만 교체
   document.querySelectorAll("#modalBases .tf-range").forEach(x=> x.classList.toggle("active", x.dataset.base===base));
   renderModalHead();
   const dEl = document.getElementById("modalDelta"); dEl.className="mdelta"; dEl.textContent="";
