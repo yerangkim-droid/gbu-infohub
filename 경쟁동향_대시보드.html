@@ -5232,8 +5232,9 @@ const catLabel=c=>CAT_LABEL[catKey(c)]||catKey(c);
 const catColor=c=>{const k=catKey(c);return (isDark()?CAT_COLOR_DARK[k]:CAT_COLOR[k])||"var(--accent)";};
 // multi=false: 사업 영역을 한 번에 하나만 선택(다른 걸 누르면 이전 선택은 해제).
 // '여러 개 선택' 체크박스를 켜면 예전처럼 여러 영역을 동시에 켤 수 있다.
-// scope: IR 전용 범위 필터 — ""=전체 / "분기"=분기 실적만 / "결산"=반기·연간만
-const state={q:"",cats:new Set(),comp:"",mode:"news",period:"",multi:false,scope:""};
+// scope: IR 전용 범위 — "분기"|"반기"|"연간". 범위를 고르면 기간 축의 단위 자체가 바뀐다
+//   (분기 → 2026년 2분기 / 반기 → 2025년 상반기 / 연간 → 2025년)
+const state={q:"",cats:new Set(),comp:"",mode:"news",period:"",multi:false,scope:"분기"};
 const gcCat={};
 const pad=n=>String(n).padStart(2,"0");
 function catRank(c){const i=CAT_ORDER.indexOf(c);return i<0?99:i;}
@@ -5274,8 +5275,25 @@ function irQuarterKey(d){
   const rp=String(d.report_period||"");
   return /^\d{4}-Q[1-4]$/.test(rp) ? rp.replace("-Q","-") : d.date;
 }
+// IR 기간 축 — 선택한 범위(분기·반기·연간)에 따라 눈금 단위가 달라진다.
+//   분기: 2026년 2분기 / 반기: 2025년 상반기 / 연간: 2025년
+//   반기·연간의 시작 월로 판정한다 — 다케다 FY2025 상반기(2025.04~09)는 '2025년 상반기'가 맞고,
+//   종료 월로 보면 9월이라 '하반기'로 잘못 잡힌다.
+function irPeriodOf(d){
+  const scope=d.report_scope||"분기";
+  const m=String(d.report_range||"").match(/^(\d{4})\.(\d{2})~(\d{4})\.(\d{2})$/);
+  if(scope==="반기"&&m){ const sy=+m[1],sm=+m[2],h=sm<=6?1:2;
+    return {key:`${sy}-H${h}`,label:`${sy}년 ${h===1?"상":"하"}반기`,sort:sy*10+(h===1?3:6)}; }
+  if(scope==="연간"&&m){ const sy=+m[1];
+    return {key:`${sy}-FY`,label:`${sy}년`,sort:sy*10+9}; }
+  const rp=String(d.report_period||"");
+  if(/^\d{4}-Q[1-4]$/.test(rp)){ const y=+rp.slice(0,4),q=+rp.slice(6);
+    return {key:rp,label:`${y}년 ${q}분기`,sort:y*10+q}; }
+  return quarterInfo(d.date);
+}
 function periodInfo(d){
   if(state.mode!=="ir") return weekInfo(d.date);
+  if(d.report_scope) return irPeriodOf(d);
   const rp=String(d.report_period||"");
   if(/^\d{4}-Q[1-4]$/.test(rp)){
     const y=+rp.slice(0,4), q=+rp.slice(6), sort=y*10+q;
@@ -5292,11 +5310,8 @@ function filtered(){
     if(d.mode!==state.mode) return false;
     if(catHidden(state.mode, d.category)) return false;
     if(state.period && periodInfo(d).key!==state.period) return false;
-    // IR 범위 필터 — 분기 비교를 할 때 반기·연간 결산을 잠깐 걷어내기 위한 것
-    if(state.mode==="ir" && state.scope){
-      const sc=d.report_scope||"분기";
-      if(state.scope==="분기" ? sc!=="분기" : sc==="분기") return false;
-    }
+    // IR 범위 — 분기·반기·연간 중 하나만 본다(기간 축 단위가 범위마다 다르므로 섞지 않는다)
+    if(state.mode==="ir" && (d.report_scope||"분기")!==state.scope) return false;
     if(state.cats.size && !state.cats.has(d.category)) return false;
     if(state.q){const hay=(d.title+" "+(d.title_ko||"")+" "+d.summary_ko+" "+d.comp_product+" "+(d.indication||"")+" "+(d.linked_issue||"")+" "+d.competitor).toLowerCase();
       if(!hay.includes(state.q.toLowerCase())) return false;}
@@ -5319,49 +5334,38 @@ function renderModes(){
   el.innerHTML=
     tab("news","📰","뉴스 기사",`주차별 · 시장 이슈 ${nIssue}건 포함`,nNews,"--news","--news-bg2")+
     tab("ir","📊","경쟁사 IR 자료","분기별",nIr,"--ir","--ir-bg2");
-  el.querySelectorAll(".modebtn").forEach(b=>b.onclick=()=>{if(state.mode!==b.dataset.mode){state.mode=b.dataset.mode;state.period="";state.scope="";render();}});
+  el.querySelectorAll(".modebtn").forEach(b=>b.onclick=()=>{if(state.mode!==b.dataset.mode){state.mode=b.dataset.mode;state.period="";state.scope="분기";render();}});
 }
 
-// IR 범위 필터 칩 — 분기 비교 시 반기·연간 결산을 잠시 숨길 수 있게
+// IR 범위 버튼 — 분기 / 반기 / 연간. 고른 범위에 맞춰 아래 기간 축 단위가 바뀐다.
 function renderScopeChips(){
   const el=document.getElementById("scopechips"); if(!el) return;
-  if(state.mode!=="ir"){ el.style.display="none"; el.innerHTML=""; state.scope=""; return; }
+  if(state.mode!=="ir"){ el.style.display="none"; el.innerHTML=""; return; }
   const src=DATA.filter(d=>d.mode==="ir" && !catHidden("ir",d.category));
-  const nQ=src.filter(d=>(d.report_scope||"분기")==="분기").length;
-  const nY=src.length-nQ;
-  const chip=(k,label,n)=>`<button class="schip" data-scope="${k}" aria-pressed="${state.scope===k}">${label}<span class="sc">${n}</span></button>`;
+  const n=s=>src.filter(d=>(d.report_scope||"분기")===s).length;
+  const chip=s=>`<button class="schip" data-scope="${s}" aria-pressed="${state.scope===s}">${s}<span class="sc">${n(s)}</span></button>`;
   el.style.display="flex";
-  el.innerHTML=chip("","전체",src.length)+chip("분기","분기만",nQ)+chip("결산","반기·연간",nY);
-  // 범위를 바꾸면 지금 고른 분기가 그 범위에 없을 수 있다 — 그러면 '전체'로 되돌린다
-  //   (빈 화면이 뜨는 대신 결과가 보이게)
+  el.innerHTML=["분기","반기","연간"].map(chip).join("");
+  // 범위가 바뀌면 기간 축의 눈금 자체가 달라지므로(2026-Q2 → 2025-H1 → 2025-FY)
+  // 이전에 고른 기간 키는 무의미하다. 항상 '전체'로 되돌린다.
   el.querySelectorAll(".schip").forEach(b=>b.onclick=()=>{
-    state.scope=b.dataset.scope;
-    if(state.period){
-      const stillThere=src.some(d=>{
-        const sc=d.report_scope||"분기";
-        const pass=!state.scope || (state.scope==="분기" ? sc==="분기" : sc!=="분기");
-        return pass && periodInfo(d).key===state.period;
-      });
-      if(!stillThere) state.period="";
-    }
-    render();
+    if(state.scope===b.dataset.scope) return;
+    state.scope=b.dataset.scope; state.period=""; render();
   });
 }
 
 function renderPeriods(){
   const isIr=state.mode==="ir";
   let src=DATA.filter(d=>d.mode===state.mode && !catHidden(state.mode,d.category));
-  // 범위 필터가 걸려 있으면 기간 탭 건수도 그 기준으로 센다(탭 숫자와 실제 결과를 일치시킨다)
-  if(isIr && state.scope) src=src.filter(d=>{
-    const sc=d.report_scope||"분기";
-    return state.scope==="분기" ? sc==="분기" : sc!=="분기";
-  });
+  // 선택한 범위만 세야 탭 숫자와 실제 결과가 맞는다
+  if(isIr) src=src.filter(d=>(d.report_scope||"분기")===state.scope);
   // ★ 반드시 filtered() 와 같은 periodInfo 를 써야 한다. 예전엔 여기서만 quarterInfo(d.date) 로
   //   발표일을 썼는데, filtered() 는 실적 대상 기간으로 거르고 있어 탭 라벨과 실제 결과가 어긋났다.
   const map={};
   src.forEach(d=>{const w=periodInfo(d);(map[w.key]=map[w.key]||{label:w.label,sort:w.sort,n:0}).n++;});
   const keys=Object.keys(map).sort((a,b)=>map[b].sort-map[a].sort);
-  const lbl=document.getElementById("periodlbl");if(lbl)lbl.textContent=isIr?"분기별 (탭 선택)":"주차별 (탭 선택)";
+  const lbl=document.getElementById("periodlbl");
+  if(lbl)lbl.textContent=isIr?`${state.scope}별 (탭 선택)`:"주차별 (탭 선택)";
   let h=`<button class="wtab" data-w="" aria-pressed="${state.period===""}"><span class="wt">전체</span><span class="wc">${src.length}건</span></button>`;
   keys.forEach(k=>{h+=`<button class="wtab" data-w="${esc(k)}" aria-pressed="${state.period===k}"><span class="wt">${esc(map[k].label)}</span><span class="wc">${map[k].n}건</span></button>`;});
   const el=document.getElementById("weektabs");el.innerHTML=h;
