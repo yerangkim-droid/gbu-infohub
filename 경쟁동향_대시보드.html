@@ -190,7 +190,7 @@
   <header class="top">
     <div>
       <h1>시장 모니터링</h1>
-      <div class="sub">6개 사업 영역과 관련하여 글로벌 시장 이슈와 동향을 <b>‘뉴스 기사’</b>, <b>‘시장 이슈’</b>, <b>‘경쟁사 IR 자료’</b> 3가지 분류로 구분하여 수집하고 요약한 내용입니다.</div>
+      <div class="sub">6개 사업 영역과 관련하여 글로벌 시장 이슈와 동향을 <b>‘뉴스 기사’</b>, <b>‘경쟁사 IR 자료’</b> 2가지 분류로 구분하여 수집하고 요약한 내용입니다. 규제·정책·관세와 시장 규모·점유율 분석 등 <b>시장 이슈</b>는 뉴스 기사와 함께 보여 주며, 카드의 <b>‘시장이슈’ 배지</b>로 구분됩니다.</div>
     </div>
     <div class="chips">
       <span class="mchip">수집기간 <b>최근 2년</b></span>
@@ -4781,7 +4781,9 @@ const catKey=c=>CAT_MERGE[c]||c;
 // 유형별 비대상 사업영역 — 해당 유형에서는 필터 칩도 카드도 노출하지 않는다.
 // 기술이전/Plant, Bulk: 지정 경쟁사(SK바이오사이언스·Grifols Engineering·SK플라즈마)가
 // 이 사업 단위로 IR을 공시하지 않는다(SK플라즈마는 비상장). → IR 탭에서 제외.
-const CAT_EXCLUDE={ ir:new Set(["Technology Transfer"]) };
+// 해외 직판(2026-08-14 추가): SK바이오팜 한 곳뿐이고 직판 실적은 전사 공시에 묻혀 있어
+// 영역 단위 IR 이 성립하지 않는다 → IR 탭에서 제외(merge.js EXCLUDE 와 같은 규칙).
+const CAT_EXCLUDE={ ir:new Set(["Technology Transfer","Direct Sales"]) };
 const catHidden=(mode,c)=>!!(CAT_EXCLUDE[mode] && CAT_EXCLUDE[mode].has(c));
 // 영역별 고유색 — 카드 왼쪽 색상 바·필터 점·그룹 헤더가 모두 이 색을 공유
 const CAT_COLOR={
@@ -4845,7 +4847,7 @@ function periodInfo(d){return state.mode==="ir"?quarterInfo(d.date):weekInfo(d.d
 
 function filtered(){
   return DATA.filter(d=>{
-    if(d.source_type!==state.mode) return false;
+    if(d.mode!==state.mode) return false;
     if(catHidden(state.mode, d.category)) return false;
     if(state.period && periodInfo(d).key!==state.period) return false;
     if(state.cats.size && !state.cats.has(d.category)) return false;
@@ -4856,26 +4858,26 @@ function filtered(){
 }
 
 function renderModes(){
-  const nOf=m=>DATA.filter(d=>d.source_type===m && !catHidden(m,d.category)).length;
-  const nNews=nOf("news"), nIr=nOf("ir"), nIssue=nOf("issue");
+  const nOf=m=>DATA.filter(d=>d.mode===m && !catHidden(m,d.category)).length;
+  const nNews=nOf("news"), nIr=nOf("ir");
+  // 뉴스 탭 안에 시장 이슈가 몇 건 섞여 있는지 부제로 알려 준다(합쳐 두되 규모는 보이게)
+  const nIssue=DATA.filter(d=>d.source_type==="issue" && !catHidden("news",d.category)).length;
   const el=document.getElementById("kpis");
   // 분류 제목이 가장 크게 · 건수는 중간 · 주기(주차별/분기별)는 하단 작게 · 분류별 고유색
   const tab=(mode,ico,name,sub,n,mvar,soft)=>
     `<button class="modebtn" data-mode="${mode}" aria-pressed="${state.mode===mode}" style="--m:var(${mvar});--msoft:var(${soft})">`+
       `<div class="mtop"><span class="mico">${ico}</span><span class="mname">${name}</span><span class="mnum">${n}건</span></div>`+
       `<div class="msub">${sub}</div></button>`;
-  // ※ issue(시장 이슈) 탭이 빠져 있어 해당 자료가 화면에서 아예 보이지 않았다(2026-08-14 복구).
-  //   규제·정책·관세·조달과 시장 규모·점유율 분석이 여기로 들어온다. 주기는 news 와 같은 주차별.
+  // 시장 이슈는 별도 탭 없이 뉴스 기사에 함께 담고, 몇 건인지만 부제로 밝힌다.
   el.innerHTML=
-    tab("news","📰","뉴스 기사","주차별",nNews,"--news","--news-bg2")+
-    tab("issue","⚖️","시장 이슈","주차별",nIssue,"--regulatory","--regulatory-bg2")+
+    tab("news","📰","뉴스 기사",`주차별 · 시장 이슈 ${nIssue}건 포함`,nNews,"--news","--news-bg2")+
     tab("ir","📊","경쟁사 IR 자료","분기별",nIr,"--ir","--ir-bg2");
   el.querySelectorAll(".modebtn").forEach(b=>b.onclick=()=>{if(state.mode!==b.dataset.mode){state.mode=b.dataset.mode;state.period="";render();}});
 }
 
 function renderPeriods(){
   const isIr=state.mode==="ir";
-  const src=DATA.filter(d=>d.source_type===state.mode && !catHidden(state.mode,d.category));
+  const src=DATA.filter(d=>d.mode===state.mode && !catHidden(state.mode,d.category));
   const info=isIr?quarterInfo:weekInfo;
   const map={};
   src.forEach(d=>{const w=info(d.date);(map[w.key]=map[w.key]||{label:w.label,sort:w.sort,n:0}).n++;});
@@ -4888,7 +4890,7 @@ function renderPeriods(){
 }
 
 function renderCats(){
-  const src=DATA.filter(d=>d.source_type===state.mode && !catHidden(state.mode, d.category));
+  const src=DATA.filter(d=>d.mode===state.mode && !catHidden(state.mode, d.category));
   const map={};src.forEach(d=>map[d.category]=(map[d.category]||0)+1);
   // 정의된 6개 사업 영역을 모두 노출(데이터 없어도 표시), 정의에 없는 값이 있으면 뒤에 추가
   // 단, 해당 유형의 비대상 영역(예: IR 탭의 기술이전/Plant, Bulk)은 아예 뺀다
@@ -4959,7 +4961,7 @@ function render(){
   renderModes();renderPeriods();renderCats();
   const list=filtered();
   list.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
-  const modeSrc=DATA.filter(d=>d.source_type===state.mode);
+  const modeSrc=DATA.filter(d=>d.mode===state.mode);
   let periodLabel=state.period;
   const pf=modeSrc.find(d=>periodInfo(d).key===state.period);
   if(pf)periodLabel=periodInfo(pf).label;
@@ -5009,9 +5011,11 @@ document.getElementById("covnote").innerHTML=
 
 function normalizeData(){
   DATA.forEach(d=>{
-    // 2026-08-14: 시장 이슈(issue)를 뉴스에 합치던 변환을 제거하고 별도 탭으로 되돌렸다.
-    //   합쳐 두면 규제·정책·관세와 시장 규모·점유율 분석이 기업 활동 기사에 섞여
-    //   "이번 주 시장 변수만 보기"가 불가능했다. 유형은 수집 단계 값(news·ir·issue)을 그대로 쓴다.
+    // 시장 이슈(issue)는 별도 탭으로 빼지 않고 주차별 '뉴스 기사' 탭에 함께 보여 준다.
+    //   다만 예전처럼 source_type 을 news 로 덮어쓰지는 않는다(2026-08-14) —
+    //   덮어쓰면 카드에서 시장 이슈인지 구분이 사라졌다. 탭 필터용 mode 를 따로 두고
+    //   source_type 은 수집 단계 값(news·ir·issue)을 보존해 배지로 계속 구분한다.
+    d.mode = (d.source_type==="issue") ? "news" : d.source_type;
     d.category=catKey(d.category);                      // 구 8개 분류 → 통합 6개 사업 영역
     if(!gcCat[d.gc_product])gcCat[d.gc_product]=d.category;
     if(d.nct_id===undefined)d.nct_id=null;
