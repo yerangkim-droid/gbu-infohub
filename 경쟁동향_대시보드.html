@@ -5226,12 +5226,18 @@ function card(d){
   // 두 섹션에 뜬다. 어느 사업부 실적인지 바로 읽히도록 IR 카드에만 제제명을 덧붙인다.
   const prod=(d.source_type==="ir"&&d.comp_product)
     ?`<span class="badge" style="color:${catColor(d.category)};background:transparent;border:1px solid currentColor">${esc(d.comp_product)}</span>`:"";
+  // 회계연도가 다른 회사(다케다·JCR 4~3월, CSL 7~6월)는 제목의 'FY2026 1분기'가 역년으로는
+  // 2분기여서, 탭(역년 분기)과 제목이 어긋나 보인다. 카드에 **대상 기간**을 직접 찍어 준다.
+  const rp=String(d.report_period||"");
+  const rpBadge=(d.source_type==="ir"&&/^\d{4}-Q[1-4]$/.test(rp))
+    ?(()=>{const y=+rp.slice(0,4),q=+rp.slice(6);const mm=[["01","03"],["04","06"],["07","09"],["10","12"]][q-1];
+      return `<span class="badge" style="color:var(--ir);background:var(--ir-bg)" title="실적 대상 기간 (발표일과 다릅니다)">실적 ${y}년 ${q}분기 · ${y}.${mm[0]}~${mm[1]}</span>`;})():"";
   // 카드 왼쪽 색상 바 = 사업 영역 색상 (필터 점·그룹 헤더·이슈 태그와 동일 색 체계)
   return `<article class="card" style="--bar:${catColor(d.category)}">
     <div class="row1">
       <span class="badge" style="color:${s.color};background:${s.bg}">${s.label}</span>
-      <span class="badge" style="color:var(--ink-2);background:var(--line-2)">${esc(d.competitor)}</span>${prod}
-      <span class="date">${esc(d.date||"")}</span>
+      <span class="badge" style="color:var(--ink-2);background:var(--line-2)">${esc(d.competitor)}</span>${prod}${rpBadge}
+      <span class="date" title="${d.source_type==="ir"?"공시·발표일":""}">${d.source_type==="ir"&&rpBadge?"발표 ":""}${esc(d.date||"")}</span>
     </div>
     <div class="title"><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(title)}</a></div>
     <div class="summary">${esc(d.summary_ko)}</div>
