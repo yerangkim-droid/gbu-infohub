@@ -54,6 +54,8 @@
   .chips{display:flex;gap:8px;flex-wrap:wrap}
   .mchip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--ink-2);font-size:12px;white-space:nowrap}
   .mchip b{color:var(--ink);font-variant-numeric:tabular-nums}
+  /* 업데이트 칩의 '뉴스 기준 / IR 기준' 꼬리표 — 탭마다 수집 시점이 달라 어느 탭 기준인지 밝힌다 */
+  .mchip .asofsub{color:var(--ink-3);margin-left:5px}
 
   .seclbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 9px}
   .seclbl .hint{font-size:11.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--ink-3);margin-left:9px;opacity:.95}
@@ -202,7 +204,7 @@
     </div>
     <div class="chips">
       <span class="mchip">수집기간 <b>최근 2년</b></span>
-      <span class="mchip" title="매일 오전 8시 자동 크롤링으로 갱신됩니다">업데이트 <b id="asof">2026-08-18</b></span>
+      <span class="mchip" id="asofchip">업데이트 <b id="asof">2026-08-18</b><span class="asofsub" id="asofsub"></span></span>
     </div>
   </header>
 
@@ -5381,6 +5383,17 @@ let DATA = [
   }
 ];
 /*__DATA_END__*/
+/*__META_START__*/
+// 탭별 '수집 완료 시점'. 뉴스와 IR 은 수집 주기가 달라(뉴스=주간, IR=분기 실적 발표 때)
+// 하나의 날짜로 묶으면 IR 탭에서 "오늘 갱신됨"으로 잘못 읽힌다. 그래서 탭마다 따로 적고,
+// 화면에서는 선택한 탭의 값만 보여 준다(renderAsof).
+//   · 값은 크롤링(수집·병합)이 끝난 시각이며 기사 발행일이 아니다.
+//   · update_dashboard.ps1 이 이 블록을 갱신한다 — 이번 실행에서 실제로 항목이 들어온 탭만
+//     시각을 바꾸고, 들어오지 않은 탭은 이전 값을 그대로 둔다.
+const META = {
+  crawledAt: { news: "2026-08-18 13:20", ir: "2026-08-14 15:21" }
+};
+/*__META_END__*/
 
 const SRC={news:{label:"뉴스",color:"var(--news)",bg:"var(--news-bg)"},ir:{label:"IR",color:"var(--ir)",bg:"var(--ir-bg)"},issue:{label:"시장이슈",color:"var(--regulatory)",bg:"var(--regulatory-bg)"}};
 // ── 사업 영역: 기존 8개 분류를 통합 + 해외 직판 신설 = 6개 ─────────────────
@@ -5660,8 +5673,25 @@ function card(d){
   </article>`;
 }
 
+// 업데이트 칩 — 선택한 탭의 수집 완료 시점을 보여 준다.
+// 탭을 바꾸면 값도 함께 바뀌므로, 어느 탭 기준인지 꼬리표로 밝히고 툴팁에 최신 자료 날짜도 덧붙인다.
+function renderAsof(){
+  const isIr=state.mode==="ir";
+  const label=isIr?"경쟁사 IR 자료":"뉴스 기사";
+  const at=((META&&META.crawledAt)||{})[state.mode]||"";
+  document.getElementById("asof").textContent=at||"—";
+  document.getElementById("asofsub").textContent="· "+(isIr?"IR":"뉴스")+" 기준";
+  // 수집 시점과 별개로, 그 탭에 담긴 가장 최근 자료가 언제 것인지도 알려 준다(빈 탭이면 생략)
+  const latest=DATA.filter(d=>d.mode===state.mode&&!catHidden(state.mode,d.category))
+                   .reduce((a,d)=>(d.date||"")>a?(d.date||""):a,"");
+  document.getElementById("asofchip").title=
+    label+" 수집을 완료한 시점입니다"+(at?" ("+at+")":"")+"."+
+    (latest?" 이 탭의 최신 자료는 "+latest+" 자료입니다.":"")+
+    " 뉴스와 IR 은 수집 주기가 달라 날짜가 다를 수 있습니다.";
+}
+
 function render(){
-  renderModes();renderScopeChips();renderPeriods();renderCats();
+  renderModes();renderAsof();renderScopeChips();renderPeriods();renderCats();
   const list=filtered();
   list.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
   const modeSrc=DATA.filter(d=>d.mode===state.mode);
