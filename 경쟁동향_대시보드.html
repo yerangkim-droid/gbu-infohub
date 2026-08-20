@@ -7140,18 +7140,16 @@ function filtered(){
 function renderModes(){
   const nOf=m=>DATA.filter(d=>d.mode===m && !catHidden(m,d.category)).length;
   const nNews=nOf("news"), nIr=nOf("ir");
-  // 뉴스 탭 안에 시장 이슈가 몇 건 섞여 있는지 부제로 알려 준다(합쳐 두되 규모는 보이게)
-  const nIssue=DATA.filter(d=>d.source_type==="issue" && !catHidden("news",d.category)).length;
   const el=document.getElementById("kpis");
-  // 분류 제목이 가장 크게 · 건수는 중간 · 주기(주차별/분기별)는 하단 작게 · 분류별 고유색
+  // 분류 제목이 가장 크게 · 건수는 중간 · 주기(주차별 / 분기·반기·연간)는 하단 작게 · 분류별 고유색
   const tab=(mode,ico,name,sub,n,mvar,soft)=>
     `<button class="modebtn" data-mode="${mode}" aria-pressed="${state.mode===mode}" style="--m:var(${mvar});--msoft:var(${soft})">`+
       `<div class="mtop"><span class="mico">${ico}</span><span class="mname">${name}</span><span class="mnum">${n}건</span></div>`+
       `<div class="msub">${sub}</div></button>`;
-  // 시장 이슈는 별도 탭 없이 뉴스 기사에 함께 담고, 몇 건인지만 부제로 밝힌다.
+  // 시장 이슈는 별도 탭 없이 뉴스 기사 탭에 함께 담는다(부제에 건수는 적지 않는다).
   el.innerHTML=
-    tab("news","📰","뉴스 기사",`주차별 · 시장 이슈 ${nIssue}건 포함`,nNews,"--news","--news-bg2")+
-    tab("ir","📊","경쟁사 IR 자료","분기별",nIr,"--ir","--ir-bg2");
+    tab("news","📰","뉴스 기사","주차별",nNews,"--news","--news-bg2")+
+    tab("ir","📊","경쟁사 IR 자료","분기 · 반기 · 연간",nIr,"--ir","--ir-bg2");
   el.querySelectorAll(".modebtn").forEach(b=>b.onclick=()=>{if(state.mode!==b.dataset.mode){state.mode=b.dataset.mode;state.period="";state.scope="분기";render();}});
 }
 
@@ -7345,7 +7343,7 @@ function renderCovNote(){
     (all.length?`<li><b>수집 기간</b> ${all.map(s=>s.from).sort()[0]} ~ ${all.map(s=>s.to).sort().pop()} · 총 <b>${all.reduce((a,s)=>a+s.n,0)}건</b><ul class="cvsub">`+
       line("뉴스 기사", news, at.news)+line("경쟁사 IR 자료", ir, at.ir)+`</ul></li>`:"")+
     `<li><b>뉴스 기사</b>는 전세계 공개된 뉴스 중 관련 내용을 가져와서 <b>주차별</b>로 구성했습니다. 영문 · 외국어 기사의 제목은 <b>한국어로 번역해 표시</b>하며, 원제는 <b>‘원문 보기’</b> 링크에서 확인할 수 있습니다.</li>`+
-    `<li><b>경쟁사 IR 자료</b>는 각 경쟁사 공식 채널로 공시한 IR 리포트를 <b>분기별</b>로 가져와 요약했습니다. 카드의 날짜는 <b>공시·발표일</b>이며, 실적 대상 기간은 제목·요약에 적혀 있습니다.</li>`+
+    `<li><b>경쟁사 IR 자료</b>는 각 경쟁사 공식 채널로 공시한 IR 리포트를 <b>분기 · 반기 · 연간</b> 단위로 가져와 요약했습니다. 카드의 날짜는 <b>공시·발표일</b>이며, 실적 대상 기간은 제목·요약에 적혀 있습니다.</li>`+
     `<li>모든 요약은 출처에 명시된 사실만 반영하여 각 카드의 <b>‘원문 보기’</b>로 검증할 수 있습니다.</li>`+
     `</ul>`;
 }

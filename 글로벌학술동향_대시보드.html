@@ -6638,7 +6638,7 @@ function card(d){
   return `<article class="card" style="--bar:${s.color}">
     <div class="row1">
       <span class="badge" style="color:${s.color};background:${s.bg}">${srcShort(d.source_type)}</span>
-      ${gc}<span class="date">${esc(d.date||"")}</span>
+      ${gc}<span class="date">${esc(d.date||"")}${(d.date&&d.date>AS_OF)?" (예정)":""}</span>
     </div>
     <div class="row1"><span class="badge-drug">${esc(d.drug)}</span>${indic}</div>
     <div class="title"><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a></div>
@@ -6714,7 +6714,7 @@ document.getElementById("covnote").innerHTML=
   `<ul>`+
   `<li>3개 사업 영역(혈액제제 · 백신 · 헌터증후군/호중구감소증)의 GC 성분 및 동일 적응증 연관 약물을 대상으로, 성분명 · 브랜드 · 적응증 키워드를 조합해 <b>최근 2년</b>(2024-08 ~ 2026-08)의 논문을 수집했습니다.</li>`+
   `<li><b>학술 논문</b>은 PubMed (미국 국립의학도서관 NLM 산하 국립생물공학정보센터 NCBI)에서 수집했습니다.</li>`+
-  `<li><b>임상 연구</b>는 ClinicalTrials.gov (미국 국립보건원 NIH 산하 국립의학도서관 NLM)에서 수집했으며, 카드에 표시되는 날짜는 <b>연구 시작일</b>이므로 진행 중인 파이프라인은 과거 시작일로 표시될 수 있습니다.</li>`+
+  `<li><b>임상 연구</b>는 ClinicalTrials.gov (미국 국립보건원 NIH 산하 국립의학도서관 NLM)에서 수집했으며, 카드에 표시되는 날짜는 <b>연구 시작일</b>이므로 진행 중인 파이프라인은 과거 시작일로 표시될 수 있고, 아직 시작하지 않은 연구는 <b>예정 시작일</b>이 미래 날짜로 표시됩니다(<b>(예정)</b> 표시).</li>`+
   `<li><b>기전 · 활성 데이터</b>는 ChEMBL (유럽 분자생물학 연구소 산하 유럽 생물정보학 연구소 EMBL-EBI)의 레퍼런스로 보강했습니다.</li>`+
   `<li><b>프리프린트</b> (bioRxiv / medRxiv · 콜드 스프링 하버 연구소 CSHL)는 공개 API가 키워드 검색을 지원하지 않아 이번 수집에는 포함되지 않았습니다.</li>`+
   `<li>GC 자사 제품(알리글로 · 지씨플루 · GC알부민)은 최근 2년 내 신규 논문이 거의 없어 대부분 동일 적응증 경쟁 · 계열 약물 근거로 구성됩니다. GC 제품 자료는 헌터라제(idursulfase beta) · 뉴라펙(pegteograstim) · 배리셀라 관련 <b>11건</b>이며, 뉴라펙의 등록임상(GCPGC)은 시작일 기준으로 2008~2016년에 표시됩니다.</li>`+
