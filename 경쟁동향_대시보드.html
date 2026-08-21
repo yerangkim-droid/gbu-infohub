@@ -7970,7 +7970,10 @@ const META = {
 
 const SRC={news:{label:"뉴스",color:"var(--news)",bg:"var(--news-bg)"},ir:{label:"IR",color:"var(--ir)",bg:"var(--ir-bg)"},issue:{label:"시장이슈",color:"var(--regulatory)",bg:"var(--regulatory-bg)"}};
 // ── 사업 영역: 기존 8개 분류를 통합 + 해외 직판 신설 = 6개 ─────────────────
-const CAT_ORDER=["Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","CMO / CDMO","Technology Transfer","Direct Sales","Market & Regulatory"];
+// 표시 순서: 시장·규제 동향을 맨 앞에 둔다(2026-08-21) — 개별 사업영역을 가로지르는
+// 공통 축이라 먼저 훑고 나서 영역별로 내려가는 읽기 순서가 맞다. 필터 칩·그룹 헤더·
+// 요약표가 모두 catRank() 로 이 배열을 따르므로 이 줄만 바꾸면 전부 같이 움직인다.
+const CAT_ORDER=["Market & Regulatory","Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","CMO / CDMO","Technology Transfer","Direct Sales"];
 const CAT_LABEL={
   "Plasma Derivative":"혈액제제",
   "Vaccine (백신)":"백신",
