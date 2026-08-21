@@ -209,7 +209,7 @@
       <div class="sub">6개 사업 영역과 관련하여 글로벌 시장 이슈와 동향을 <b>‘뉴스 기사’</b>, <b>‘경쟁사 IR 자료’</b> 2가지 분류로 구분하여 수집하고 요약한 내용입니다. 각국 규제·약가·관세, 산업 전반의 구도처럼 <b>어느 한 사업 영역에 속하지 않는 이슈</b>는 <b>‘시장·규제 동향’</b>으로 따로 모읍니다. 시장 이슈는 뉴스 기사와 함께 보여 주며 카드의 <b>‘시장이슈’ 배지</b>로 구분됩니다.</div>
     </div>
     <div class="chips">
-      <span class="mchip" id="asofchip">업데이트 <b id="asof">2026-08-21</b><span class="asofsub" id="asofsub"></span></span>
+      <span class="mchip" id="asofchip">업데이트 <b id="asof">2026-08-21 14:29</b><span class="asofsub" id="asofsub"></span></span>
     </div>
   </header>
 
@@ -7964,16 +7964,17 @@ let DATA = [
 //   · update_dashboard.ps1 이 이 블록을 갱신한다 — 이번 실행에서 실제로 항목이 들어온 탭만
 //     시각을 바꾸고, 들어오지 않은 탭은 이전 값을 그대로 둔다.
 const META = {
-  crawledAt: { news: "2026-08-21 18:00", ir: "2026-08-20 15:04" }
+  crawledAt: { news: "2026-08-21 14:29", ir: "2026-08-20 15:04" }
 };
 /*__META_END__*/
 
 const SRC={news:{label:"뉴스",color:"var(--news)",bg:"var(--news-bg)"},ir:{label:"IR",color:"var(--ir)",bg:"var(--ir-bg)"},issue:{label:"시장이슈",color:"var(--regulatory)",bg:"var(--regulatory-bg)"}};
 // ── 사업 영역: 기존 8개 분류를 통합 + 해외 직판 신설 = 6개 ─────────────────
-// 표시 순서: 시장·규제 동향을 맨 앞에 둔다(2026-08-21) — 개별 사업영역을 가로지르는
-// 공통 축이라 먼저 훑고 나서 영역별로 내려가는 읽기 순서가 맞다. 필터 칩·그룹 헤더·
-// 요약표가 모두 catRank() 로 이 배열을 따르므로 이 줄만 바꾸면 전부 같이 움직인다.
-const CAT_ORDER=["Market & Regulatory","Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","CMO / CDMO","Technology Transfer","Direct Sales"];
+// 표시 순서: 시장·규제 동향을 맨 뒤에 둔다 — 사업영역을 먼저 훑고, 어느 영역에도
+// 귀속되지 않는 규제·산업 이슈를 마지막에 본다(2026-08-21 앞으로 옮겼다가 되돌림).
+// 필터 칩·그룹 헤더·요약표가 모두 catRank() 로 이 배열을 따르므로 이 줄만 바꾸면 전부 같이 움직인다.
+const CAT_ORDER=["Plasma Derivative","Vaccine (백신)","Rare Disease (희귀질환)","CMO / CDMO","Technology Transfer","Direct Sales","Market & Regulatory"];
+
 const CAT_LABEL={
   "Plasma Derivative":"혈액제제",
   "Vaccine (백신)":"백신",
