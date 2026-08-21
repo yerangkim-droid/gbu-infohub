@@ -85,6 +85,7 @@
     color:var(--m);background:var(--msoft);border:1px solid var(--m);border-radius:999px;padding:1px 11px;white-space:nowrap}
   .modebtn[aria-pressed="true"] .mnum{background:var(--m);color:var(--card);border-color:var(--m)}
   .modebtn .msub{font-size:11.5px;font-weight:600;color:var(--ink-3);letter-spacing:.01em;padding-left:26px}
+  .modebtn .mspan{font-weight:500;font-variant-numeric:tabular-nums;opacity:.92}
 
   /* 흰 패널 (환율 레이아웃 통일: 상단 콘솔 + 결과 그룹) */
   .panel{background:var(--card);
@@ -208,7 +209,6 @@
       <div class="sub">6개 사업 영역과 관련하여 글로벌 시장 이슈와 동향을 <b>‘뉴스 기사’</b>, <b>‘경쟁사 IR 자료’</b> 2가지 분류로 구분하여 수집하고 요약한 내용입니다. 각국 규제·약가·관세, 산업 전반의 구도처럼 <b>어느 한 사업 영역에 속하지 않는 이슈</b>는 <b>‘시장·규제 동향’</b>으로 따로 모읍니다. 시장 이슈는 뉴스 기사와 함께 보여 주며 카드의 <b>‘시장이슈’ 배지</b>로 구분됩니다.</div>
     </div>
     <div class="chips">
-      <span class="mchip">수집기간 <b>하단 참조</b></span>
       <span class="mchip" id="asofchip">업데이트 <b id="asof">2026-08-21</b><span class="asofsub" id="asofsub"></span></span>
     </div>
   </header>
@@ -8137,6 +8137,14 @@ function filtered(){
   });
 }
 
+// 유형별 수집 기간 — 탭 부제와 하단 '수집 범위 및 한계'가 같은 값을 쓰도록 한 곳에서 계산한다.
+// 유형마다 비대상 사업영역이 다르므로(IR 탭은 3개 영역 제외) mode 별로 따로 구해야 한다.
+function modeSpan(mode){
+  const ds=DATA.filter(d=>d.mode===mode&&!catHidden(mode,d.category)&&d.date)
+               .map(d=>d.date).sort();
+  return ds.length?{from:ds[0],to:ds[ds.length-1],n:ds.length}:null;
+}
+
 function renderModes(){
   const nOf=m=>DATA.filter(d=>d.mode===m && !catHidden(m,d.category)).length;
   const nNews=nOf("news"), nIr=nOf("ir");
@@ -8147,9 +8155,12 @@ function renderModes(){
       `<div class="mtop"><span class="mico">${ico}</span><span class="mname">${name}</span><span class="mnum">${n}건</span></div>`+
       `<div class="msub">${sub}</div></button>`;
   // 시장 이슈는 별도 탭 없이 뉴스 기사 탭에 함께 담는다(부제에 건수는 적지 않는다).
+  // 부제 = 기간 단위 + 그 유형이 실제로 담고 있는 수집 기간(2026-08-21).
+  // 예전에는 상단에 '수집기간 하단 참조' 칩만 있어서 탭을 옮겨도 기간을 알 수 없었다.
+  const sub=(unit,s)=>s?`${unit} <span class="mspan">(수집기간 ${s.from} ~ ${s.to})</span>`:unit;
   el.innerHTML=
-    tab("news","📰","뉴스 기사","주차별",nNews,"--news","--news-bg2")+
-    tab("ir","📊","경쟁사 IR 자료","분기 · 반기 · 연간",nIr,"--ir","--ir-bg2");
+    tab("news","📰","뉴스 기사",sub("주차별",modeSpan("news")),nNews,"--news","--news-bg2")+
+    tab("ir","📊","경쟁사 IR 자료",sub("분기 · 반기 · 연간",modeSpan("ir")),nIr,"--ir","--ir-bg2");
   el.querySelectorAll(".modebtn").forEach(b=>b.onclick=()=>{if(state.mode!==b.dataset.mode){state.mode=b.dataset.mode;state.scope="분기";state.period=latestPeriodKey(state.mode);render();}});
 }
 
@@ -8324,12 +8335,7 @@ updateCatHint();
 // 수집 범위 및 한계 — 기간·건수는 DATA/META 에서 그때그때 계산한다.
 // 손으로 적어 두면 갱신 때마다 고쳐야 하고 실제로 옛 날짜가 남는다(2026-08-18 동적 계산으로 전환).
 function renderCovNote(){
-  const span=mode=>{
-    const ds=DATA.filter(d=>d.mode===mode&&!catHidden(mode,d.category)&&d.date)
-                 .map(d=>d.date).sort();
-    return ds.length?{from:ds[0],to:ds[ds.length-1],n:ds.length}:null;
-  };
-  const news=span("news"), ir=span("ir");
+  const news=modeSpan("news"), ir=modeSpan("ir");
   const all=[news,ir].filter(Boolean);
   const at=(META&&META.crawledAt)||{};
   const line=(label,s,crawled)=>s
