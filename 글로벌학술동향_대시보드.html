@@ -205,7 +205,7 @@
       <div class="pills" id="targetpills"></div>
     </div>
     <div class="filterblock" style="flex:1 1 260px">
-      <span class="blbl">사업 영역 (복수 선택)</span>
+      <span class="blbl">사업 영역</span>
       <div class="pills" id="catpills"></div>
     </div>
   </div>
@@ -6616,11 +6616,20 @@ function renderCats(){
     return `<button class="pill" data-c="${esc(c)}" aria-pressed="${state.cats.has(c)}"><span class="pdot" style="background:${catColor(c)}"></span>${esc(catLabel(c))} <span class="cnt">${n}</span></button>`;
   }).join("");
   el.innerHTML=h;
-  // 사업 영역은 라벨 그대로 항상 복수 선택 — '여러 개 선택' 토글은 위쪽 분류(KPI) 전용이다.
+  // 사업 영역도 분류(KPI)와 같은 규칙을 쓴다 — 기본은 한 번에 하나만, '여러 개 선택'(#catmulti)을
+  // 켜야 동시에 여러 개가 켜진다(2026-08-21). 예전에는 여기만 항상 복수 선택이라
+  // 기간·대상·분류는 하나씩 잡히는데 사업 영역만 계속 쌓여 규칙이 어긋나 보였다.
   el.querySelectorAll(".pill").forEach(b=>b.onclick=()=>{
     const c=b.dataset.c;
-    if(!c) state.cats.clear();   // '전체' — 초기화
-    else state.cats.has(c)?state.cats.delete(c):state.cats.add(c);
+    if(!c){                      // '전체' — 항상 초기화
+      state.cats.clear();
+    }else if(state.multi){       // 다중 선택 — 누른 것만 토글
+      state.cats.has(c)?state.cats.delete(c):state.cats.add(c);
+    }else{                       // 단일 선택 — 이미 그것만 켜져 있으면 해제, 아니면 그것만 남긴다
+      const onlyThis = state.cats.size===1 && state.cats.has(c);
+      state.cats.clear();
+      if(!onlyThis) state.cats.add(c);
+    }
     render();
   });
 }
@@ -6692,8 +6701,8 @@ document.getElementById("reset").addEventListener("click",()=>{
 function updateCatHint(){
   const el=document.getElementById("cathint"); if(!el) return;
   el.textContent = state.multi
-    ? "여러 분류를 동시에 선택할 수 있습니다 · 선택된 분류를 다시 누르면 해제 · ‘전체’를 누르면 초기화"
-    : "한 번에 한 분류만 선택됩니다 · 다시 누르면 해제 · 여러 분류를 함께 보려면 ‘여러 개 선택’을 켜세요";
+    ? "분류와 사업 영역을 여러 개 동시에 선택할 수 있습니다 · 선택된 것을 다시 누르면 해제 · ‘전체’를 누르면 초기화"
+    : "분류와 사업 영역 모두 한 번에 하나만 선택됩니다 · 다시 누르면 해제 · 여러 개를 함께 보려면 ‘여러 개 선택’을 켜세요";
 }
 document.getElementById("catmulti").addEventListener("change",e=>{
   state.multi=e.target.checked;
@@ -6702,6 +6711,11 @@ document.getElementById("catmulti").addEventListener("change",e=>{
   if(!state.multi && state.srcs.size>1){
     const first=[...state.srcs].sort((a,b)=>SRC_ORDER.indexOf(a)-SRC_ORDER.indexOf(b))[0];
     state.srcs.clear(); state.srcs.add(first);
+  }
+  // 사업 영역도 같은 토글을 따르므로 함께 정리한다(2026-08-21)
+  if(!state.multi && state.cats.size>1){
+    const first=[...state.cats].sort((a,b)=>catRank(a)-catRank(b)||a.localeCompare(b))[0];
+    state.cats.clear(); state.cats.add(first);
   }
   updateCatHint(); render();
 });

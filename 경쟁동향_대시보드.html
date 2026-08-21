@@ -7464,6 +7464,21 @@ function periodInfo(d){
   }
   return quarterInfo(d.date);   // 대상 기간이 없으면 예전처럼 발표일 기준
 }
+// 뉴스 기사 탭의 기본값 — '전체'가 아니라 **가장 최근 주차**를 열어 둔다(2026-08-21).
+//   매주 확인하는 화면이라 들어오자마자 이번 주 기사만 보이는 편이 맞고,
+//   전체를 보려면 주차 축의 '전체' 버튼을 누르면 된다.
+//   IR 은 분기·반기·연간이 섞여 있어 최신 하나만 여는 게 의미가 없으므로 '전체'를 그대로 둔다.
+//   ※ periodInfo 는 state.mode 를 보고 갈라지므로 반드시 mode 를 바꾼 뒤에 부른다.
+function latestPeriodKey(mode){
+  if(mode!=="news") return "";
+  let best=null;
+  DATA.forEach(d=>{
+    if(d.mode!=="news"||catHidden("news",d.category)) return;
+    const w=periodInfo(d);
+    if(!best||w.sort>best.sort) best=w;
+  });
+  return best?best.key:"";
+}
 
 function filtered(){
   return DATA.filter(d=>{
@@ -7492,7 +7507,7 @@ function renderModes(){
   el.innerHTML=
     tab("news","📰","뉴스 기사","주차별",nNews,"--news","--news-bg2")+
     tab("ir","📊","경쟁사 IR 자료","분기 · 반기 · 연간",nIr,"--ir","--ir-bg2");
-  el.querySelectorAll(".modebtn").forEach(b=>b.onclick=()=>{if(state.mode!==b.dataset.mode){state.mode=b.dataset.mode;state.period="";state.scope="분기";render();}});
+  el.querySelectorAll(".modebtn").forEach(b=>b.onclick=()=>{if(state.mode!==b.dataset.mode){state.mode=b.dataset.mode;state.scope="분기";state.period=latestPeriodKey(state.mode);render();}});
 }
 
 // IR 범위 버튼 — 분기 / 반기 / 연간. 고른 범위에 맞춰 아래 기간 축 단위가 바뀐다.
@@ -7647,7 +7662,7 @@ function render(){
 
 document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value;render();});
 document.getElementById("reset").addEventListener("click",()=>{
-  state.q="";state.cats.clear();state.period="";
+  state.q="";state.cats.clear();state.period=latestPeriodKey(state.mode);
   document.getElementById("q").value="";render();
 });
 document.getElementById("catmulti").addEventListener("change",e=>{
@@ -7704,5 +7719,6 @@ function normalizeData(){
 }
 normalizeData();
 renderCovNote();   // mode·category 정규화가 끝난 뒤에 계산해야 탭별 기간이 맞는다
+state.period=latestPeriodKey(state.mode);   // 첫 화면은 뉴스 최신 주차로 연다
 render();
 </script>

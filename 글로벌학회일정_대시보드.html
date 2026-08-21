@@ -113,7 +113,6 @@
   .kpi .lbl{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2);font-weight:600;white-space:nowrap}
   .kpi .dot{width:9px;height:9px;border-radius:50%;flex:none}
   .kpi .num{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--ink)}
-  .kpi.total .num{color:var(--accent)}
 
   /* filters */
   .controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:10px}
@@ -271,7 +270,7 @@
   </section>
 
   <div class="panel console">
-  <div class="seclbl">요약 · 클릭하여 필터 / 이동</div>
+  <div class="seclbl">클릭하면 달력이 해당 시점으로 이동합니다</div>
   <div class="kpis" id="kpis"></div>
 
   <div class="controls">
@@ -492,9 +491,11 @@ function buildKPIs(){
   const minY=Math.min(TODAY.getFullYear(), ...(nums.length?nums:[TODAY.getFullYear()]));
   const years=[]; for(let y=minY; y<=2028; y++) years.push(String(y));
   const upcoming=EVENTS.filter(e=>daysUntil(e.start)>=0).length;
-  const tiles=[{id:"total", lbl:"총 행사", num:EVENTS.length, color:"var(--accent)", cls:"total"}];
+  // '총 행사' 타일은 2026-08-21 제거했다 — 숫자는 헤더 칩('총 N개 행사')과 같았고,
+  // 클릭 동작(검색·지역·유형 초기화)은 바로 아래 '초기화' 버튼과 완전히 겹쳤다.
+  // 남은 타일은 전부 '달력을 그 시점으로 옮기는' 이동 버튼이라 성격이 하나로 모인다.
+  const tiles=[{id:"upcoming", lbl:"다가오는 행사 ↗", num:upcoming, color:"var(--up)"}];
   years.forEach(y=> tiles.push({id:"y"+y, lbl:y+"년 ↗", num:EVENTS.filter(e=>e.start.startsWith(y)).length, color:"var(--conf)"}));
-  tiles.push({id:"upcoming", lbl:"다가오는 행사 ↗", num:upcoming, color:"var(--up)"});
   host.innerHTML=tiles.map(t=>
     `<button class="kpi ${t.cls||""}" data-kpi="${t.id}" aria-pressed="false">
       <div class="lbl"><span class="dot" style="background:${t.color}"></span>${t.lbl}</div>
@@ -504,7 +505,6 @@ function buildKPIs(){
 }
 function onKPI(id){
   hidePopup();
-  if(id==="total"){ state.q=""; state.region="all"; state.type="all"; renderAll(); return; }
   if(id==="upcoming"){
     const next=filtered().filter(e=>daysUntil(e.start)>=0).sort((a,b)=>a.start<b.start?-1:1)[0]
       || EVENTS.filter(e=>daysUntil(e.start)>=0)[0];
