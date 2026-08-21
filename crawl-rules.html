@@ -217,7 +217,7 @@
       <strong>어떤 키워드로</strong> 수집하는지 정리한 문서입니다. 실시간 환율은 크롤링이 아닌 시세 API 조회라 제외했습니다.
     </p>
     <div class="meta">
-      <span>기준일 2026-08-12</span>
+      <span>기준일 2026-08-21</span>
       <span>대시보드 <a href="https://infohub-site.vercel.app">infohub-site.vercel.app</a></span>
     </div>
   </header>
@@ -232,7 +232,7 @@
         <tbody>
           <tr>
             <th scope="row">시장 동향</th>
-            <td>평일 = 최근 4주<br>월요일 = 최근 3년 전체 재수집</td>
+            <td>주간 = 최근 1~4주<br>과거 구간은 <strong>기간을 나눠 소급 수집</strong><br>보관 3년</td>
             <td>공개 뉴스(국내 제약 전문지 포함) · 경쟁사 공식 IR · 규제기관 발표</td>
             <td>8개 사업영역 × 경쟁사 + 제품 + 적응증 + 기간</td>
           </tr>
@@ -261,7 +261,7 @@
     <dl class="spec">
       <dt>검색기간</dt>
       <dd>
-        <div>평일에는 <strong>최근 4주(28일)</strong>만 집중 수집하고, 월요일에는 <strong>최근 3년</strong> 전체를 다시 훑어 빈 주차를 메웁니다.</div>
+        <div>정기 수집은 <strong>최근 1~4주</strong>를 훑습니다. 그 이전 구간은 <strong>기간과 감시 대상을 나눠 소급 수집(백필)</strong>합니다 — 한 번에 넓게 요구하면 검색이 얕아져, 대상 2~6개 단위의 블록으로 쪼개 돌립니다.</div>
         <span class="sub">3년이 지난 자료는 갱신할 때 정리됩니다. 수집 창을 벗어난 자료는 화면에서 "이전 자료"로 묶입니다.</span>
       </dd>
 
@@ -347,7 +347,7 @@
         <tbody>
           <tr>
             <th scope="row">혈액제제 — 면역글로불린</th>
-            <td>CSL Behring · Takeda · Grifols · Octapharma · ADMA · Kedrion · Intas · Reliance · 쓰촨 위엔다</td>
+            <td>CSL Behring · Takeda · Grifols · Octapharma · ADMA · Kedrion · Intas · Reliance · 쓰촨 위엔다<span class="sub">쓰촨 위엔다 슈양(四川远大蜀阳)은 중국 의약 DB와 회사 자체 사이트에만 실려 일반 검색으로는 잡히지 않습니다 — 사이트를 직접 확인합니다.</span></td>
             <td class="en">Privigen · Hizentra · Gammagard · HYQVIA · Cuvitru · Gamunex-C · Xembify · Octagam · Panzyga · Cutaquig · Asceniv · Bivigam</td>
           </tr>
           <tr>
@@ -400,6 +400,50 @@
         </tbody>
       </table>
     </div>
+
+    <h3>수집 품질 규칙 <span class="sub">2026-08 백필 실행에서 확인된 문제를 규칙으로 고정</span></h3>
+    <dl class="spec">
+      <dt>검색 통로</dt>
+      <dd>
+        <div>감시 대상 <strong>하나마다 네 개 통로를 각각 최소 1회씩</strong> 돌립니다. 건수 목표가 아니라 <strong>검색 횟수</strong>의 하한입니다 — 결과가 0건인 것은 정상이지만 통로를 건너뛰는 것은 아닙니다.</div>
+        <div><span class="num">1</span> 회사·기관 <strong>공식 채널</strong>의 연도별 뉴스 아카이브를 직접 연다 &nbsp;
+             <span class="num">2</span> 일반 웹 검색(제품명 · 사건 키워드) &nbsp;
+             <span class="num">3</span> <strong>지역 · 현지 매체</strong> &nbsp;
+             <span class="num">4</span> 국내 전문지 또는 <strong>현지어</strong></div>
+        <span class="sub">통로 3이 빠지면 공장 · 투자 · 조달 건을 놓칩니다. 옥타파마의 미국 록힐 15억 달러 투자는 공식 보도자료보다 <strong>지역지 3곳이 한 달 먼저</strong> 다뤘습니다.</span>
+        <span class="sub">통로 4(현지어)는 다른 통로로는 잡히지 않는 자료가 나오는 자리입니다 — 러시아 전략의약품 목록 개정, 스페인 · 아르헨티나 혈액제제 조달 공고가 이 통로에서만 확인됐습니다.</span>
+      </dd>
+
+      <dt>URL</dt>
+      <dd>
+        <div><strong>그 기사의 고유 주소</strong>만 수집합니다. 뉴스룸 · 보도자료 목록 같은 랜딩 페이지는 기사를 가리키지 않아 검증도 중복 판정도 되지 않습니다.</div>
+        <span class="sub">주소를 특정하지 못하면 목록 페이지로 대신하지 않고 <strong>그 건을 버립니다</strong>.</span>
+        <div>같은 보도자료가 통신사에 재배포돼 있으면 <strong>회사 공식 뉴스룸 주소</strong>를 씁니다.
+          <span class="sub">globenewswire · PR Newswire · Business Wire 재배포판을 쓰면 이미 보유한 자료와 주소만 달라져 중복이 걸러지지 않습니다.</span></div>
+      </dd>
+
+      <dt>제외</dt>
+      <dd>
+        <div><strong>임상시험 레지스트리 등록 항목</strong> — ClinicalTrials.gov(NCT) · WHO ICTRP · EudraCT의 연구 등록 페이지는 기사가 아니며 학술 동향 대시보드 소관입니다. 그 임상을 <strong>다룬 기사</strong>는 수집합니다.</div>
+        <div><strong>재조합 항체 · 유전자치료제</strong> — 혈액제제 영역은 <strong>혈장에서 분획한 제제</strong>가 대상입니다(HEMGENIX · ANDEMBRY 등 제외).</div>
+        <div><strong>혈우병 · 고면역글로불린</strong> — 제8인자 · Hemlibra · Advate · HBIG · TIG · VZIG · Nabi-HB.</div>
+        <div><strong>상시 갱신 페이지</strong> — 시장 리포트 판매 페이지, 연간 전망 랜딩 페이지, 규제기관의 상시 갱신 목록처럼 발행일이 고정되지 않는 문서.</div>
+        <span class="sub">분기 · 반기 · 연간 실적 자료는 IR로 따로 수집하므로 뉴스에서는 제외합니다(유형만 바꿔 넣는 것도 안 됩니다).</span>
+      </dd>
+
+      <dt>건수</dt>
+      <dd>
+        <div><strong>최소 건수를 요구하지 않습니다.</strong> 2026-08 두 차례 실행에서 최소 건수를 채우려고 실재하는 주소에 없는 제목 · 날짜를 붙인 사례가 나와(누적 13건) 요구 자체를 없앴습니다.</div>
+        <span class="sub">대신 검색을 수행했다는 <strong>보고</strong>를 받습니다 — 대상별 <code>커버리지</code>와 통로별 <code>출처</code> 구성. 0건은 정상이고, 보고가 비어 있으면 검색을 하지 않은 것으로 봅니다.</span>
+      </dd>
+
+      <dt>검증</dt>
+      <dd>
+        <div>수집된 링크는 병합 전에 <strong>본문을 직접 열어</strong> 제목 · 발행일을 대조합니다. 접근이 막히는 도메인은 회피 목록으로 관리합니다.
+          <span class="sub">현재 회피 — chosun.com · biz.chosun.com · yna.co.kr · morningstar.com · biospectrumasia.com · accord-healthcare.com</span></div>
+        <span class="sub">같은 사건을 여러 매체가 다뤘으면 원출처 1건만 남깁니다. 다만 국내 매체의 <strong>자체 취재 · 해설</strong>은 별건으로 봅니다.</span>
+      </dd>
+    </dl>
   </section>
 
   <!-- ═══════════ 학회 일정 ═══════════ -->
