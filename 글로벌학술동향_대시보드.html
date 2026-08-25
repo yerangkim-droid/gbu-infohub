@@ -11,8 +11,8 @@
     --accent:#a8102c; --accent-strong:#82081f; --accent-soft:#a8102c0f;
     --shadow:0 1px 2px rgba(17,28,38,.04),0 2px 8px rgba(17,28,38,.04);
     /* 소스 구분색 (뮤트 통일) */
-    --pubmed:#24557f; --preprint:#5a6672; --clinical:#16706a;
-    --pubmed-bg:#24557f12; --preprint-bg:#5a667214; --clinical-bg:#16706a12;
+    --pubmed:#24557f; --clinical:#16706a;
+    --pubmed-bg:#24557f12; --clinical-bg:#16706a12;
     --gc:#007a33; --gc-bg:#007a3314;
     --radius:14px; --radius-sm:10px;
     --fs:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,system-ui,sans-serif;
@@ -21,8 +21,8 @@
     --paper:#0e1317; --card:#161c22; --ink:#e7edf2; --ink-2:#a6b2bd; --ink-3:#74808b;
     --line:#232b33; --line-2:#1b2229; --accent:#f0798c; --accent-strong:#f5a6b0; --accent-soft:#f0798c20;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
-    --pubmed:#8fb4d8; --preprint:#9aa5b1; --clinical:#6cc6bf;
-    --pubmed-bg:#8fb4d81c; --preprint-bg:#9aa5b11c; --clinical-bg:#6cc6bf1c;
+    --pubmed:#8fb4d8; --clinical:#6cc6bf;
+    --pubmed-bg:#8fb4d81c; --clinical-bg:#6cc6bf1c;
     --gc:#5ec98d; --gc-bg:#5ec98d1c;
   }}
   :root[data-theme="dark"]{
@@ -30,8 +30,8 @@
     --paper:#0e1317; --card:#161c22; --ink:#e7edf2; --ink-2:#a6b2bd; --ink-3:#74808b;
     --line:#232b33; --line-2:#1b2229; --accent:#f0798c; --accent-strong:#f5a6b0; --accent-soft:#f0798c20;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 3px 12px rgba(0,0,0,.28);
-    --pubmed:#8fb4d8; --preprint:#9aa5b1; --clinical:#6cc6bf;
-    --pubmed-bg:#8fb4d81c; --preprint-bg:#9aa5b11c; --clinical-bg:#6cc6bf1c;
+    --pubmed:#8fb4d8; --clinical:#6cc6bf;
+    --pubmed-bg:#8fb4d81c; --clinical-bg:#6cc6bf1c;
     --gc:#5ec98d; --gc-bg:#5ec98d1c;
   }
   :root[data-theme="light"]{
@@ -39,8 +39,8 @@
     --paper:#f5f7f9; --card:#ffffff; --ink:#111c26; --ink-2:#4f5c6a; --ink-3:#8a96a2;
     --line:#e5eaee; --line-2:#f0f3f6; --accent:#a8102c; --accent-strong:#82081f; --accent-soft:#a8102c0f;
     --shadow:0 1px 2px rgba(17,28,38,.04),0 2px 8px rgba(17,28,38,.04);
-    --pubmed:#24557f; --preprint:#5a6672; --clinical:#16706a;
-    --pubmed-bg:#24557f12; --preprint-bg:#5a667214; --clinical-bg:#16706a12;
+    --pubmed:#24557f; --clinical:#16706a;
+    --pubmed-bg:#24557f12; --clinical-bg:#16706a12;
     --gc:#007a33; --gc-bg:#007a3314;
   }
 
@@ -6358,16 +6358,13 @@ const SRC={
   pubmed:{label:"학술 논문", db:"PubMed",
     org:"미국 국립의학도서관 NLM 산하 국립생물공학정보센터 NCBI",
     color:"var(--pubmed)",bg:"var(--pubmed-bg)"},
-  preprint:{label:"프리프린트", db:"bioRxiv / medRxiv",
-    org:"콜드 스프링 하버 연구소 CSHL",
-    color:"var(--preprint)",bg:"var(--preprint-bg)"},
   clinical:{label:"임상 연구", db:"ClinicalTrials.gov",
     org:"미국 국립보건원 NIH 산하 국립의학도서관 NLM",
     color:"var(--clinical)",bg:"var(--clinical-bg)"},
 };
 // 카드 배지 등 좁은 영역용 짧은 표기
 const srcShort=s=>(SRC[s]?SRC[s].label+" ("+SRC[s].db+")":s);
-const SRC_ORDER=["pubmed","preprint","clinical"];
+const SRC_ORDER=["pubmed","clinical"];
 const CAT_ORDER=["plasma","vaccine","rare"];
 const CAT_LABEL={plasma:"혈액제제",vaccine:"백신",rare:"헌터증후군/호중구감소증"};
 const CAT_SUB={plasma:"면역글로불린(IVIG/SCIG) · 알부민 — GC 제품 허가 적응증 기준",vaccine:"인플루엔자 · 수두 백신",rare:"MPS II · G-CSF(호중구감소증)"};
@@ -6582,7 +6579,6 @@ document.getElementById("covnote").innerHTML=
   `<li>3개 사업 영역(혈액제제 · 백신 · 헌터증후군/호중구감소증)의 GC 성분 및 동일 적응증 연관 약물을 대상으로, 성분명 · 브랜드 · 적응증 키워드를 조합해 <b>최근 2년</b>(2024-08 ~ 2026-08)의 논문을 수집했습니다.</li>`+
   `<li><b>학술 논문</b>은 PubMed (미국 국립의학도서관 NLM 산하 국립생물공학정보센터 NCBI)에서 수집했습니다.</li>`+
   `<li><b>임상 연구</b>는 ClinicalTrials.gov (미국 국립보건원 NIH 산하 국립의학도서관 NLM)에서 수집했으며, 카드에 표시되는 날짜는 <b>레지스트리 최초 등록일</b>입니다. 연구 시작일은 아직 시작하지 않은 연구에서 미래 날짜가 되거나 계획 변경으로 바뀌므로 등록일을 기준으로 삼았으며, 오래 전 등록된 연구는 아래 수집 기간보다 이전 날짜로 표시될 수 있습니다.</li>`+
-  `<li><b>프리프린트</b> (bioRxiv / medRxiv · 콜드 스프링 하버 연구소 CSHL)는 공개 API가 키워드 검색을 지원하지 않아 이번 수집에는 포함되지 않았습니다.</li>`+
   `<li>GC 자사 제품(알리글로 · 지씨플루 · GC알부민)은 최근 2년 내 신규 논문이 거의 없어 대부분 동일 적응증 경쟁 · 계열 약물 근거로 구성됩니다. GC 제품 자료는 헌터라제(idursulfase beta) · 뉴라펙(pegteograstim) · 배리셀라 관련 <b>11건</b>이며, 뉴라펙의 등록임상(GCPGC)은 시작일 기준으로 2008~2016년에 표시됩니다.</li>`+
   `<li>카드의 날짜는 <b>연-월까지만</b> 표시합니다. PubMed는 발행호 기준이고 ClinicalTrials.gov는 등록일 기준이라 출처마다 정밀도가 달라, 일 단위 표기는 실제보다 정확해 보일 수 있기 때문입니다.</li>`+
   `<li>모든 요약은 출처에 명시된 사실만 반영하여 각 카드의 <b>‘원문 보기’</b> · DOI · PMID · NCT 링크로 검증할 수 있습니다.</li>`+
