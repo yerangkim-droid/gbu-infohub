@@ -259,8 +259,6 @@
     </div>
     <div class="chips">
       <span class="mchip">업데이트 <b id="asof">2026-08-20</b></span>
-      <span class="mchip">총 <b id="chipTotal">0</b>개 행사</span>
-      <span class="mchip">오늘 <b id="chipToday">–</b></span>
     </div>
   </header>
 
@@ -391,7 +389,6 @@ const EVENTS = (window.GBU_EVENTS || []);
 const MONTH_KO = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 function parseD(s){ return new Date(s+"T00:00:00"); }
 function pad(n){ return String(n).padStart(2,"0"); }
-function fmtToday(d){ return d.getFullYear()+"."+pad(d.getMonth()+1)+"."+pad(d.getDate()); }
 function dayDiff(a,b){ return Math.round((a-b)/86400000); }
 function addDays(d,n){ return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n); }
 function ymd(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
@@ -809,8 +806,6 @@ document.addEventListener("click", (e)=>{ const p=document.getElementById("popup
 document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") hidePopup(); });
 
 // ── 초기화 ──────────────────────────────────────────────────────────────
-document.getElementById("chipTotal").textContent=EVENTS.length;
-document.getElementById("chipToday").textContent=fmtToday(TODAY);
 buildKPIs();
 buildSummary();
 buildRegionPills();
