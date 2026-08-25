@@ -211,7 +211,7 @@
       <div class="sub">6개 사업 영역과 관련하여 글로벌 시장 이슈와 동향을 <b>‘뉴스 기사’</b>, <b>‘경쟁사 IR 자료’</b> 2가지 분류로 구분하여 수집하고 요약한 내용입니다. 각국 규제·약가·관세, 산업 전반의 구도처럼 <b>어느 한 사업 영역에 속하지 않는 이슈</b>는 <b>‘시장·규제 동향’</b>으로 따로 모읍니다. 시장 이슈는 뉴스 기사와 함께 보여 주며 카드의 <b>‘시장이슈’ 배지</b>로 구분됩니다.</div>
     </div>
     <div class="chips">
-      <span class="mchip" id="asofchip">업데이트 <b id="asof">2026-08-25 13:31</b><span class="asofsub" id="asofsub"></span></span>
+      <span class="mchip" id="asofchip">업데이트 <b id="asof">2026-08-25 13:37</b><span class="asofsub" id="asofsub"></span></span>
     </div>
   </header>
 
@@ -8887,7 +8887,7 @@ let DATA = [
 //   · update_dashboard.ps1 이 이 블록을 갱신한다 — 이번 실행에서 실제로 항목이 들어온 탭만
 //     시각을 바꾸고, 들어오지 않은 탭은 이전 값을 그대로 둔다.
 const META = {
-  crawledAt: { news: "2026-08-25 13:31", ir: "2026-08-24 17:50" }
+  crawledAt: { news: "2026-08-25 13:37", ir: "2026-08-24 17:50" }
 };
 /*__META_END__*/
 
@@ -8976,16 +8976,36 @@ function hostOf(u){try{return new URL(u).hostname.replace(/^www\./,"");}catch(e)
 const _now=new Date(), _ny=_now.getFullYear(), _nm=_now.getMonth()+1;
 const WEEK_CUTOFF=(_ny-3)*10000+_nm*100;
 const QTR_CUTOFF=(_ny-3)*10+(Math.floor((_nm-1)/3)+1);
+// 주차 기준 (2026-08-25 변경) — **월~일 한 주, 그 달의 첫 월요일이 1주차**.
+//   예) 2026년 8월 1주 = 8/3(월)~8/9(일).
+//   주가 달을 걸치면 **그 주 월요일이 속한 달**로 귀속한다 —
+//   8/1(토)·8/2(일)은 월요일이 7/27 이므로 7월 4주(7/27~8/2)에 든다.
+//   옛 규칙은 1~7일=1주 식으로 날짜만 7로 나눠 요일과 어긋났다(8/1 이 8월 1주로 잡혔다).
+//   한 달의 월요일은 최대 5개이므로 주차는 5를 넘지 않는다.
+const DAYMS=86400000;
+function weekOf(y,m,day){
+  const d=new Date(Date.UTC(y,m-1,day));
+  const dow=(d.getUTCDay()+6)%7;                        // 월=0 … 일=6
+  const mon=new Date(d.getTime()-dow*DAYMS);            // 그 주의 월요일
+  const my=mon.getUTCFullYear(), mm=mon.getUTCMonth()+1, md=mon.getUTCDate();
+  const firstMon=((8-new Date(Date.UTC(my,mm-1,1)).getUTCDay())%7)+1;  // 그 달 첫 월요일의 일자
+  return {y:my,m:mm,wk:Math.floor((md-firstMon)/7)+1,mon};
+}
+function weekRange(mon){
+  const end=new Date(mon.getTime()+6*DAYMS);
+  return (mon.getUTCMonth()+1)+"."+mon.getUTCDate()+"~"+(end.getUTCMonth()+1)+"."+end.getUTCDate();
+}
 function weekInfo(dateStr){
   const earlier={key:"earlier",label:"이전 자료",sort:-1};
   if(!dateStr) return earlier;
   const p=String(dateStr).split("-"); const y=+p[0]; const m=p[1]?+p[1]:0; const day=p[2]?+p[2]:0;
-  const wk=day?Math.min(5,Math.floor((day-1)/7)+1):0;
-  const sort=y*10000+m*100+wk;
+  if(!y) return earlier;
+  if(!m){ const s=y*10000; return s<WEEK_CUTOFF?earlier:{key:y+"-00",label:y+"년 (월미상)",sort:s}; }
+  if(!day){ const s=y*10000+m*100; return s<WEEK_CUTOFF?earlier:{key:y+"-"+pad(m)+"-W0",label:y+"년 "+m+"월 (일자미상)",sort:s}; }
+  const w=weekOf(y,m,day);
+  const sort=w.y*10000+w.m*100+w.wk;
   if(sort<WEEK_CUTOFF) return earlier;
-  if(!m) return {key:y+"-00",label:y+"년 (월미상)",sort:y*10000};
-  if(!day) return {key:y+"-"+pad(m)+"-W0",label:y+"년 "+m+"월 (일자미상)",sort:y*10000+m*100};
-  return {key:y+"-"+pad(m)+"-W"+wk,label:y+"년 "+m+"월 "+wk+"주",sort};
+  return {key:w.y+"-"+pad(w.m)+"-W"+w.wk,label:w.y+"년 "+w.m+"월 "+w.wk+"주",range:weekRange(w.mon),sort};
 }
 function quarterInfo(dateStr){
   const earlier={key:"earlier",label:"이전 자료",sort:-1};
@@ -9117,12 +9137,13 @@ function renderPeriods(){
   // ★ 반드시 filtered() 와 같은 periodInfo 를 써야 한다. 예전엔 여기서만 quarterInfo(d.date) 로
   //   발표일을 썼는데, filtered() 는 실적 대상 기간으로 거르고 있어 탭 라벨과 실제 결과가 어긋났다.
   const map={};
-  src.forEach(d=>{const w=periodInfo(d);(map[w.key]=map[w.key]||{label:w.label,sort:w.sort,n:0}).n++;});
+  src.forEach(d=>{const w=periodInfo(d);(map[w.key]=map[w.key]||{label:w.label,sort:w.sort,range:w.range||"",n:0}).n++;});
   const keys=Object.keys(map).sort((a,b)=>map[b].sort-map[a].sort);
   const lbl=document.getElementById("periodlbl");
   if(lbl)lbl.textContent=isIr?`${state.scope}별 (탭 선택)`:"주차별 (탭 선택)";
   let h=`<button class="wtab" data-w="" aria-pressed="${state.period===""}"><span class="wt">전체</span><span class="wc">${src.length}건</span></button>`;
-  keys.forEach(k=>{h+=`<button class="wtab" data-w="${esc(k)}" aria-pressed="${state.period===k}"><span class="wt">${esc(map[k].label)}</span><span class="wc">${map[k].n}건</span></button>`;});
+  keys.forEach(k=>{const t=map[k].range?` title="${esc(map[k].label)} · ${esc(map[k].range)}"`:"";
+    h+=`<button class="wtab" data-w="${esc(k)}"${t} aria-pressed="${state.period===k}"><span class="wt">${esc(map[k].label)}</span><span class="wc">${map[k].n}건</span></button>`;});
   const el=document.getElementById("weektabs");el.innerHTML=h;
   el.querySelectorAll(".wtab").forEach(b=>b.onclick=()=>{state.period=b.dataset.w;render();});
 }
@@ -9276,7 +9297,7 @@ function renderCovNote(){
     `<li>6개 사업 영역 시장 및 경쟁 동향 관련하여 키워드를 조합해 수집하며, 어느 영역에도 속하지 않는 규제·산업 이슈는 <b>시장·규제 동향</b>으로 분류합니다. 화면에는 <b>뉴스·시장 이슈는 2025년 1월 1일 이후 발행분</b>을, <b>경쟁사 IR 자료는 2024년 1분기·상반기·연간 실적부터</b> 표시합니다(그 이전 자료는 아카이브에만 보관). IR 은 실적이 끝난 뒤 1~2개월에 공시되고 회계연도가 다른 회사도 있어, 공시일이 아니라 <b>실적 대상 기간</b>으로 기준을 잡습니다. 실제로 수집된 기간은 아래와 같습니다(이번 갱신 기준).</li>`+
     (all.length?`<li><b>수집 기간</b> ${all.map(s=>s.from).sort()[0]} ~ ${all.map(s=>s.to).sort().pop()} · 총 <b>${all.reduce((a,s)=>a+s.n,0)}건</b><ul class="cvsub">`+
       line("뉴스 기사", news, at.news)+line("경쟁사 IR 자료", ir, at.ir)+`</ul></li>`:"")+
-    `<li><b>뉴스 기사</b>는 전세계 공개된 뉴스 중 관련 내용을 가져와서 <b>주차별</b>로 구성했습니다. 영문 · 외국어 기사의 제목은 <b>한국어로 번역해 표시</b>하며, 원제는 <b>‘원문 보기’</b> 링크에서 확인할 수 있습니다.</li>`+
+    `<li><b>뉴스 기사</b>는 전세계 공개된 뉴스 중 관련 내용을 가져와서 <b>주차별</b>로 구성했습니다. 주차는 <b>월요일에 시작해 일요일에 끝나며, 그 달의 첫 월요일이 1주차</b>입니다(예: 2026년 8월 1주 = 8/3~8/9). 주가 달을 걸치면 <b>그 주 월요일이 속한 달</b>로 넣습니다 — 8/1·8/2는 7월 4주(7/27~8/2)입니다. 각 주차 탭에 마우스를 올리면 기간이 표시됩니다. 영문 · 외국어 기사의 제목은 <b>한국어로 번역해 표시</b>하며, 원제는 <b>‘원문 보기’</b> 링크에서 확인할 수 있습니다.</li>`+
     `<li><b>경쟁사 IR 자료</b>는 각 경쟁사 공식 채널로 공시한 IR 리포트를 <b>분기 · 반기 · 연간</b> 단위로 가져와 요약했습니다. 카드의 날짜는 <b>공시·발표일</b>이며, 실적 대상 기간은 제목·요약에 적혀 있습니다.</li>`+
     `<li>모든 요약은 출처에 명시된 사실만 반영하여 각 카드의 <b>‘원문 보기’</b>로 검증할 수 있습니다.</li>`+
     `</ul>`;
