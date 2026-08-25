@@ -1,4 +1,4 @@
-<title>학술 임상 모니터링 — GC녹십자 글로벌사업본부</title>
+<title>학술/임상 모니터링 — GC녹십자 글로벌사업본부</title>
 <style>
   @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
   :root{
@@ -178,13 +178,12 @@
 <div class="wrap">
   <header class="top">
     <div>
-      <h1>학술 임상 모니터링</h1>
+      <h1>학술/임상 모니터링</h1>
       <div class="sub">3개 사업 영역과 관련하여 글로벌 학술 및 임상 동향을 <b>‘학술 논문’</b>, <b>‘임상 연구’</b> 2가지 분류로 구분하여 수집하고 요약한 내용입니다.</div>
     </div>
     <div class="chips">
-      <span class="mchip">수집기간 <b>최근 2년</b></span>
+      <span class="mchip">수집기간 <b id="rangechip">–</b></span>
       <span class="mchip">업데이트 <b id="asof">2026-08-25</b></span>
-      <span class="mchip">총 <b id="totchip">0</b>건</span>
     </div>
   </header>
 
@@ -6875,7 +6874,52 @@ updateCatHint();
 // _auto/update_academic.ps1 을 실행해 크롤 -> 병합 -> DATA 주입 -> 배포까지 처리한다.
 
 document.getElementById("asof").textContent=AS_OF;
-document.getElementById("totchip").textContent=DATA.length;
+// 상단 '수집기간' 칩 — '최근 2년' 고정 문구 대신 **실제 구간**을 찍는다(2026-08-25 변경).
+//   기준은 **학술 논문(pubmed)의 발행일**이다. 임상(clinical)의 date 는 레지스트리 최초
+//   등록일이라 2009년처럼 옛 날짜가 섞여 있어(38건 중 15건), 그대로 최소값을 쓰면
+//   "2009년부터 수집" 으로 잘못 읽힌다. 그 사정은 아래 안내문에 이미 적혀 있다.
+//   총 건수 칩은 분류 탭에 이미 건수가 나와 중복이라 없앴다.
+{
+  const ds = DATA.filter(d => d.source_type === "pubmed")
+    .map(d => String(d.date || "").slice(0, 10))
+    .filter(s => /^\d{4}-\d{2}-\d{2}$/.test(s)).sort();
+  const el = document.getElementById("rangechip");
+  if (el && ds.length) {
+    el.textContent = ds[0] + " ~ " + ds[ds.length - 1];
+    const chip = el.closest(".mchip");
+    if (chip) chip.title = "학술 논문 발행일 기준입니다. 임상 연구는 레지스트리 최초 등록일로 표시돼 이 구간보다 이전 날짜가 있을 수 있습니다.";
+  }
+}
+
+document.getElementById("catmulti").addEventListener("change",e=>{
+  state.multi=e.target.checked;
+  // 다중 → 단일로 되돌릴 때 여러 개가 켜져 있으면, 화면 표시 순서상 첫 분류만 남긴다
+  // (전부 지워버리면 방금 보던 결과가 통째로 바뀌어 버린다)
+  if(!state.multi && state.srcs.size>1){
+    const first=[...state.srcs].sort((a,b)=>SRC_ORDER.indexOf(a)-SRC_ORDER.indexOf(b))[0];
+    state.srcs.clear(); state.srcs.add(first);
+  }
+  // 사업 영역도 같은 토글을 따르므로 함께 정리한다(2026-08-21)
+  if(!state.multi && state.cats.size>1){
+    const first=[...state.cats].sort((a,b)=>catRank(a)-catRank(b)||a.localeCompare(b))[0];
+    state.cats.clear(); state.cats.add(first);
+  }
+  updateCatHint(); render();
+});
+updateCatHint();
+
+// 데이터는 이 파일에 내장된 DATA 블록만 사용한다(런타임 fetch 없음).
+// 갱신은 작업 스케줄러 `GC학술동향_주간갱신`(매주 월요일 08:00)이
+// _auto/update_academic.ps1 을 실행해 크롤 -> 병합 -> DATA 주입 -> 배포까지 처리한다.
+
+document.getElementById("asof").textContent=AS_OF;
+// 상단 '수집기간' 칩 — '최근 2년' 이라는 고정 문구 대신 **실제로 들어와 있는 구간**을 찍는다
+// (2026-08-25 변경). 총 건수 칩은 아래 분류 탭에 이미 건수가 나와 중복이라 없앴다.
+{
+  const ds = DATA.map(d => String(d.date || "").slice(0, 10)).filter(s => /^\d{4}-\d{2}-\d{2}$/.test(s)).sort();
+  const el = document.getElementById("rangechip");
+  if (el) el.textContent = ds.length ? `${ds[0]} ~ ${ds[ds.length - 1]}` : "–";
+}
 document.getElementById("covnote").innerHTML=
   `<div class="cvtitle">수집 범위 및 한계</div>`+
   `<ul>`+
