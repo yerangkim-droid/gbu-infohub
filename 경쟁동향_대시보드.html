@@ -9586,7 +9586,7 @@ function filtered(){
   });
 }
 
-// 유형별 수집 기간 — 탭 부제와 하단 '수집 범위 및 한계'가 같은 값을 쓰도록 한 곳에서 계산한다.
+// 유형별 수집 기간 — 탭 부제와 하단 '참고사항'이 같은 값을 쓰도록 한 곳에서 계산한다.
 // 유형마다 비대상 사업영역이 다르므로(IR 탭은 3개 영역 제외) mode 별로 따로 구해야 한다.
 function modeSpan(mode){
   const ds=DATA.filter(d=>d.mode===mode&&!catHidden(mode,d.category)&&d.date)
@@ -9782,7 +9782,7 @@ document.getElementById("catmulti").addEventListener("change",e=>{
 updateCatHint();
 // 테마 전환 시 사업 영역 색상(인라인 지정)을 다시 계산해야 하므로 재렌더
 
-// 수집 범위 및 한계 — 기간·건수는 DATA/META 에서 그때그때 계산한다.
+// 참고사항 — 기간·건수는 DATA/META 에서 그때그때 계산한다.
 // 손으로 적어 두면 갱신 때마다 고쳐야 하고 실제로 옛 날짜가 남는다(2026-08-18 동적 계산으로 전환).
 function renderCovNote(){
   const news=modeSpan("news"), ir=modeSpan("ir");

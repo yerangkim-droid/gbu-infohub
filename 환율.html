@@ -486,7 +486,7 @@
   <footer class="notes">
     <div class="ftitle">참고사항</div>
     <ul>
-      <li>최신 환율: <code>fxratesapi.com</code> (분 단위 실시간 시장환율). 일시적 오류 시 <code>open.er-api.com</code>으로 자동 전환됩니다. 화면은 <b>5분마다 자동 재조회</b>하며 상단에 마지막 조회 시점을 실시간 표시합니다.</li>
+      <li>최신 환율: <code>fxratesapi.com</code> (분 단위 실시간 시장환율). 일시적 오류 시 <code>open.er-api.com</code>으로 자동 전환됩니다. 화면은 <b>1분마다 자동 재조회</b>하므로 새로고침 버튼을 누르지 않아도 값이 바뀝니다(상단에 마지막 조회 시점을 실시간 표시). 다른 탭을 보고 있는 동안에는 조회를 건너뜁니다.</li>
       <li>시장 중간값(mid-rate) 기준이라, 은행 <b>고시 환율(매매기준율·현찰 살 때/팔 때)</b>과는 스프레드만큼 차이가 있습니다.</li>
       <li>추이 그래프: 같은 출처의 <b>일자별 스냅샷을 조합</b>해 재구성하며, 그래프의 <b>기간 버튼(1개월·3개월·6개월·1년·3년·5년)</b>으로 더 과거 데이터까지 볼 수 있습니다. 기간이 길수록 표본 간격이 넓어집니다(3년 약 68일·5년 약 107일 간격).</li>
       <li>그래프의 <b>회색 점선은 선택 기간의 평균</b>입니다 — 표본 지점들의 단순 평균이라 표본 간격이 넓은 장기 구간에서는 근사값입니다.</li>
@@ -645,7 +645,8 @@ function parseNum(str) {
 }
 
 // ── API 호출 ───────────────────────────────────────────────────────────
-const AUTO_REFRESH_MS = 300000;   // 5분마다 자동 재조회(무료 API 쿼터 보호)
+const AUTO_REFRESH_MS = 60000;    // 1분마다 자동 재조회(2026-08-26 사용자 요청으로 5분 -> 1분)
+const STALE_MS        = 300000;   // 탭 복귀 시 이만큼 지났으면 즉시 갱신 — 주기와 분리해 둔다
 let fetchedAt = null, lastUpdateUtc = null, nextUpdateUtc = null, isLoading = false;
 
 async function loadRates(silent = false) {
@@ -1328,11 +1329,11 @@ loadRates();
 // ── 자동 갱신 ────────────────────────────────────────────────────────────
 // 1) 매초 "N초 전 조회" 라벨 갱신
 setInterval(renderUpdatedLabel, 1000);
-// 2) 5분마다 조용히 자동 재조회 (탭이 숨겨져 있으면 건너뜀)
+// 2) 1분마다 조용히 자동 재조회 (탭이 숨겨져 있으면 건너뜀 — 백그라운드 탭이 쿼터를 먹지 않게)
 setInterval(() => { if (document.visibilityState !== "hidden") loadRates(true); }, AUTO_REFRESH_MS);
 // 3) 탭으로 돌아왔을 때 마지막 조회가 오래됐으면 즉시 갱신
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && fetchedAt && (Date.now() - fetchedAt.getTime()) > AUTO_REFRESH_MS) loadRates(true);
+  if (document.visibilityState === "visible" && fetchedAt && (Date.now() - fetchedAt.getTime()) > STALE_MS) loadRates(true);
 });
 </script>
 </body>
