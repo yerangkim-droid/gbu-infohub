@@ -68,6 +68,13 @@
   .ciline{ height:3px; background:linear-gradient(90deg,var(--gc-red) 0%,#8f4a2c 46%,var(--gc-green) 100%); }
 
   /* 브랜드와 메뉴를 한 줄로 합쳐 상단 크롬을 줄이고 본문 영역을 넓힘 */
+  /* 대시보드는 iframe 안에서 스크롤되므로 그 스크롤바 폭(--sb)만큼 헤더 오른쪽도 비워야
+     본문과 같은 칼럼에 놓인다. 실측(2026-08-26, 뷰포트 1418px): 스크롤바 15px 일 때
+     본문 칼럼이 7.5px 왼쪽으로 밀려 제목·업데이트 칩이 헤더 브랜드·탭과 어긋났다.
+     --sb 는 아래 syncGutter() 가 활성 iframe 의 실제 차이를 재서 넣는다.
+     .topstack 이 아니라 .bar 에 주는 이유 — .ciline 그라데이션은 화면 끝까지 그려야 한다. */
+  .bar{ padding-right: var(--sb, 0px); }
+
   /* 폭·좌우 여백을 대시보드 .wrap(max-width:1120px / padding 0 18px)과 똑같이 맞춘다.
      예전엔 1200px/22px 이어서 헤더 콘텐츠가 본문보다 72px 넓었고, 오른쪽 정렬인 탭이
      본문 오른쪽 끝보다 36px 튀어나와 보였다(2026-08-26 사용자 지적). */
@@ -230,6 +237,7 @@ function ensureFrame(route){
   const f = document.createElement("iframe");
   f.title = route;
   f.src = ROUTES[route].file;
+  f.addEventListener("load", syncGutter);   // 대시보드가 길어져 스크롤바가 생긴 뒤 재측정
   frameWrap.appendChild(f);
   frames[route] = f;
   return f;
@@ -242,8 +250,32 @@ function showRoute(route){
   });
   const target = ensureFrame(route);
   Object.values(frames).forEach(f=> f.style.display = (f===target ? "block" : "none"));
+  syncGutter();   // 탭마다 스크롤 여부가 달라 전환 직후 다시 잰다
 }
 function navTo(route){ location.hash = "#"+route; }
+
+/* ── 헤더/본문 칼럼 정렬 ────────────────────────────────────────────────
+   대시보드는 iframe 안에서 스크롤돼 뷰포트가 스크롤바만큼 좁다. 셸 헤더에는 스크롤바가
+   없으니 그대로 두면 본문 칼럼이 스크롤바/2 만큼 왼쪽으로 밀린다. 활성 iframe 의 실제
+   차이를 재서 헤더 오른쪽에 같은 폭을 비운다(--sb).                                    */
+function platformScrollbar(){
+  const d = document.createElement("div");
+  d.style.cssText = "position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll";
+  document.body.appendChild(d);
+  const w = d.offsetWidth - d.clientWidth;
+  d.remove();
+  return w;
+}
+function syncGutter(){
+  const f = frames[currentRoute()];
+  let sb = null;
+  // 같은 오리진일 때만 읽힌다(배포본은 같은 오리진). file:// 이나 로딩 전이면 폴백.
+  try { if (f && f.contentDocument) sb = f.clientWidth - f.contentDocument.documentElement.clientWidth; } catch(_){}
+  if (sb === null || sb < 0 || sb > 40) sb = platformScrollbar();
+  document.documentElement.style.setProperty("--sb", sb + "px");
+}
+let gutterTimer = 0;
+window.addEventListener("resize", ()=>{ clearTimeout(gutterTimer); gutterTimer = setTimeout(syncGutter, 120); });
 document.getElementById("nav").addEventListener("click", e=>{
   const b = e.target.closest(".navitem"); if(!b) return;
   navTo(b.dataset.route);
