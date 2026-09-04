@@ -160,7 +160,9 @@
   .legend .lgdot{width:11px;height:11px;border-radius:3px;flex:none}
 
   /* ── Calendar grid ── */
-  .calwrap{margin:10px auto 0;max-width:880px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+  /* 달력 폭은 위 카드(.wrap 내부 콘텐츠 폭)와 같이 간다. 880px 로 묶어 두었더니
+     카드보다 200px 좁아 화면 가운데가 잘록해 보였다(2026-09-04 변경). */
+  .calwrap{margin:10px auto 0;max-width:100%;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
   .calhead{display:grid;grid-template-columns:repeat(7,1fr);background:var(--line-2)}
   .calhead div{padding:7px 6px;text-align:center;font-size:11.5px;font-weight:700;color:var(--ink-2);border-bottom:1px solid var(--line)}
   .calhead div.sun{color:var(--sun)}
@@ -255,10 +257,10 @@
   <header class="top">
     <div>
       <h1>글로벌 제약바이오 학회 현황</h1>
-      <div class="sub">주요 제약·바이오 학회, 파트너링·투자, 규제·전시 행사를 달력으로. 미국·유럽 필수 포함, 그 외 지역은 대륙별로 분류됩니다. 행사 막대를 클릭하면 상세와 공식 홈페이지를 볼 수 있습니다.</div>
+      <div class="sub">주요 제약·바이오 학회, 파트너링·투자, 규제·전시 행사를 달력으로. 지역은 미국/북미·유럽·아시아·한국·중동·장소 미정으로 나눕니다(한국은 아시아와 따로 셉니다). 행사 막대를 클릭하면 상세와 공식 홈페이지를 볼 수 있습니다.</div>
     </div>
     <div class="chips">
-      <span class="mchip">업데이트 <b id="asof">2026-09-02</b></span>
+      <span class="mchip">업데이트 <b id="asof">2026-09-04</b></span>
     </div>
   </header>
 
@@ -363,14 +365,32 @@ const CONT_OF = {
 const EUROPE = new Set(["독일","프랑스","스페인","이탈리아","스위스","오스트리아","네덜란드",
   "벨기에","영국","아일랜드","덴마크","스웨덴","노르웨이","핀란드","포르투갈","폴란드",
   "체코","그리스","헝가리","룩셈부르크","슬로베니아","크로아티아"]);
+
+// ── 지역 6분류 (2026-09-04 개편) ─────────────────────────────────────────
+//   미국/북미 · 유럽 · 아시아 · 한국 · 중동 · 장소 미정
+//   · 한국을 아시아에서 빼 따로 세운다 — 국내 행사는 참가 판단 기준이 달라 섞으면 묻힌다.
+//     그래서 '아시아' 숫자에는 한국이 들어 있지 않다.
+//   · 미국과 캐나다·멕시코를 '미국/북미' 한 칸으로 합친다(예전에는 미국만 별도였다).
+//   · '장소 미정' 은 개최지가 아직 공개되지 않았거나 온라인인 행사다.
+//   · 여섯에 들지 않는 지역(남미·아프리카·오세아니아)은 '기타' 로 모으고, **0건이면 칩을
+//     그리지 않는다.** 지금 데이터에는 없지만 그리폴스(브라질)·CSL(호주) 축이 들어오면
+//     갈 곳이 필요하다 — 칸을 없애면 그 행사가 조용히 사라진다.
+const KOREA = new Set(["한국","대한민국","korea"]);
+const NORTH_AMERICA = new Set(["미국","캐나다","멕시코","과테말라","온두라스",
+  "코스타리카","도미니카 공화국","파나마"]);
+const MIDEAST = new Set(["사우디아라비아","아랍에미리트 연합","바레인","오만","예멘","이라크",
+  "이란","레바논","시리아","요르단","튀르키예","카타르","이스라엘","쿠웨이트"]);
 function regionOf(country){
-  if(country==="미국") return "미국";           // 미국은 별도 최상위 지역
-  if(country==="글로벌"||country==="온라인"||!country) return "글로벌";
-  if(EUROPE.has(country)) return "유럽";
-  return CONT_OF[country] || "글로벌";
+  const c = String(country||"").trim();
+  if(!c || c==="글로벌" || c==="온라인" || c==="미정") return "장소 미정";
+  if(KOREA.has(c)) return "한국";
+  if(NORTH_AMERICA.has(c)) return "미국/북미";
+  if(EUROPE.has(c)) return "유럽";
+  if(MIDEAST.has(c)) return "중동";
+  if(CONT_OF[c]==="아시아") return "아시아";
+  return "기타";
 }
-const REGION_ORDER = ["미국","유럽","아시아","중동","북미","남미","아프리카","오세아니아","글로벌"];
-const REGION_EMOJI = {"미국":"🇺🇸","유럽":"🇪🇺","아시아":"🌏","중동":"🕌","북미":"🌎","남미":"🏔️","아프리카":"🌍","오세아니아":"🦘","글로벌":"🌐"};
+const REGION_ORDER = ["미국/북미","유럽","아시아","한국","중동","장소 미정","기타"];
 
 // ── 유형 정의 ────────────────────────────────────────────────────────────
 const TYPES = [
@@ -412,11 +432,20 @@ function statusOf(ev){
 const daysUntil = (s)=> dayDiff(parseD(s), TODAY);
 
 // region 파생 + 정렬
-EVENTS.forEach(ev=> ev.region = ev.region || regionOf(ev.country));
+// 데이터에 박혀 있던 옛 region 값(미국·글로벌 등)은 새 6분류와 어긋나므로 항상 다시 센다.
+// (EHA 2028 처럼 개최지 미정인데 region:"유럽" 이 적혀 있던 건이 있다 — 그건 아래 예외로 남긴다)
+EVENTS.forEach(ev=>{
+  const derived = regionOf(ev.country);
+  // 개최지는 미정이지만 대륙이 분명한 행사(예: EHA 2028 유럽)는 적어 둔 값을 살린다.
+  ev.region = (derived==="장소 미정" && REGION_ORDER.includes(ev.region)) ? ev.region : derived;
+});
 EVENTS.sort((a,b)=> a.start < b.start ? -1 : a.start > b.start ? 1 : 0);
 
 // ── 상태 ────────────────────────────────────────────────────────────────
-const state = { q:"", region:"all", type:"all" };
+// upcoming: 지난 행사를 감출지. **기본값이 켜짐**이다(2026-09-04) — 이 화면을 여는 이유가
+// '앞으로 뭐가 있나' 이고, 지난 행사가 섞이면 달력이 지나간 일정으로 덮인다.
+// 상단 '다가오는 행사' 타일이 이 토글이다. 끄면 지난 행사까지 다 보인다.
+const state = { q:"", region:"all", type:"all", upcoming:true };
 let viewYear = TODAY.getFullYear();
 let viewMonth = TODAY.getMonth()+1; // 1-12
 
@@ -471,9 +500,9 @@ function passFilters(ev){
     const hay=(ev.name+" "+(ev.abbr||"")+" "+ev.city+" "+ev.country+" "+ev.region+" "+(ev.category||"")).toLowerCase();
     if(!hay.includes(q)) return false;
   }
+  if(state.upcoming && statusOf(ev)==="past") return false;
   if(state.region!=="all"){
-    if(state.region==="__other__"){ if(ev.region==="미국"||ev.region==="유럽") return false; }
-    else if(ev.region!==state.region) return false;
+    if(ev.region!==state.region) return false;
   }
   if(state.type!=="all" && ev.type!==state.type) return false;
   return true;
@@ -483,18 +512,22 @@ function filtered(){ return EVENTS.filter(passFilters); }
 // ── KPI (요약 + 연도 이동) ──────────────────────────────────────────────
 function buildKPIs(){
   const host=document.getElementById("kpis");
-  // 데이터에 있는 연도 + 올해부터 2028년까지 항상 이동 가능하도록 노출(빈 연도도 달력 탐색용)
+  // 데이터에 있는 연도 + 올해부터 2년 뒤까지 항상 이동 가능하도록 노출(빈 연도도 달력 탐색용).
+  // 상한은 **데이터를 따라간다**. 예전에는 2028 로 못 박아 둬서, 2029년 행사(ASGCT 2029-05-07)가
+  // 들어온 뒤에도 그 해로 갈 타일이 없었다 — 달 이동 화살표를 스물여덟 번 눌러야 닿았고,
+  // '2029년'을 고르는 방법이 화면에 없으니 사실상 달력에서 안 보이는 해였다(2026-09-04 수정).
   const nums=EVENTS.map(e=>Number(e.start.slice(0,4)));
   const minY=Math.min(TODAY.getFullYear(), ...(nums.length?nums:[TODAY.getFullYear()]));
-  const years=[]; for(let y=minY; y<=2028; y++) years.push(String(y));
+  const maxY=Math.max(TODAY.getFullYear()+2, ...(nums.length?nums:[TODAY.getFullYear()]));
+  const years=[]; for(let y=minY; y<=maxY; y++) years.push(String(y));
   const upcoming=EVENTS.filter(e=>daysUntil(e.start)>=0).length;
   // '총 행사' 타일은 2026-08-21 제거했다 — 숫자는 헤더 칩('총 N개 행사')과 같았고,
   // 클릭 동작(검색·지역·유형 초기화)은 바로 아래 '초기화' 버튼과 완전히 겹쳤다.
   // 남은 타일은 전부 '달력을 그 시점으로 옮기는' 이동 버튼이라 성격이 하나로 모인다.
-  const tiles=[{id:"upcoming", lbl:"다가오는 행사 ↗", num:upcoming, color:"var(--up)"}];
+  const tiles=[{id:"upcoming", lbl:"다가오는 행사", num:upcoming, color:"var(--up)", on:state.upcoming}];
   years.forEach(y=> tiles.push({id:"y"+y, lbl:y+"년 ↗", num:EVENTS.filter(e=>e.start.startsWith(y)).length, color:"var(--conf)"}));
   host.innerHTML=tiles.map(t=>
-    `<button class="kpi ${t.cls||""}" data-kpi="${t.id}" aria-pressed="false">
+    `<button class="kpi ${t.cls||""}" data-kpi="${t.id}" aria-pressed="${t.on?"true":"false"}"${t.id==="upcoming"?' title="지난 행사를 감추고 다음 행사가 있는 달로 이동합니다. 연도를 누르면 꺼지고 그 해가 통째로 보입니다"':""}>
       <div class="lbl"><span class="dot" style="background:${t.color}"></span>${t.lbl}</div>
       <div class="num">${t.num}</div>
     </button>`).join("");
@@ -503,12 +536,20 @@ function buildKPIs(){
 function onKPI(id){
   hidePopup();
   if(id==="upcoming"){
-    const next=filtered().filter(e=>daysUntil(e.start)>=0).sort((a,b)=>a.start<b.start?-1:1)[0]
-      || EVENTS.filter(e=>daysUntil(e.start)>=0)[0];
-    if(next){ const d=parseD(next.start); viewYear=d.getFullYear(); viewMonth=d.getMonth()+1; }
+    // 켜면 지난 행사를 감추고 달력을 다음 행사가 있는 달로 옮긴다.
+    // 다시 누르면 꺼지고, 보고 있던 해가 통째로 보인다(연도 타일을 누른 것과 같은 상태).
+    state.upcoming = !state.upcoming;
+    if(state.upcoming){
+      const next=EVENTS.filter(e=>daysUntil(e.start)>=0).sort((a,b)=>a.start<b.start?-1:1)[0];
+      if(next){ const d=parseD(next.start); viewYear=d.getFullYear(); viewMonth=d.getMonth()+1; }
+    }
     renderAll(); return;
   }
-  if(/^y\d{4}$/.test(id)){ viewYear=Number(id.slice(1)); viewMonth=1; renderAll(); return; }
+  if(/^y\d{4}$/.test(id)){
+    // 연도를 고르면 그 해를 **통째로** 본다 — 지나간 행사까지. 그래서 '다가오는 행사'는 꺼진다.
+    // 둘은 반대 성격이라 함께 켜 두면 "2026년을 눌렀는데 지난 전시가 안 보인다"가 된다.
+    state.upcoming=false; viewYear=Number(id.slice(1)); viewMonth=1; renderAll(); return;
+  }
 }
 
 // ── 주요 행사 요약 표 (검색란 위, 일정순 전체 목록) ─────────────────────
@@ -516,7 +557,11 @@ function buildSummary(){
   const host=document.getElementById("summaryTable");
   if(!host) return;
   // 지난 행사는 제외하고, 다가오는/진행 행사만 임박순으로 (원본 인덱스 i 유지)
-  const order=EVENTS.map((ev,i)=>({ev,i})).filter(({ev})=>statusOf(ev)!=="past");
+  // 표도 상단 타일을 따른다(2026-09-04). '다가오는 행사' 가 켜져 있으면 지난 행사를 빼고,
+  // 연도를 골랐으면 그 해를 통째로 — 지나간 전시까지 — 보여 준다.
+  // 예전에는 여기서 무조건 past 를 걸러서, 2026년을 눌러도 표는 그대로였다.
+  const order=EVENTS.map((ev,i)=>({ev,i}))
+    .filter(({ev})=> state.upcoming ? statusOf(ev)!=="past" : ev.start.startsWith(String(viewYear)));
   order.sort((a,b)=> a.ev.start<b.ev.start?-1:1);
   if(!order.length){ host.innerHTML=`<thead><tr><th>일정</th><th>행사명</th><th>장소</th><th>주요 내용</th></tr></thead><tbody><tr><td colspan="4" style="padding:16px 12px;color:var(--ink-3)">다가오는 행사가 없습니다.</td></tr></tbody>`; return; }
   const rows=order.map(({ev,i})=>{
@@ -544,12 +589,11 @@ function buildSummary(){
 // ── 지역 pill ────────────────────────────────────────────────────────────
 function buildRegionPills(){
   const host=document.getElementById("regionPills");
+  // 0건인 지역은 칩을 그리지 않는다. '기타'도 마찬가지 — 해당 행사가 생길 때만 나타난다.
   const present=REGION_ORDER.filter(r=> EVENTS.some(e=>e.region===r));
   let html=`<button class="pill pill-all" data-region="all" aria-pressed="true">전체 <span class="cnt">${EVENTS.length}</span></button>`;
   present.forEach(r=>{ const n=EVENTS.filter(e=>e.region===r).length;
-    html+=`<button class="pill" data-region="${r}" aria-pressed="false"><span class="rdot">${REGION_EMOJI[r]||""}</span>${r} <span class="cnt">${n}</span></button>`; });
-  const other=EVENTS.filter(e=>e.region!=="미국"&&e.region!=="유럽").length;
-  html+=`<button class="pill" data-region="__other__" aria-pressed="false">기타(미국·유럽 외) <span class="cnt">${other}</span></button>`;
+    html+=`<button class="pill" data-region="${r}" aria-pressed="false">${r} <span class="cnt">${n}</span></button>`; });
   host.innerHTML=html;
   host.querySelectorAll(".pill").forEach(b=> b.addEventListener("click", ()=>{ state.region=b.dataset.region; hidePopup(); renderAll(); }));
 }
@@ -571,7 +615,11 @@ function syncControls(){
     const id=b.dataset.kpi;
     let on=false;
     if(id==="total") on=noFilter;
-    else if(/^y\d{4}$/.test(id)) on=(Number(id.slice(1))===viewYear);
+    // '다가오는 행사' 는 달력 이동 버튼이 아니라 **토글**이다(2026-09-04). 이 줄이 없으면
+    // 렌더 직후 여기서 false 로 덮어써, 기본값이 켜져 있어도 꺼진 것처럼 보인다.
+    else if(id==="upcoming") on=state.upcoming;
+    // 연도 타일은 '다가오는 행사'가 꺼져 있을 때만 켜진 것으로 표시한다 — 둘은 배타적이다.
+    else if(/^y\d{4}$/.test(id)) on=(!state.upcoming && Number(id.slice(1))===viewYear);
     b.setAttribute("aria-pressed", String(on));
   });
   document.querySelectorAll("#regionPills .pill").forEach(b=> b.setAttribute("aria-pressed", String(b.dataset.region===state.region)));
@@ -701,7 +749,7 @@ function showPopup(ev, anchor){
     <div class="pu-title">${abbr}${ev.name}</div>
     <div class="pu-date">📅 ${fmtRange(ev.start, ev.end)} ${stTag}</div>
     <div class="pu-meta">
-      <span class="tag loc">📍 ${ev.city?ev.city+", ":""}${ev.country} · ${REGION_EMOJI[ev.region]||""}${ev.region}</span>
+      <span class="tag loc">${ev.city?ev.city+", ":""}${ev.country||"개최지 미정"} · ${ev.region}</span>
       <span class="tag type-${ev.type}"><span class="tdot" style="background:var(${tvar})"></span>${TYPE_LABEL[ev.type]||ev.type}</span>
       ${cat}
     </div>
@@ -721,6 +769,9 @@ window.addEventListener("resize", positionPopup);
 // ── 전체 렌더 ────────────────────────────────────────────────────────────
 function renderAll(){
   syncControls();
+  // 요약 표도 다시 그린다 — 예전에는 부팅 때 한 번만 그려서, 상단 타일이나 필터를 눌러도
+  // 표는 처음 상태 그대로였다(2026-09-04 수정).
+  buildSummary();
   document.getElementById("calTitle").textContent = viewYear+"년 "+MONTH_KO[viewMonth-1];
   // 현재 화면에 보이는 날짜의 연도 공휴일 확보(경계 주가 이전/다음 연도를 포함할 수 있음)
   const wks=monthWeeks(viewYear, viewMonth);
@@ -735,7 +786,7 @@ function renderAll(){
     return s<=mE && en>=mS;
   }).length;
   const ctx=[];
-  if(state.region!=="all") ctx.push(state.region==="__other__"?"미국·유럽 외":state.region);
+  if(state.region!=="all") ctx.push(state.region);
   if(state.type!=="all") ctx.push(TYPE_LABEL[state.type]||state.type);
   if(state.q) ctx.push(`"${state.q}"`);
   document.getElementById("resultbar").innerHTML =
@@ -791,7 +842,7 @@ document.getElementById("searchBox").addEventListener("keydown", (e)=>{
 });
 document.getElementById("reset").addEventListener("click", ()=>{
   clearTimeout(searchTimer);
-  state.q=""; state.region="all"; state.type="all";
+  state.q=""; state.region="all"; state.type="all"; state.upcoming=true;
   viewYear=TODAY.getFullYear(); viewMonth=TODAY.getMonth()+1; hidePopup(); renderAll();
 });
 document.getElementById("prevBtn").addEventListener("click", ()=> shiftMonth(-1));
