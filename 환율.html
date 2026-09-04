@@ -50,12 +50,18 @@
     background: var(--bg-1);
     color: var(--ink);
     min-height: 100vh;
-    padding: 32px 18px 72px;
+    /* 좌우 여백은 body 가 아니라 .wrap 이 갖는다 — 다른 대시보드 3종과 같은 규칙.
+       body 에 두면 .wrap(max-width:1120px)이 그 안쪽에서 다시 가운데 정렬돼,
+       내용이 셸 메뉴바 글자보다 18px 바깥으로 나간다(2026-09-04 수정). */
+    padding: 0;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  .wrap { max-width: 1120px; margin: 0 auto; }
+  /* 셸(인포허브.html)의 메뉴바 .bar 안쪽과 **같은 값**이어야 글자·버튼이 세로로 맞는다.
+     셸: max-width:1120px / padding:0 18px — 여기서 좌우 18px 를 빼먹으면 환율 화면만
+     좌우로 튀어나온다. 시장·학술·학회 세 대시보드도 .wrap{padding:24px 18px 72px} 이다. */
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 24px 18px 72px; }
 
   /* ── Header ── */
   header.top {
@@ -257,7 +263,7 @@
   @keyframes sp { to { transform: rotate(360deg); } }
 
   @media (max-width: 620px) {
-    body { padding: 22px 12px 56px; }
+    .wrap { padding: 18px 14px 60px; }
     header.top h1 { font-size: 20px; }
     .card { padding: 20px 18px; }
     .three { grid-template-columns: 1fr; }
