@@ -117,6 +117,10 @@
   .pill .pdot{width:9px;height:9px;border-radius:3px;flex:none}
   .pill[aria-pressed="true"] .pdot{box-shadow:0 0 0 1.5px rgba(255,255,255,.6)}
   .pill-all{font-weight:700}
+  /* 지금 조건에서 0건인 칩 — 누를 수 없게 잠근다. 아예 자료가 없는 영역과는 문구로 구분한다 */
+  .pill-empty{opacity:.5;cursor:default;border-style:dashed}
+  .pill-empty:hover{border-color:var(--line)}
+  .pill-empty .cnt{opacity:.85;font-style:normal}
 
   .resultbar{margin:20px 0 12px;font-size:13.5px;color:var(--ink-2)}
   .resultbar b{color:var(--ink);font-variant-numeric:tabular-nums}
@@ -183,7 +187,7 @@
     </div>
     <div class="chips">
       <span class="mchip">수집기간 <b id="rangechip">–</b></span>
-      <span class="mchip">업데이트 <b id="asof">2026-08-25</b></span>
+      <span class="mchip">업데이트 <b id="asof">2026-09-04</b></span>
     </div>
   </header>
 
@@ -194,16 +198,16 @@
   </div>
   <section class="kpis" id="kpis"></section>
 
+  <!-- 필터는 걸리는 순서대로 위에서 아래로 — 분류(KPI) → 기간 → 사업 영역.
+       한 줄에 나란히 두면 어느 것이 어느 것을 좁히는지 안 읽힌다(2026-09-04 세로 배치로 변경). -->
   <div class="filterrow">
-    <div class="filterblock">
+    <div class="filterblock" style="flex:1 1 100%">
       <span class="blbl">기간</span>
       <div class="pills" id="periodpills"></div>
     </div>
-    <div class="filterblock">
-      <span class="blbl">대상</span>
-      <div class="pills" id="targetpills"></div>
-    </div>
-    <div class="filterblock" style="flex:1 1 260px">
+  </div>
+  <div class="filterrow">
+    <div class="filterblock" style="flex:1 1 100%">
       <span class="blbl">사업 영역</span>
       <div class="pills" id="catpills"></div>
     </div>
@@ -262,7 +266,7 @@ let DATA = [
       "네트워크 메타분석",
       "인플루엔자 예방"
     ],
-    "is_new": true
+    "is_new": false
   },
   {
     "category": "vaccine",
@@ -286,30 +290,54 @@ let DATA = [
       "품질관리",
       "인플루엔자 예방"
     ],
-    "is_new": true
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Base-Edited Hematopoietic Stem/Progenitor Cell Gene Therapy for Treatment of CXCR4-WHIM",
+    "authors": "",
+    "journal": "",
+    "date": "2026-08-20",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07775313",
+    "url": "https://clinicaltrials.gov/study/NCT07775313",
+    "summary_ko": "「WHIM, Warts, Hypogammaglobulinemia」 대상 1상/2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 10명(목표), 후원사는 National Institute of Allergy and Infectious Diseases (NIAID)이며, 레지스트리 등록번호는 NCT07775313이다.",
+    "indication": "저·무감마글로불린혈증",
+    "tags": [
+      "G-CSF",
+      "저·무감마글로불린혈증",
+      "1상",
+      "2상",
+      "중재연구"
+    ],
+    "is_new": false
   },
   {
     "category": "plasma",
-    "drug": "immune globulin (IVIG) / 이중여과혈장교환(DFPP)",
+    "drug": "immune globulin (IVIG) 불응 MIS-C",
     "is_gc": false,
     "source_type": "pubmed",
-    "title": "Clinical Outcomes of Double Filtration Plasmapheresis in Guillain-Barré Syndrome: A Single-Center Retrospective Study.",
-    "authors": "Li J, Chen Y, Wu J",
-    "journal": "Ther Apher Dial",
+    "title": "Multisystem Inflammatory Syndrome Therapies in Children: A Comparative Effectiveness Trial.",
+    "authors": "Jain S, He F, Cheng Y",
+    "journal": "J Pediatr",
     "date": "2026-08-18",
-    "doi": "10.1002/1744-9987.70211",
-    "pmid": "42619276",
+    "doi": "10.1016/j.jpeds.2026.115293",
+    "pmid": "42617793",
     "nct_id": null,
-    "url": "https://pubmed.ncbi.nlm.nih.gov/42619276/",
-    "summary_ko": "길랑-바레 증후군 환자 43명을 후향 분석해 이중여과혈장교환(DFPP) 포함 요법 36명과 IVIG 단독 7명의 단기 기능적 결과를 비교한 단일기관 연구다. 치료적 성분채집술의 실사용 근거와 병용 전략 데이터가 제한적이라는 점에서 수행됐다.",
-    "indication": "길랑-바레 증후군",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42617793/",
+    "summary_ko": "IVIG 불응 소아 다기관염증증후군(MIS-C)에서 인플릭시맙·메틸프레드니솔론·아나킨라 중 가장 효과적인 항염증제를 가린 2개 병원 비교효과 연구다. 등록 73명 중 71명이 1차 배정약을 투여받고 완료했으며, 2차 무작위배정이 필요했던 비율을 1차 평가변수로 삼았다.",
+    "indication": "",
     "tags": [
       "IVIG",
-      "길랑-바레 증후군",
-      "혈장교환",
-      "실사용근거"
+      "MIS-C",
+      "비교효과연구",
+      "소아"
     ],
-    "is_new": true
+    "is_new": false
   },
   {
     "category": "plasma",
@@ -333,30 +361,30 @@ let DATA = [
       "임상3상",
       "피하 전환"
     ],
-    "is_new": true
+    "is_new": false
   },
   {
     "category": "plasma",
-    "drug": "immune globulin (IVIG) 불응 MIS-C",
+    "drug": "immune globulin (IVIG) / 이중여과혈장교환(DFPP)",
     "is_gc": false,
     "source_type": "pubmed",
-    "title": "Multisystem Inflammatory Syndrome Therapies in Children: A Comparative Effectiveness Trial.",
-    "authors": "Jain S, He F, Cheng Y",
-    "journal": "J Pediatr",
+    "title": "Clinical Outcomes of Double Filtration Plasmapheresis in Guillain-Barré Syndrome: A Single-Center Retrospective Study.",
+    "authors": "Li J, Chen Y, Wu J",
+    "journal": "Ther Apher Dial",
     "date": "2026-08-18",
-    "doi": "10.1016/j.jpeds.2026.115293",
-    "pmid": "42617793",
+    "doi": "10.1002/1744-9987.70211",
+    "pmid": "42619276",
     "nct_id": null,
-    "url": "https://pubmed.ncbi.nlm.nih.gov/42617793/",
-    "summary_ko": "IVIG 불응 소아 다기관염증증후군(MIS-C)에서 인플릭시맙·메틸프레드니솔론·아나킨라 중 가장 효과적인 항염증제를 가린 2개 병원 비교효과 연구다. 등록 73명 중 71명이 1차 배정약을 투여받고 완료했으며, 2차 무작위배정이 필요했던 비율을 1차 평가변수로 삼았다.",
-    "indication": "",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42619276/",
+    "summary_ko": "길랑-바레 증후군 환자 43명을 후향 분석해 이중여과혈장교환(DFPP) 포함 요법 36명과 IVIG 단독 7명의 단기 기능적 결과를 비교한 단일기관 연구다. 치료적 성분채집술의 실사용 근거와 병용 전략 데이터가 제한적이라는 점에서 수행됐다.",
+    "indication": "길랑-바레 증후군",
     "tags": [
       "IVIG",
-      "MIS-C",
-      "비교효과연구",
-      "소아"
+      "길랑-바레 증후군",
+      "혈장교환",
+      "실사용근거"
     ],
-    "is_new": true
+    "is_new": false
   },
   {
     "category": "plasma",
@@ -429,7 +457,7 @@ let DATA = [
       "신경보호",
       "파일럿시험"
     ],
-    "is_new": true
+    "is_new": false
   },
   {
     "category": "vaccine",
@@ -482,6 +510,29 @@ let DATA = [
   },
   {
     "category": "plasma",
+    "drug": "immune globulin (IVIG)",
+    "is_gc": false,
+    "source_type": "pubmed",
+    "title": "Extracriteria manifestations in Kawasaki disease: coronary threat or diagnostic pitfall?",
+    "authors": "Vuran G, Yılmazer MM, Bilen M",
+    "journal": "Eur J Pediatr",
+    "date": "2026-08-14",
+    "doi": "10.1007/s00431-026-07339-x",
+    "pmid": "42603200",
+    "nct_id": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42603200/",
+    "summary_ko": "2005~2025년 가와사키병 소아 254명을 후향 검토해 5대 진단기준을 벗어난 비전형 장기 증상의 빈도와 임상적 의미를 평가했다. 다른 진단을 배제한 뒤 장기계 침범이 기록된 경우를 비전형 증상으로 정의하고 관상동맥 위험과의 관계를 비교했다.",
+    "indication": "가와사키병",
+    "tags": [
+      "IVIG",
+      "가와사키병",
+      "관상동맥",
+      "소아"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
     "drug": "IVIG (정맥주사 면역글로불린, class)",
     "is_gc": false,
     "source_type": "pubmed",
@@ -504,29 +555,6 @@ let DATA = [
       "이식후 감염"
     ],
     "is_new": false
-  },
-  {
-    "category": "plasma",
-    "drug": "immune globulin (IVIG)",
-    "is_gc": false,
-    "source_type": "pubmed",
-    "title": "Extracriteria manifestations in Kawasaki disease: coronary threat or diagnostic pitfall?",
-    "authors": "Vuran G, Yılmazer MM, Bilen M",
-    "journal": "Eur J Pediatr",
-    "date": "2026-08-14",
-    "doi": "10.1007/s00431-026-07339-x",
-    "pmid": "42603200",
-    "nct_id": null,
-    "url": "https://pubmed.ncbi.nlm.nih.gov/42603200/",
-    "summary_ko": "2005~2025년 가와사키병 소아 254명을 후향 검토해 5대 진단기준을 벗어난 비전형 장기 증상의 빈도와 임상적 의미를 평가했다. 다른 진단을 배제한 뒤 장기계 침범이 기록된 경우를 비전형 증상으로 정의하고 관상동맥 위험과의 관계를 비교했다.",
-    "indication": "가와사키병",
-    "tags": [
-      "IVIG",
-      "가와사키병",
-      "관상동맥",
-      "소아"
-    ],
-    "is_new": true
   },
   {
     "category": "vaccine",
@@ -649,6 +677,30 @@ let DATA = [
       "백신주 선정",
       "감시",
       "2026-2027 시즌"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Allogeneic ORCA-Q Stem Cell Transplant for the Treatment of Relapsed and Refractory High Risk Multiple Myeloma",
+    "authors": "",
+    "journal": "",
+    "date": "2026-08-12",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07759102",
+    "url": "https://clinicaltrials.gov/study/NCT07759102",
+    "summary_ko": "「Recurrent Multiple Myeloma, Refractory Multiple Myeloma」 대상 1상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 20명(목표), 후원사는 University of California, Davis이며, 레지스트리 등록번호는 NCT07759102이다.",
+    "indication": "Recurrent Multiple Myeloma / Refractory Multiple Myeloma",
+    "tags": [
+      "G-CSF",
+      "Recurrent Multiple Myeloma / Refractory Multiple Myeloma",
+      "1상",
+      "중재연구",
+      "모집 예정"
     ],
     "is_new": false
   },
@@ -996,7 +1048,7 @@ let DATA = [
       "평가법",
       "종설"
     ],
-    "is_new": true
+    "is_new": false
   },
   {
     "category": "plasma",
@@ -1069,6 +1121,54 @@ let DATA = [
       "PEG화",
       "약물농도측정",
       "분석간섭"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "Neulasta (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study to Investigate the Pharmacokinetics, Pharmacodynamics, and Safety of NKF-PEG, and US-Neulasta in Healthy Adult Male Volunteers",
+    "authors": "",
+    "journal": "",
+    "date": "2026-07-31",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07738991",
+    "url": "https://clinicaltrials.gov/study/NCT07738991",
+    "summary_ko": "「Healthy Participants」 대상 1상 중재연구 임상이다. 상태는 모집 중, 등록 규모 202명(목표), 후원사는 Nanjing King-Friend Biochemical Pharmaceutical Co., Ltd.이며, 레지스트리 등록번호는 NCT07738991이다.",
+    "indication": "Healthy Participants",
+    "tags": [
+      "G-CSF",
+      "Healthy Participants",
+      "1상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Phase I/II Clinical Trial of Influenza Vaccine (Split Virion), Inactivated (High Dose)",
+    "authors": "",
+    "journal": "",
+    "date": "2026-07-30",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07737106",
+    "url": "https://clinicaltrials.gov/study/NCT07737106",
+    "summary_ko": "「Influenza」 대상 1상 중재연구 임상이다. 상태는 종료, 등록 규모 50명(실제 등록), 후원사는 Sinovac Biotech Co., Ltd이며, 레지스트리 등록번호는 NCT07737106이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "중재연구",
+      "종료"
     ],
     "is_new": false
   },
@@ -1244,7 +1344,7 @@ let DATA = [
       "허혈성뇌졸중",
       "코호트"
     ],
-    "is_new": true
+    "is_new": false
   },
   {
     "category": "plasma",
@@ -1293,6 +1393,54 @@ let DATA = [
       "염증지표",
       "후향코호트",
       "실사용근거"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "How Healthy Adults Respond to the Nasal Flu Vaccine",
+    "authors": "",
+    "journal": "",
+    "date": "2026-07-24",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07726862",
+    "url": "https://clinicaltrials.gov/study/NCT07726862",
+    "summary_ko": "「Mucosal Immune Response to Influenza Vaccination」 대상 4상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 20명(목표), 후원사는 University of Alabama at Birmingham이며, 레지스트리 등록번호는 NCT07726862이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "4상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Intrahospital Influenza Vaccination in Patients at High Cardiovascular Risk (VACC-UP)",
+    "authors": "",
+    "journal": "",
+    "date": "2026-07-23",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07721649",
+    "url": "https://clinicaltrials.gov/study/NCT07721649",
+    "summary_ko": "「Acute Coronary Syndrome, Heart Failure, Influenza, Human」 대상 임상단계 미지정 중재연구 임상이다. 상태는 모집 예정, 등록 규모 482명(목표), 후원사는 Stephan Baldus이며, 레지스트리 등록번호는 NCT07721649이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "임상단계 미지정",
+      "중재연구",
+      "모집 예정"
     ],
     "is_new": false
   },
@@ -1392,6 +1540,30 @@ let DATA = [
       "제대혈이식",
       "재이식",
       "증례"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Preliminary Safety Assessment of a Quadrivalent Subunit Influenza Vaccine in China",
+    "authors": "",
+    "journal": "",
+    "date": "2026-07-17",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07710586",
+    "url": "https://clinicaltrials.gov/study/NCT07710586",
+    "summary_ko": "「Influenza Vaccine」 대상 4상 중재연구 임상이다. 상태는 종료, 등록 규모 3105명(실제 등록), 후원사는 Ab&B Bio-tech Co., Ltd.JS이며, 레지스트리 등록번호는 NCT07710586이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "4상",
+      "중재연구",
+      "종료"
     ],
     "is_new": false
   },
@@ -1718,6 +1890,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "plasma",
+    "drug": "immune globulin (IVIG/SCIG)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Efficacy and Safety of Immunoglobulin Plus Firsekibart in Patients With Kawasaki Disease",
+    "authors": "",
+    "journal": "",
+    "date": "2026-07-07",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07686770",
+    "url": "https://clinicaltrials.gov/study/NCT07686770",
+    "summary_ko": "「Kawasaki Disease」 대상 2상/3상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 90명(목표), 후원사는 Children's Hospital of Fudan University이며, 레지스트리 등록번호는 NCT07686770이다.",
+    "indication": "가와사키병",
+    "tags": [
+      "면역글로불린",
+      "가와사키병",
+      "2상",
+      "3상",
+      "중재연구"
+    ],
+    "is_new": false
+  },
+  {
     "category": "vaccine",
     "drug": "Seasonal influenza vaccine (pediatric mortality effectiveness)",
     "is_gc": false,
@@ -1738,6 +1934,30 @@ let DATA = [
       "소아",
       "사망예방",
       "실사용"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
+    "drug": "human albumin (혈청 알부민)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Comparison of Efficacy and Safety of Albumin Versus Fresh Frozen Plasma in Managing Diuretic Resistant Edema in Children With Idiopathic Nephrotic Syndrome.",
+    "authors": "",
+    "journal": "",
+    "date": "2026-07-06",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07685093",
+    "url": "https://clinicaltrials.gov/study/NCT07685093",
+    "summary_ko": "「Idiopathic Nephrotic Syndrome (INS)」 대상 임상단계 미지정 중재연구 임상이다. 상태는 모집 예정, 등록 규모 56명(목표), 후원사는 Qamar Shafiq이며, 레지스트리 등록번호는 NCT07685093이다.",
+    "indication": "Idiopathic Nephrotic Syndrome (INS)",
+    "tags": [
+      "알부민",
+      "Idiopathic Nephrotic Syndrome (INS)",
+      "임상단계 미지정",
+      "중재연구",
+      "모집 예정"
     ],
     "is_new": false
   },
@@ -1787,6 +2007,30 @@ let DATA = [
       "보강형",
       "복합백신",
       "1/2상"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "trilaciclib (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Trilaciclib Combined With Immunochemotherapy for R/M HNSCC",
+    "authors": "",
+    "journal": "",
+    "date": "2026-07-01",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07679997",
+    "url": "https://clinicaltrials.gov/study/NCT07679997",
+    "summary_ko": "「Head & Neck Squamous Cell Carcinoma」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 32명(목표), 후원사는 Sun Yat-Sen Memorial Hospital of Sun Yat-Sen University이며, 레지스트리 등록번호는 NCT07679997이다.",
+    "indication": "Head & Neck Squamous Cell Carcinoma",
+    "tags": [
+      "G-CSF",
+      "Head & Neck Squamous Cell Carcinoma",
+      "2상",
+      "중재연구",
+      "모집 예정"
     ],
     "is_new": false
   },
@@ -1962,6 +2206,30 @@ let DATA = [
       "실사용데이터",
       "폐암",
       "경쟁제품"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
+    "drug": "immune globulin (IVIG/SCIG)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Autoantibody Reduction Therapy for Progressive Idiopathic Pulmonary Fibrosis",
+    "authors": "",
+    "journal": "",
+    "date": "2026-06-30",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07674745",
+    "url": "https://clinicaltrials.gov/study/NCT07674745",
+    "summary_ko": "「Idiopathic Pulmonary Fibrosis」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 52명(목표), 후원사는 University of Alabama at Birmingham이며, 레지스트리 등록번호는 NCT07674745이다.",
+    "indication": "Idiopathic Pulmonary Fibrosis",
+    "tags": [
+      "면역글로불린",
+      "Idiopathic Pulmonary Fibrosis",
+      "2상",
+      "중재연구",
+      "모집 예정"
     ],
     "is_new": false
   },
@@ -2260,6 +2528,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Autologous Tumor Infiltrating Lymphocytes With Interleukin-2 for the Treatment of Locally Advanced, Recurrent or Metastatic Gastrointestinal Stromal Tumors",
+    "authors": "",
+    "journal": "",
+    "date": "2026-06-15",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07647068",
+    "url": "https://clinicaltrials.gov/study/NCT07647068",
+    "summary_ko": "「Locally Advanced Gastrointestinal Stromal Tumor, Metastatic Gastrointestinal Stromal Tumor, Recurrent Gastrointestinal Stromal Tumor」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 59명(목표), 후원사는 Joal Beane이며, 레지스트리 등록번호는 NCT07647068이다.",
+    "indication": "Locally Advanced Gastrointestinal Stromal Tumor / Metastatic Gastrointestinal Stromal Tumor",
+    "tags": [
+      "G-CSF",
+      "Locally Advanced Gastrointestinal Stromal Tumor / Metastatic Gastrointestinal Stromal Tumor",
+      "2상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
     "category": "vaccine",
     "drug": "Seasonal influenza vaccine (cross-reactivity to H3N2 subclade K)",
     "is_gc": false,
@@ -2332,6 +2624,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Health Economic Evaluation of Influenza and Pneumococcal Vaccination in COPD Patients",
+    "authors": "",
+    "journal": "",
+    "date": "2026-06-11",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07640841",
+    "url": "https://clinicaltrials.gov/study/NCT07640841",
+    "summary_ko": "「Influenza and Pneumonia」 대상 4상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 7000명(목표), 후원사는 Jiangsu Province Centers for Disease Control and Prevention이며, 레지스트리 등록번호는 NCT07640841이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "4상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
     "category": "plasma",
     "drug": "IVIG vs SCIG (class)",
     "is_gc": false,
@@ -2353,6 +2669,30 @@ let DATA = [
       "면역글로불린",
       "안전성",
       "혈전색전증"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
+    "drug": "immune globulin (IVIG/SCIG)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Acalabrutinib Maleate and Bortezomib for Patients With HLA Antibodies",
+    "authors": "",
+    "journal": "",
+    "date": "2026-06-09",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07635511",
+    "url": "https://clinicaltrials.gov/study/NCT07635511",
+    "summary_ko": "「Hematological Malignancies, Platelet Transfusion Refractoriness (PTR), HLA Antibodies」 대상 3상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 42명(목표), 후원사는 The First Affiliated Hospital of Soochow University이며, 레지스트리 등록번호는 NCT07635511이다.",
+    "indication": "Hematological Malignancies / Platelet Transfusion Refractoriness (PTR)",
+    "tags": [
+      "면역글로불린",
+      "Hematological Malignancies / Platelet Transfusion Refractoriness (PTR)",
+      "3상",
+      "중재연구",
+      "모집 예정"
     ],
     "is_new": false
   },
@@ -2431,6 +2771,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Pre-discharge Influenza Vaccination in Patients Hospitalized for Acute Cardiac Conditions",
+    "authors": "",
+    "journal": "",
+    "date": "2026-06-01",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07617376",
+    "url": "https://clinicaltrials.gov/study/NCT07617376",
+    "summary_ko": "「Myocardial Infarction, Decompensated Chronic Heart Failure, Acute Heart Failure (AHF)」 대상 4상 중재연구 임상이다. 상태는 모집 중, 등록 규모 400명(목표), 후원사는 Wroclaw Medical University이며, 레지스트리 등록번호는 NCT07617376이다.",
+    "indication": "Myocardial Infarction / Decompensated Chronic Heart Failure",
+    "tags": [
+      "독감백신",
+      "Myocardial Infarction / Decompensated Chronic Heart Failure",
+      "4상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
     "category": "plasma",
     "drug": "Bivigam (IVIG 10%, ADMA Biologics)",
     "is_gc": false,
@@ -2453,6 +2817,30 @@ let DATA = [
       "모델기반개발",
       "소아",
       "경쟁제품"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Haploidentical Donor Hematopoietic Cell Transplant for Sickle Cell Disease",
+    "authors": "",
+    "journal": "",
+    "date": "2026-06-01",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07616154",
+    "url": "https://clinicaltrials.gov/study/NCT07616154",
+    "summary_ko": "「Sickle Cell Disease」 대상 2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 45명(목표), 후원사는 St. Jude Children's Research Hospital이며, 레지스트리 등록번호는 NCT07616154이다.",
+    "indication": "Sickle Cell Disease",
+    "tags": [
+      "G-CSF",
+      "Sickle Cell Disease",
+      "2상",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -2579,6 +2967,30 @@ let DATA = [
   },
   {
     "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Phase 1/2 FLAG-IDA, VEN and Asciminib in CML and Ph+ AML",
+    "authors": "",
+    "journal": "",
+    "date": "2026-05-22",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07604233",
+    "url": "https://clinicaltrials.gov/study/NCT07604233",
+    "summary_ko": "「Myeloid Leukemia」 대상 1상/2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 30명(목표), 후원사는 M.D. Anderson Cancer Center이며, 레지스트리 등록번호는 NCT07604233이다.",
+    "indication": "Myeloid Leukemia",
+    "tags": [
+      "G-CSF",
+      "Myeloid Leukemia",
+      "1상",
+      "2상",
+      "중재연구"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
     "drug": "Efbemalenograstim alfa (F-627, Ryzneuta)",
     "is_gc": false,
     "source_type": "pubmed",
@@ -2675,6 +3087,54 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "vaccine",
+    "drug": "Fluad (influenza vaccine (인플루엔자 백신))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Vaccination Response Modulation With a Targeted Rapamycin Protocol Study",
+    "authors": "",
+    "journal": "",
+    "date": "2026-05-14",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07587801",
+    "url": "https://clinicaltrials.gov/study/NCT07587801",
+    "summary_ko": "「Vaccine Immune Response, Haemodialysis Patients, Older Adults」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 60명(목표), 후원사는 Central Adelaide Local Health Network Incorporated이며, 레지스트리 등록번호는 NCT07587801이다.",
+    "indication": "Vaccine Immune Response / Haemodialysis Patients",
+    "tags": [
+      "독감백신",
+      "Vaccine Immune Response / Haemodialysis Patients",
+      "2상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Stem Cell Mobilization and Apheresis for Life-threatening Blood Disorders",
+    "authors": "",
+    "journal": "",
+    "date": "2026-05-13",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07585136",
+    "url": "https://clinicaltrials.gov/study/NCT07585136",
+    "summary_ko": "「Bone Marrow Failure Syndrome」 대상 1상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 12명(목표), 후원사는 St. Jude Children's Research Hospital이며, 레지스트리 등록번호는 NCT07585136이다.",
+    "indication": "Bone Marrow Failure Syndrome",
+    "tags": [
+      "G-CSF",
+      "Bone Marrow Failure Syndrome",
+      "1상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
     "category": "plasma",
     "drug": "IVIG/SCIG (class)",
     "is_gc": false,
@@ -2695,6 +3155,30 @@ let DATA = [
       "PID",
       "삶의질",
       "돌봄부담"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
+    "drug": "Gamunex (immune globulin (IVIG/SCIG))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Clinical Trial to Evaluate Efficacy, Safety, and Pharmacokinetics of Gamunex in Participants With Chronic Lymphocytic Leukemia, Multiple Myeloma, or Non-Hodgkin Lymphoma",
+    "authors": "",
+    "journal": "",
+    "date": "2026-05-12",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07582432",
+    "url": "https://clinicaltrials.gov/study/NCT07582432",
+    "summary_ko": "「Chronic Lymphocytic Leukemia, Multiple Myeloma, or Non-Hodgkin Lymphoma」 대상 3상 중재연구 임상이다. 상태는 모집 중, 등록 규모 49명(목표), 후원사는 Grifols Biologicals, LLC이며, 레지스트리 등록번호는 NCT07582432이다.",
+    "indication": "Chronic Lymphocytic Leukemia, Multiple Myeloma, or Non-Hodgkin Lymphoma",
+    "tags": [
+      "면역글로불린",
+      "Chronic Lymphocytic Leukemia, Multiple Myeloma, or Non-Hodgkin Lymphoma",
+      "3상",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -2814,6 +3298,30 @@ let DATA = [
       "CIDP",
       "환자선호도",
       "이산선택실험"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
+    "drug": "human albumin (혈청 알부민)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Albumin and Furosemide for Preventing Ovarian Hyperstimulation Syndrome in ICSI Patients",
+    "authors": "",
+    "journal": "",
+    "date": "2026-05-06",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07568886",
+    "url": "https://clinicaltrials.gov/study/NCT07568886",
+    "summary_ko": "「Ovarian Hyper Stimulation Syndrome (OHSS)」 대상 임상단계 미지정 중재연구 임상이다. 상태는 종료, 등록 규모 200명(실제 등록), 후원사는 Al-Nahrain University이며, 레지스트리 등록번호는 NCT07568886이다.",
+    "indication": "Ovarian Hyper Stimulation Syndrome (OHSS)",
+    "tags": [
+      "알부민",
+      "Ovarian Hyper Stimulation Syndrome (OHSS)",
+      "임상단계 미지정",
+      "중재연구",
+      "종료"
     ],
     "is_new": false
   },
@@ -3083,6 +3591,30 @@ let DATA = [
   },
   {
     "category": "plasma",
+    "drug": "immune globulin (IVIG/SCIG)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study Investigating Intravenous Human Normal Immune Globulin 10% in Adults With Stiff Person Syndrome",
+    "authors": "",
+    "journal": "",
+    "date": "2026-04-27",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07552987",
+    "url": "https://clinicaltrials.gov/study/NCT07552987",
+    "summary_ko": "「Stiff Person Syndrome」 대상 3상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 38명(목표), 후원사는 Kedrion S.p.A.이며, 레지스트리 등록번호는 NCT07552987이다.",
+    "indication": "Stiff Person Syndrome",
+    "tags": [
+      "면역글로불린",
+      "Stiff Person Syndrome",
+      "3상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
     "drug": "Xembify vs Gamunex-C (SCIG/IVIG)",
     "is_gc": false,
     "source_type": "clinical",
@@ -3128,6 +3660,30 @@ let DATA = [
       "임상2상",
       "차세대 제형",
       "경쟁제품"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
+    "drug": "immune globulin (IVIG/SCIG)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Efficacy of IVIG Versus PLEX in Myasthenic Crisis in Syria.",
+    "authors": "",
+    "journal": "",
+    "date": "2026-04-16",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07532707",
+    "url": "https://clinicaltrials.gov/study/NCT07532707",
+    "summary_ko": "「Myasthenic Crisis, Myasthenia Gravis (MG)」 대상 임상단계 미지정 중재연구 임상이다. 상태는 종료, 등록 규모 50명(실제 등록), 후원사는 Damascus University이며, 레지스트리 등록번호는 NCT07532707이다.",
+    "indication": "중증근무력증",
+    "tags": [
+      "면역글로불린",
+      "중증근무력증",
+      "임상단계 미지정",
+      "중재연구",
+      "종료"
     ],
     "is_new": false
   },
@@ -3303,6 +3859,54 @@ let DATA = [
   },
   {
     "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Longitudinal Tracking of Bone Marrow Plasma Cell Responses to Licensed Human Vaccines",
+    "authors": "",
+    "journal": "",
+    "date": "2026-03-25",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07493460",
+    "url": "https://clinicaltrials.gov/study/NCT07493460",
+    "summary_ko": "「Immunology, Healthy Adults」 대상 4상 중재연구 임상이다. 상태는 진행 중(모집 종료), 등록 규모 25명(목표), 후원사는 Washington University School of Medicine이며, 레지스트리 등록번호는 NCT07493460이다.",
+    "indication": "Immunology / Healthy Adults",
+    "tags": [
+      "독감백신",
+      "Immunology / Healthy Adults",
+      "4상",
+      "중재연구",
+      "진행 중(모집 종료)"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "trilaciclib (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Trilaciclib in Combination With Chemotherapy in Patients With CDK4/6-Dependent Solid Tumors",
+    "authors": "",
+    "journal": "",
+    "date": "2026-03-24",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07490236",
+    "url": "https://clinicaltrials.gov/study/NCT07490236",
+    "summary_ko": "「Trilaciclib, CDK4/6-dependent Solid Tumors」 대상 1상 중재연구 임상이다. 상태는 모집 중, 등록 규모 100명(목표), 후원사는 Hebei Medical University Fourth Hospital이며, 레지스트리 등록번호는 NCT07490236이다.",
+    "indication": "Trilaciclib / CDK4/6-dependent Solid Tumors",
+    "tags": [
+      "G-CSF",
+      "Trilaciclib / CDK4/6-dependent Solid Tumors",
+      "1상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
     "drug": "High-dose / MF59-adjuvanted influenza vaccine (immunocompromised, Asan Medical Center)",
     "is_gc": false,
     "source_type": "clinical",
@@ -3347,6 +3951,30 @@ let DATA = [
       "접종정책",
       "비용효용 분석",
       "수리모형"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "varicella vaccine (수두 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Immunogenicity and Safety of Varicella Vaccine, Live in Healthy Vietnamese Children",
+    "authors": "",
+    "journal": "",
+    "date": "2026-03-16",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07473427",
+    "url": "https://clinicaltrials.gov/study/NCT07473427",
+    "summary_ko": "「Varicella (Chickenpox), Varicella Immunisation」 대상 3상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 300명(목표), 후원사는 Sinovac (Dalian) Vaccine Technology Co., Ltd.이며, 레지스트리 등록번호는 NCT07473427이다.",
+    "indication": "수두 예방",
+    "tags": [
+      "수두백신",
+      "수두 예방",
+      "3상",
+      "중재연구",
+      "모집 예정"
     ],
     "is_new": false
   },
@@ -3396,6 +4024,54 @@ let DATA = [
       "CIDP",
       "리뷰",
       "자가항체"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study on the Safety and Immune Response of Investigational mRNA Seasonal Flu/COVID-19 Combination Vaccine in Adults",
+    "authors": "",
+    "journal": "",
+    "date": "2026-03-11",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07464314",
+    "url": "https://clinicaltrials.gov/study/NCT07464314",
+    "summary_ko": "「Influenza, Human+COVID-19」 대상 1상 중재연구 임상이다. 상태는 모집 중, 등록 규모 225명(목표), 후원사는 GlaxoSmithKline이며, 레지스트리 등록번호는 NCT07464314이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Structured Review: To Optimise Management and Prevent Harm in COPD",
+    "authors": "",
+    "journal": "",
+    "date": "2026-03-10",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07460154",
+    "url": "https://clinicaltrials.gov/study/NCT07460154",
+    "summary_ko": "「COPD」 대상 임상단계 미지정 중재연구 임상이다. 상태는 모집 중, 등록 규모 96명(목표), 후원사는 Northumbria Healthcare NHS Foundation Trust이며, 레지스트리 등록번호는 NCT07460154이다.",
+    "indication": "COPD",
+    "tags": [
+      "독감백신",
+      "COPD",
+      "임상단계 미지정",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -3594,6 +4270,29 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "plasma",
+    "drug": "human albumin (혈청 알부민)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Evaluate Recombinant Human Serum Albumin From Oryza Sativa In Patients With Hypoalbuminemia and/or Hypovolemia Requiring Urgent Treatment",
+    "authors": "",
+    "journal": "",
+    "date": "2026-02-27",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07435922",
+    "url": "https://clinicaltrials.gov/study/NCT07435922",
+    "summary_ko": "「Hypoalbuminemia, Hypovolemia」 대상 관찰연구 임상이다. 상태는 모집 예정, 등록 규모 2000명(목표), 후원사는 Healthgen Biotechnology Corp.이며, 레지스트리 등록번호는 NCT07435922이다.",
+    "indication": "저알부민혈증",
+    "tags": [
+      "알부민",
+      "저알부민혈증",
+      "관찰연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
     "category": "rare",
     "drug": "G-CSF 예방요법 (AGIHO 가이드라인)",
     "is_gc": false,
@@ -3667,6 +4366,54 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Clinical Trial of Subunit Influenza Vaccine (Adjuvant) in Chinese Population Aged 65 Years and Older",
+    "authors": "",
+    "journal": "",
+    "date": "2026-02-19",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07421050",
+    "url": "https://clinicaltrials.gov/study/NCT07421050",
+    "summary_ko": "「Influenza, Influenza Vaccine」 대상 1상 중재연구 임상이다. 상태는 진행 중(모집 종료), 등록 규모 80명(실제 등록), 후원사는 Ab&B Bio-tech Co., Ltd.JS이며, 레지스트리 등록번호는 NCT07421050이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "중재연구",
+      "진행 중(모집 종료)"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Clinical Trial of Quadrivalent Subunit Influenza Vaccine (Adjuvant) in Chinese Population Aged 65 Years and Older",
+    "authors": "",
+    "journal": "",
+    "date": "2026-02-19",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07421037",
+    "url": "https://clinicaltrials.gov/study/NCT07421037",
+    "summary_ko": "「Influenza, Influenza Vaccine」 대상 1상 중재연구 임상이다. 상태는 진행 중(모집 종료), 등록 규모 80명(실제 등록), 후원사는 Ab&B Bio-tech Co., Ltd.JS이며, 레지스트리 등록번호는 NCT07421037이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "중재연구",
+      "진행 중(모집 종료)"
+    ],
+    "is_new": false
+  },
+  {
     "category": "rare",
     "drug": "CSF/urine biomarkers (MPS)",
     "is_gc": false,
@@ -3687,6 +4434,30 @@ let DATA = [
       "참조범위",
       "뇌척수액",
       "소변"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "Varivax (varicella vaccine (수두 백신))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "SkyVaricella® (NBP608) Vaccine With Lower Potencies in Healthy Children Aged 12 Months to 12 Years",
+    "authors": "",
+    "journal": "",
+    "date": "2026-02-17",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07415252",
+    "url": "https://clinicaltrials.gov/study/NCT07415252",
+    "summary_ko": "「Varicella (Chickenpox)」 대상 3상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 780명(목표), 후원사는 SK Bioscience Co., Ltd.이며, 레지스트리 등록번호는 NCT07415252이다.",
+    "indication": "수두 예방",
+    "tags": [
+      "수두백신",
+      "수두 예방",
+      "3상",
+      "중재연구",
+      "모집 예정"
     ],
     "is_new": false
   },
@@ -3739,6 +4510,29 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "vaccine",
+    "drug": "varicella vaccine (VarV, 2회 접종)",
+    "is_gc": false,
+    "source_type": "pubmed",
+    "title": "Impact of the two-dose varicella vaccination recommendation program and surveillance optimization on epidemiological trends in a megacity in China.",
+    "authors": "Liu Y, Xu J, Zhang H",
+    "journal": "Hum Vaccin Immunother",
+    "date": "2026-02-14",
+    "doi": "10.1080/21645515.2026.2630521",
+    "pmid": "41693349",
+    "nct_id": null,
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41693349/",
+    "summary_ko": "중국 충칭에서 수두백신 2회 접종 권고 프로그램이 수두 발생률에 미친 영향을 중단시계열분석(ITS)으로 평가했다. 2011~2023년 국가법정감염병보고시스템 월별 보고 건수와 예방접종 기록을 결합했으며, 이 기간 연평균 보고 발생률은 10만명당 69.6명이었다.",
+    "indication": "수두 예방",
+    "tags": [
+      "수두백신",
+      "2회 접종",
+      "중단시계열",
+      "예방접종정책"
+    ],
+    "is_new": false
+  },
+  {
     "category": "rare",
     "drug": "verenafusp alfa (GNR-055)",
     "is_gc": false,
@@ -3763,25 +4557,26 @@ let DATA = [
     "is_new": false
   },
   {
-    "category": "vaccine",
-    "drug": "varicella vaccine (VarV, 2회 접종)",
+    "category": "plasma",
+    "drug": "immune globulin (IVIG/SCIG)",
     "is_gc": false,
-    "source_type": "pubmed",
-    "title": "Impact of the two-dose varicella vaccination recommendation program and surveillance optimization on epidemiological trends in a megacity in China.",
-    "authors": "Liu Y, Xu J, Zhang H",
-    "journal": "Hum Vaccin Immunother",
-    "date": "2026-02-14",
-    "doi": "10.1080/21645515.2026.2630521",
-    "pmid": "41693349",
-    "nct_id": null,
-    "url": "https://pubmed.ncbi.nlm.nih.gov/41693349/",
-    "summary_ko": "중국 충칭에서 수두백신 2회 접종 권고 프로그램이 수두 발생률에 미친 영향을 중단시계열분석(ITS)으로 평가했다. 2011~2023년 국가법정감염병보고시스템 월별 보고 건수와 예방접종 기록을 결합했으며, 이 기간 연평균 보고 발생률은 10만명당 69.6명이었다.",
-    "indication": "수두 예방",
+    "source_type": "clinical",
+    "title": "Therapy in the Acute Phase of NMOSD: A Multicenter Prospective Real-World Study",
+    "authors": "",
+    "journal": "",
+    "date": "2026-02-13",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07410039",
+    "url": "https://clinicaltrials.gov/study/NCT07410039",
+    "summary_ko": "「Neuromyelitis Optica Spectrum Disorder Attack」 대상 4상 중재연구 임상이다. 상태는 모집 중, 등록 규모 200명(목표), 후원사는 Chinese PLA General Hospital이며, 레지스트리 등록번호는 NCT07410039이다.",
+    "indication": "Neuromyelitis Optica Spectrum Disorder Attack",
     "tags": [
-      "수두백신",
-      "2회 접종",
-      "중단시계열",
-      "예방접종정책"
+      "면역글로불린",
+      "Neuromyelitis Optica Spectrum Disorder Attack",
+      "4상",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -3807,6 +4602,30 @@ let DATA = [
       "임상3상",
       "약동학",
       "HyQvia"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "Fluad (influenza vaccine (인플루엔자 백신))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "WU 345: Immune Responses to Adjuvanted and Non-adjuvanted Seasonal Influenza Vaccines in the Lymphoid Tissues.",
+    "authors": "",
+    "journal": "",
+    "date": "2026-02-04",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07386509",
+    "url": "https://clinicaltrials.gov/study/NCT07386509",
+    "summary_ko": "「Healthy」 대상 초기 1상 중재연구 임상이다. 상태는 조기 종료, 등록 규모 2명(실제 등록), 후원사는 Washington University School of Medicine이며, 레지스트리 등록번호는 NCT07386509이다.",
+    "indication": "Healthy",
+    "tags": [
+      "독감백신",
+      "Healthy",
+      "초기 1상",
+      "중재연구",
+      "조기 종료"
     ],
     "is_new": false
   },
@@ -3932,6 +4751,102 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Study of Sacituzumab Govitecan With Atropine to Improve Tolerability in Advanced TNBC and HR+/HER2- Breast Cancer",
+    "authors": "",
+    "journal": "",
+    "date": "2026-01-26",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07367178",
+    "url": "https://clinicaltrials.gov/study/NCT07367178",
+    "summary_ko": "「Breast Cancer, Advanced HR+/HER2- Breast Cancer, Advanced Triple-Negative Breast Cancer」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 30명(목표), 후원사는 MedSIR이며, 레지스트리 등록번호는 NCT07367178이다.",
+    "indication": "Breast Cancer / Advanced HR+/HER2- Breast Cancer",
+    "tags": [
+      "G-CSF",
+      "Breast Cancer / Advanced HR+/HER2- Breast Cancer",
+      "2상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
+    "drug": "human albumin (혈청 알부민)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Efficacy and Safety of Intra-Arterial Albumin as Adjunct to Mechanical Thrombectomy in Acute Ischemic Stroke",
+    "authors": "",
+    "journal": "",
+    "date": "2026-01-26",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07365475",
+    "url": "https://clinicaltrials.gov/study/NCT07365475",
+    "summary_ko": "「Acute Ischemic Stroke From Large Vessel Occlusion」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 306명(목표), 후원사는 Tianjin Huanhu Hospital이며, 레지스트리 등록번호는 NCT07365475이다.",
+    "indication": "Acute Ischemic Stroke From Large Vessel Occlusion",
+    "tags": [
+      "알부민",
+      "Acute Ischemic Stroke From Large Vessel Occlusion",
+      "2상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "Flublok (influenza vaccine (인플루엔자 백신))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Clinical Study to Evaluate the Safety, Tolerability, and Immunogenicity of VAX-31 With Influenza Vaccine in Adults ≥ 50 Years of Age",
+    "authors": "",
+    "journal": "",
+    "date": "2026-01-26",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07365826",
+    "url": "https://clinicaltrials.gov/study/NCT07365826",
+    "summary_ko": "「Pneumococcal Vaccines」 대상 3상 중재연구 임상이다. 상태는 진행 중(모집 종료), 등록 규모 1390명(실제 등록), 후원사는 Vaxcyte, Inc.이며, 레지스트리 등록번호는 NCT07365826이다.",
+    "indication": "Pneumococcal Vaccines",
+    "tags": [
+      "독감백신",
+      "Pneumococcal Vaccines",
+      "3상",
+      "중재연구",
+      "진행 중(모집 종료)"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "plinabulin (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Docetaxel Plus Plinabulin vs Docetaxel Plus Placebo in Advanced/Metastatic Non-Squamous NSCLC After PD-1/PD-L1 Therapy and Platinum Chemotherapy (DUBLIN-4)",
+    "authors": "",
+    "journal": "",
+    "date": "2026-01-23",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07361484",
+    "url": "https://clinicaltrials.gov/study/NCT07361484",
+    "summary_ko": "「Non-Small Cell Lung Cancer, Non-squamous Non-Small Cell Lung Cance」 대상 3상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 442명(목표), 후원사는 BeyondSpring Pharmaceuticals Inc.이며, 레지스트리 등록번호는 NCT07361484이다.",
+    "indication": "Non-Small Cell Lung Cancer / Non-squamous Non-Small Cell Lung Cance",
+    "tags": [
+      "G-CSF",
+      "Non-Small Cell Lung Cancer / Non-squamous Non-Small Cell Lung Cance",
+      "3상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
     "category": "vaccine",
     "drug": "varicella vaccine (VarV, 2회 접종)",
     "is_gc": false,
@@ -4005,6 +4920,78 @@ let DATA = [
   },
   {
     "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Phase I Trial to Evaluate the Safety and Immunogenicity of Influenza Virus Split Vaccine (Adjuvant)",
+    "authors": "",
+    "journal": "",
+    "date": "2026-01-16",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07349017",
+    "url": "https://clinicaltrials.gov/study/NCT07349017",
+    "summary_ko": "「Influenza」 대상 1상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 160명(목표), 후원사는 Changchun BCHT Biotechnology Co.이며, 레지스트리 등록번호는 NCT07349017이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "헌터라제 (Hunterase, idursulfase beta)",
+    "is_gc": true,
+    "source_type": "clinical",
+    "title": "An Extension Study to Assess the Long-term Safety and Efficacy of Hunterase (Idursulfase Beta)",
+    "authors": "",
+    "journal": "",
+    "date": "2026-01-15",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07344376",
+    "url": "https://clinicaltrials.gov/study/NCT07344376",
+    "summary_ko": "「MPS II, Hunter Syndrome (MPS II), Hunter Syndrome」 대상 3상 중재연구 임상이다. 상태는 종료, 등록 규모 30명(실제 등록), 후원사는 GC Biopharma Corp이며, 레지스트리 등록번호는 NCT07344376이다.",
+    "indication": "MPS II(헌터증후군)",
+    "tags": [
+      "헌터증후군 ERT",
+      "MPS II(헌터증후군)",
+      "3상",
+      "중재연구",
+      "종료"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "Flucelvax (influenza vaccine (인플루엔자 백신))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "H1ssF Flu Vaccine Clinical Trial",
+    "authors": "",
+    "journal": "",
+    "date": "2026-01-14",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07340047",
+    "url": "https://clinicaltrials.gov/study/NCT07340047",
+    "summary_ko": "「Influenza」 대상 1상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 112명(목표), 후원사는 University of Minnesota이며, 레지스트리 등록번호는 NCT07340047이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
     "drug": "mRNA-1010 (Moderna) vs FLUAD (면역증강, CSL Seqirus)",
     "is_gc": false,
     "source_type": "pubmed",
@@ -4025,6 +5012,29 @@ let DATA = [
       "기억 B세포",
       "임상1상",
       "경쟁제품"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Safety Study of Quadrivalent Subunit Influenza Vaccine in People Aged 3 Years and Older",
+    "authors": "",
+    "journal": "",
+    "date": "2026-01-12",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07332689",
+    "url": "https://clinicaltrials.gov/study/NCT07332689",
+    "summary_ko": "「Influenza Vaccine」 대상 관찰연구 임상이다. 상태는 종료, 등록 규모 42881명(실제 등록), 후원사는 Ab&B Bio-tech Co., Ltd.JS이며, 레지스트리 등록번호는 NCT07332689이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "관찰연구",
+      "종료"
     ],
     "is_new": false
   },
@@ -4252,6 +5262,54 @@ let DATA = [
   },
   {
     "category": "plasma",
+    "drug": "human albumin (혈청 알부민)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "The Preliminary Efficacy and Safety of Intra-Arterial Albumin as Adjunct to Mechanical Thrombectomy in Acute Ischemic Stroke",
+    "authors": "",
+    "journal": "",
+    "date": "2025-12-19",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07294391",
+    "url": "https://clinicaltrials.gov/study/NCT07294391",
+    "summary_ko": "「Acute Ischemic Stroke From Large Vessel Occlusion」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 60명(목표), 후원사는 Tianjin Huanhu Hospital이며, 레지스트리 등록번호는 NCT07294391이다.",
+    "indication": "Acute Ischemic Stroke From Large Vessel Occlusion",
+    "tags": [
+      "알부민",
+      "Acute Ischemic Stroke From Large Vessel Occlusion",
+      "2상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Phase 1/2 Study of a Plant-Based Seasonal Recombinant Trivalent VLP Influenza Vaccine",
+    "authors": "",
+    "journal": "",
+    "date": "2025-12-18",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07291635",
+    "url": "https://clinicaltrials.gov/study/NCT07291635",
+    "summary_ko": "「Influenza」 대상 1상/2상 중재연구 임상이다. 상태는 진행 중(모집 종료), 등록 규모 728명(목표), 후원사는 Aramis Biotechnologies Inc.이며, 레지스트리 등록번호는 NCT07291635이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "2상",
+      "중재연구"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
     "drug": "Bivigam (IVIG 10%)",
     "is_gc": false,
     "source_type": "pubmed",
@@ -4300,6 +5358,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "rare",
+    "drug": "Neulasta (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Ruxolitinib in Combination With CHOP Chemotherapy for the Treatment of Untreated Nodal T-Follicular Helper Cell Lymphomas",
+    "authors": "",
+    "journal": "",
+    "date": "2025-12-12",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07278856",
+    "url": "https://clinicaltrials.gov/study/NCT07278856",
+    "summary_ko": "「Follicular Helper T-Cell Lymphoma, Follicular Helper T-Cell Lymphoma, Angioimmunoblastic-Type, Follicular Helper T-Cell Lymphoma, Follicular-Type」 대상 1상 중재연구 임상이다. 상태는 모집 중, 등록 규모 20명(목표), 후원사는 City of Hope Medical Center이며, 레지스트리 등록번호는 NCT07278856이다.",
+    "indication": "Follicular Helper T-Cell Lymphoma / Follicular Helper T-Cell Lymphoma, Angioimmunoblastic-Type",
+    "tags": [
+      "G-CSF",
+      "Follicular Helper T-Cell Lymphoma / Follicular Helper T-Cell Lymphoma, Angioimmunoblastic-Type",
+      "1상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
     "category": "plasma",
     "drug": "SCIG (class)",
     "is_gc": false,
@@ -4323,6 +5405,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Influenza Vaccination After Acute Coronary Syndrome",
+    "authors": "",
+    "journal": "",
+    "date": "2025-12-02",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07259252",
+    "url": "https://clinicaltrials.gov/study/NCT07259252",
+    "summary_ko": "「Acute Coronary Syndromes (ACS)」 대상 임상단계 미지정 중재연구 임상이다. 상태는 모집 중, 등록 규모 6620명(목표), 후원사는 Tongji Hospital이며, 레지스트리 등록번호는 NCT07259252이다.",
+    "indication": "Acute Coronary Syndromes (ACS)",
+    "tags": [
+      "독감백신",
+      "Acute Coronary Syndromes (ACS)",
+      "임상단계 미지정",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
     "category": "rare",
     "drug": "idursulfase (Elaprase)",
     "is_gc": false,
@@ -4342,6 +5448,30 @@ let DATA = [
       "여성환자",
       "헌터결과조사",
       "임상특성"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "CD45RA-depleted CD19-CAR T Cell Consolidation After TCRαβ+/CD19 B Cell-depleted Haploidentical Hematopoietic Cell Transplantation for Relapsed/Refractory CD19+ ALL and Lymphoma",
+    "authors": "",
+    "journal": "",
+    "date": "2025-12-02",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07257419",
+    "url": "https://clinicaltrials.gov/study/NCT07257419",
+    "summary_ko": "「Relapsed Pediatric ALL, Hematopoietic Cell Transplantation, Hematologic Malignancy」 대상 1상 중재연구 임상이다. 상태는 모집 중, 등록 규모 70명(목표), 후원사는 St. Jude Children's Research Hospital이며, 레지스트리 등록번호는 NCT07257419이다.",
+    "indication": "Relapsed Pediatric ALL / Hematopoietic Cell Transplantation",
+    "tags": [
+      "G-CSF",
+      "Relapsed Pediatric ALL / Hematopoietic Cell Transplantation",
+      "1상",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -4371,6 +5501,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "rare",
+    "drug": "trilaciclib (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Bone Marrow Protection, Safety, Efficacy of Trilaciclib and Eribulin in Locally Advanced or Metastatic TNBC(Triple-negative Breast Cancer)",
+    "authors": "",
+    "journal": "",
+    "date": "2025-12-01",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07255612",
+    "url": "https://clinicaltrials.gov/study/NCT07255612",
+    "summary_ko": "「Breast Cancer」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 29명(목표), 후원사는 Sun Yat-sen University이며, 레지스트리 등록번호는 NCT07255612이다.",
+    "indication": "Breast Cancer",
+    "tags": [
+      "G-CSF",
+      "Breast Cancer",
+      "2상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
     "category": "vaccine",
     "drug": "mRNA-1010 (Moderna)",
     "is_gc": false,
@@ -4392,6 +5546,30 @@ let DATA = [
       "임상3상",
       "방어상관지표",
       "경쟁제품"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "The Dynamics of the Immune Responses to Repeat Influenza Vaccination Exposures (DRIVE III) Study",
+    "authors": "",
+    "journal": "",
+    "date": "2025-11-21",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07240922",
+    "url": "https://clinicaltrials.gov/study/NCT07240922",
+    "summary_ko": "「Influenza」 대상 4상 중재연구 임상이다. 상태는 진행 중(모집 종료), 등록 규모 600명(목표), 후원사는 The University of Hong Kong이며, 레지스트리 등록번호는 NCT07240922이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "4상",
+      "중재연구",
+      "진행 중(모집 종료)"
     ],
     "is_new": false
   },
@@ -4563,6 +5741,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "rare",
+    "drug": "Neulasta (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Dose-Adjusted EPOCH With or Without Rituximab Plus Ponatinib for the Treatment of Newly-Diagnosed Philadelphia Chromosome Positive Acute Lymphoblastic Leukemia/Lymphoma",
+    "authors": "",
+    "journal": "",
+    "date": "2025-11-04",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07224100",
+    "url": "https://clinicaltrials.gov/study/NCT07224100",
+    "summary_ko": "「B Acute Lymphoblastic Leukemia With t(9;22)(q34.1;q11.2); BCR-ABL1, B Lymphoblastic Leukemia/Lymphoma With t(9;22)(q34.1;q11.2); BCR-ABL1, Lymphoblastic Lymphoma」 대상 2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 33명(목표), 후원사는 University of Washington이며, 레지스트리 등록번호는 NCT07224100이다.",
+    "indication": "B Acute Lymphoblastic Leukemia With t(9;22)(q34.1;q11.2); BCR-ABL1 / B Lymphoblastic Leukemia/Lymphoma With t(9;22)(q34.1;q11.2); BCR-ABL1",
+    "tags": [
+      "G-CSF",
+      "B Acute Lymphoblastic Leukemia With t(9;22)(q34.1;q11.2); BCR-ABL1 / B Lymphoblastic Leukemia/Lymphoma With t(9;22)(q34.1;q11.2); BCR-ABL1",
+      "2상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
     "category": "vaccine",
     "drug": "브랜드별 계절 독감백신 (북유럽 3개국)",
     "is_gc": false,
@@ -4686,6 +5888,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "plasma",
+    "drug": "human albumin (혈청 알부민)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Human Albumin for Resuscitation in Surgical Septic Shock: A Randomized Controlled Trial (ALBUS Study)",
+    "authors": "",
+    "journal": "",
+    "date": "2025-10-08",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07212582",
+    "url": "https://clinicaltrials.gov/study/NCT07212582",
+    "summary_ko": "「Critical Illness, Septic Shock」 대상 3상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 304명(목표), 후원사는 Mahidol University이며, 레지스트리 등록번호는 NCT07212582이다.",
+    "indication": "중증 감염증(항생제 병용)",
+    "tags": [
+      "알부민",
+      "중증 감염증(항생제 병용)",
+      "3상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
     "category": "vaccine",
     "drug": "Quadrivalent influenza vaccine, split-virion (Sinovac, pregnant women)",
     "is_gc": false,
@@ -4732,6 +5958,30 @@ let DATA = [
       "임상3상",
       "사후분석",
       "경쟁제품"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "Fluzone (influenza vaccine (인플루엔자 백신))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "High vs. Standard Dose Influenza Vaccines in Lung Transplant (Repeater)",
+    "authors": "",
+    "journal": "",
+    "date": "2025-09-25",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07192458",
+    "url": "https://clinicaltrials.gov/study/NCT07192458",
+    "summary_ko": "「Immunization; Infection|Transplantation Infection|Influenza, Influenza」 대상 2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 60명(목표), 후원사는 Vanderbilt University Medical Center이며, 레지스트리 등록번호는 NCT07192458이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "2상",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -4854,6 +6104,30 @@ let DATA = [
       "PID",
       "약물경제성",
       "Hizentra"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "Fluarix (influenza vaccine (인플루엔자 백신))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Characterizing the Human Airway Immune Response to FluMist Vaccination",
+    "authors": "",
+    "journal": "",
+    "date": "2025-09-17",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07177417",
+    "url": "https://clinicaltrials.gov/study/NCT07177417",
+    "summary_ko": "「Healthy Young Adults, Influenza Vaccines, Influenza Vaccine Response」 대상 4상 중재연구 임상이다. 상태는 모집 중, 등록 규모 30명(목표), 후원사는 Washington University School of Medicine이며, 레지스트리 등록번호는 NCT07177417이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "4상",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -4982,6 +6256,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "plasma",
+    "drug": "human albumin (혈청 알부민)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Effect of Goal-Oriented Albumin Infusion on Postoperative Complication Management in Gastric Cancer Surgery",
+    "authors": "",
+    "journal": "",
+    "date": "2025-08-13",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07119463",
+    "url": "https://clinicaltrials.gov/study/NCT07119463",
+    "summary_ko": "「Postoperative Hypoalbuminemia, Postoperative Complications, Gastric Cancer」 대상 2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 112명(목표), 후원사는 The First Hospital of Jilin University이며, 레지스트리 등록번호는 NCT07119463이다.",
+    "indication": "저알부민혈증",
+    "tags": [
+      "알부민",
+      "저알부민혈증",
+      "2상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
     "category": "rare",
     "drug": "idursulfase beta (recombinant IDS)",
     "is_gc": true,
@@ -5052,6 +6350,30 @@ let DATA = [
       "효소대체요법",
       "임상3상",
       "GC제품"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Intranasal LAIV Mucosal Immunity Examination",
+    "authors": "",
+    "journal": "",
+    "date": "2025-07-30",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07093281",
+    "url": "https://clinicaltrials.gov/study/NCT07093281",
+    "summary_ko": "「Impact of Vaccination」 대상 4상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 25명(목표), 후원사는 University of Maryland, Baltimore이며, 레지스트리 등록번호는 NCT07093281이다.",
+    "indication": "Impact of Vaccination",
+    "tags": [
+      "독감백신",
+      "Impact of Vaccination",
+      "4상",
+      "중재연구",
+      "모집 예정"
     ],
     "is_new": false
   },
@@ -5132,6 +6454,77 @@ let DATA = [
   },
   {
     "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Clinical Trial to Observe the Safety of 23-Valent Pneumococcal Polysaccharide Vaccine in Target Population",
+    "authors": "",
+    "journal": "",
+    "date": "2025-07-17",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07071701",
+    "url": "https://clinicaltrials.gov/study/NCT07071701",
+    "summary_ko": "「Pneumococcal Infectious Disease」 대상 관찰연구 임상이다. 상태는 종료, 등록 규모 19267명(실제 등록), 후원사는 Sinovac Biotech Co., Ltd이며, 레지스트리 등록번호는 NCT07071701이다.",
+    "indication": "Pneumococcal Infectious Disease",
+    "tags": [
+      "독감백신",
+      "Pneumococcal Infectious Disease",
+      "관찰연구",
+      "종료"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "pegfilgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Trial of Single Protein Encapsulated Doxorubicin, SPEDOX-6 in Advanced Malignancies",
+    "authors": "",
+    "journal": "",
+    "date": "2025-07-14",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07064018",
+    "url": "https://clinicaltrials.gov/study/NCT07064018",
+    "summary_ko": "「Soft-tissue Sarcoma, Triple Negative Breast Cancer, Non-small Cell Lung Cancer」 대상 1상/2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 67명(목표), 후원사는 University of California, Irvine이며, 레지스트리 등록번호는 NCT07064018이다.",
+    "indication": "Soft-tissue Sarcoma / Triple Negative Breast Cancer",
+    "tags": [
+      "G-CSF",
+      "Soft-tissue Sarcoma / Triple Negative Breast Cancer",
+      "1상",
+      "2상",
+      "중재연구"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "pegfilgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Neoadjuvant Intra-tumoral RP2 and FLOT in Gastroesophageal Adenocarcinoma",
+    "authors": "",
+    "journal": "",
+    "date": "2025-07-11",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07059611",
+    "url": "https://clinicaltrials.gov/study/NCT07059611",
+    "summary_ko": "「Gastric Adenocarcinoma, Esophageal Adenocarcinoma, Gastroesophageal Junction Adenocarcinoma」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 34명(목표), 후원사는 Abramson Cancer Center at Penn Medicine이며, 레지스트리 등록번호는 NCT07059611이다.",
+    "indication": "Gastric Adenocarcinoma / Esophageal Adenocarcinoma",
+    "tags": [
+      "G-CSF",
+      "Gastric Adenocarcinoma / Esophageal Adenocarcinoma",
+      "2상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
     "drug": "고용량 Fluzone (HD-IIV, Sanofi)",
     "is_gc": false,
     "source_type": "pubmed",
@@ -5177,6 +6570,30 @@ let DATA = [
       "품질관리",
       "바이오시밀러",
       "기전"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "TCRαβ-depleted Progenitor Cell Graft With Early Memory T-cell DLI, Plus Selected Use of Blinatumomab, in naïve T-cell Depleted Haploidentical Donor Hematopoietic Cell Transplantation for Hematologic Malignancies",
+    "authors": "",
+    "journal": "",
+    "date": "2025-07-04",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07052370",
+    "url": "https://clinicaltrials.gov/study/NCT07052370",
+    "summary_ko": "「Hematologic Malignancy」 대상 1상 중재연구 임상이다. 상태는 모집 중, 등록 규모 30명(목표), 후원사는 St. Jude Children's Research Hospital이며, 레지스트리 등록번호는 NCT07052370이다.",
+    "indication": "Hematologic Malignancy",
+    "tags": [
+      "G-CSF",
+      "Hematologic Malignancy",
+      "1상",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -5255,6 +6672,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "rare",
+    "drug": "Neulasta (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "ctDNA-Guided Therapy for Relapsed/Refractory Hodgkin Lymphoma",
+    "authors": "",
+    "journal": "",
+    "date": "2025-06-15",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07021989",
+    "url": "https://clinicaltrials.gov/study/NCT07021989",
+    "summary_ko": "「Hodgkin Lymphoma, Adult, Refractory Hodgkin Lymphoma, Classic Hodgkin Lymphoma」 대상 2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 38명(목표), 후원사는 Michael Spinner, MD이며, 레지스트리 등록번호는 NCT07021989이다.",
+    "indication": "Hodgkin Lymphoma, Adult / Refractory Hodgkin Lymphoma",
+    "tags": [
+      "G-CSF",
+      "Hodgkin Lymphoma, Adult / Refractory Hodgkin Lymphoma",
+      "2상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
     "category": "plasma",
     "drug": "Bivigam (IVIG 10%)",
     "is_gc": false,
@@ -5276,6 +6717,30 @@ let DATA = [
       "소아",
       "안전성",
       "Bivigam"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study to Find the Highest Dose of Cedazuridine and Decitabine Combination With Filgrastim as a Treatment Option After Hematopoietic Stem Cell Transplant in Children With High-Risk Acute Myeloid Leukemia",
+    "authors": "",
+    "journal": "",
+    "date": "2025-06-10",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT07012044",
+    "url": "https://clinicaltrials.gov/study/NCT07012044",
+    "summary_ko": "「Acute Myeloid Leukemia Post Cytotoxic Therapy, Recurrent Acute Myeloid Leukemia, Refractory Acute Myeloid Leukemia」 대상 1상 중재연구 임상이다. 상태는 모집 중, 등록 규모 47명(목표), 후원사는 National Cancer Institute (NCI)이며, 레지스트리 등록번호는 NCT07012044이다.",
+    "indication": "Acute Myeloid Leukemia Post Cytotoxic Therapy / Recurrent Acute Myeloid Leukemia",
+    "tags": [
+      "G-CSF",
+      "Acute Myeloid Leukemia Post Cytotoxic Therapy / Recurrent Acute Myeloid Leukemia",
+      "1상",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -5332,6 +6797,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "vaccine",
+    "drug": "varicella vaccine (수두 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Study on Booster Immunization With Varicella Vaccine at Different Intervals",
+    "authors": "",
+    "journal": "",
+    "date": "2025-05-29",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06994052",
+    "url": "https://clinicaltrials.gov/study/NCT06994052",
+    "summary_ko": "「VZV, Varicella Immunisation」 대상 4상 중재연구 임상이다. 상태는 종료, 등록 규모 412명(실제 등록), 후원사는 Sinovac (Dalian) Vaccine Technology Co., Ltd.이며, 레지스트리 등록번호는 NCT06994052이다.",
+    "indication": "수두 예방",
+    "tags": [
+      "수두백신",
+      "수두 예방",
+      "4상",
+      "중재연구",
+      "종료"
+    ],
+    "is_new": false
+  },
+  {
     "category": "rare",
     "drug": "Trilaciclib + sacituzumab tirumotecan",
     "is_gc": false,
@@ -5353,6 +6842,30 @@ let DATA = [
       "ADC",
       "임상2상",
       "비소세포폐암"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "varicella vaccine (수두 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Simultaneous Administration Study of Varicella Attenuated Live Vaccine and Trivalent Inactivated Influenza Vaccine (Split Virion)",
+    "authors": "",
+    "journal": "",
+    "date": "2025-05-23",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06987942",
+    "url": "https://clinicaltrials.gov/study/NCT06987942",
+    "summary_ko": "「Varicella, Influenza Vaccine」 대상 4상 중재연구 임상이다. 상태는 종료, 등록 규모 899명(실제 등록), 후원사는 Sinovac (Dalian) Vaccine Technology Co., Ltd.이며, 레지스트리 등록번호는 NCT06987942이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "수두백신",
+      "인플루엔자 예방",
+      "4상",
+      "중재연구",
+      "종료"
     ],
     "is_new": false
   },
@@ -5409,6 +6922,126 @@ let DATA = [
   },
   {
     "category": "rare",
+    "drug": "trilaciclib (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Trilaciclib Combined With Anti-PD-1 Antibody and Chemotherapy in the Treatment of Locally Advanced TNBC",
+    "authors": "",
+    "journal": "",
+    "date": "2025-05-02",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06955156",
+    "url": "https://clinicaltrials.gov/study/NCT06955156",
+    "summary_ko": "「Triple Negative Breast Cancer」 대상 2상 중재연구 임상이다. 상태는 상태 미상, 등록 규모 50명(목표), 후원사는 QIAO LI이며, 레지스트리 등록번호는 NCT06955156이다.",
+    "indication": "Triple Negative Breast Cancer",
+    "tags": [
+      "G-CSF",
+      "Triple Negative Breast Cancer",
+      "2상",
+      "중재연구",
+      "상태 미상"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Pilot Study of IT Topotecan and Maintenance Chemotherapy for HR-EBTs in Children < 6 Years, Post Consolidation",
+    "authors": "",
+    "journal": "",
+    "date": "2025-04-24",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06942039",
+    "url": "https://clinicaltrials.gov/study/NCT06942039",
+    "summary_ko": "「CNS Embryonal Tumor, CNS, Medulloblastoma, Atypical Teratoid Rhabdoid Tumor」 대상 초기 1상 중재연구 임상이다. 상태는 모집 중, 등록 규모 15명(목표), 후원사는 C17 Council이며, 레지스트리 등록번호는 NCT06942039이다.",
+    "indication": "CNS Embryonal Tumor / CNS, Medulloblastoma",
+    "tags": [
+      "G-CSF",
+      "CNS Embryonal Tumor / CNS, Medulloblastoma",
+      "초기 1상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "trilaciclib (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Trilaciclib in Combination With Docetaxel for Second-Line and Beyond Treatment of Locally Advanced or Metastatic NSCLC",
+    "authors": "",
+    "journal": "",
+    "date": "2025-04-16",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06929936",
+    "url": "https://clinicaltrials.gov/study/NCT06929936",
+    "summary_ko": "「Non-Small Cell Lung Cancer, Myelosuppression」 대상 2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 33명(목표), 후원사는 The First Affiliated Hospital of Xiamen University이며, 레지스트리 등록번호는 NCT06929936이다.",
+    "indication": "항암화학요법 유발 호중구감소(CIN)",
+    "tags": [
+      "G-CSF",
+      "항암화학요법 유발 호중구감소(CIN)",
+      "2상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "pegfilgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Telpegfilgrastim vs Filgrastim for Secondary Prevention of Chemotherapy-Induced Neutropenia in Pediatric Solid Tumors",
+    "authors": "",
+    "journal": "",
+    "date": "2025-04-15",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06926751",
+    "url": "https://clinicaltrials.gov/study/NCT06926751",
+    "summary_ko": "「Solid Tumors, Children, Adolescent」 대상 2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 132명(목표), 후원사는 Cancer Institute and Hospital, Chinese Academy of Medical Sciences이며, 레지스트리 등록번호는 NCT06926751이다.",
+    "indication": "항암화학요법 유발 호중구감소(CIN)",
+    "tags": [
+      "G-CSF",
+      "항암화학요법 유발 호중구감소(CIN)",
+      "2상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Chemotherapy (Decitabine in Combination With FLAG-Ida) and Total-Body Irradiation Followed by Donor Stem Cell Transplant for the Treatment of Adults With Myeloid Malignancies at High Risk of Relapse",
+    "authors": "",
+    "journal": "",
+    "date": "2025-04-15",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06928662",
+    "url": "https://clinicaltrials.gov/study/NCT06928662",
+    "summary_ko": "「Acute Myeloid Leukemia, Acute Undifferentiated Leukemia, Mixed Phenotype Acute Leukemia」 대상 1상/2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 36명(목표), 후원사는 Fred Hutchinson Cancer Center이며, 레지스트리 등록번호는 NCT06928662이다.",
+    "indication": "Acute Myeloid Leukemia / Acute Undifferentiated Leukemia",
+    "tags": [
+      "G-CSF",
+      "Acute Myeloid Leukemia / Acute Undifferentiated Leukemia",
+      "1상",
+      "2상",
+      "중재연구"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
     "drug": "idursulfase (safety/administration)",
     "is_gc": false,
     "source_type": "pubmed",
@@ -5456,6 +7089,30 @@ let DATA = [
   },
   {
     "category": "plasma",
+    "drug": "human albumin (혈청 알부민)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study of Recombinant Human Albumin Injection to Treat Hypoalbuminemia in Cirrhotic Patients With Ascites",
+    "authors": "",
+    "journal": "",
+    "date": "2025-04-04",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06911554",
+    "url": "https://clinicaltrials.gov/study/NCT06911554",
+    "summary_ko": "「Hepatic Ascites」 대상 3상 중재연구 임상이다. 상태는 종료, 등록 규모 416명(실제 등록), 후원사는 Tonghua Anrate Biopharmaceutical Co., Ltd.이며, 레지스트리 등록번호는 NCT06911554이다.",
+    "indication": "간경변 복수",
+    "tags": [
+      "알부민",
+      "간경변 복수",
+      "3상",
+      "중재연구",
+      "종료"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
     "drug": "Gammagard Liquid/Kiovig (IVIG 10%)",
     "is_gc": false,
     "source_type": "pubmed",
@@ -5475,6 +7132,125 @@ let DATA = [
       "임상시험",
       "재발치료",
       "Gammagard"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "varicella vaccine (수두 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Study of Live Attenuated Varicella Vaccine Co-administered with MMR Vaccine or DTaP Vaccine",
+    "authors": "",
+    "journal": "",
+    "date": "2025-03-24",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06891872",
+    "url": "https://clinicaltrials.gov/study/NCT06891872",
+    "summary_ko": "「Varicella (chickenpox), MMR Vaccine, DTaP Vaccine」 대상 4상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 720명(목표), 후원사는 Sinovac (Dalian) Vaccine Technology Co., Ltd.이며, 레지스트리 등록번호는 NCT06891872이다.",
+    "indication": "수두 예방",
+    "tags": [
+      "수두백신",
+      "수두 예방",
+      "4상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A-TANGO Phase 2 Study",
+    "authors": "",
+    "journal": "",
+    "date": "2025-03-21",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06890039",
+    "url": "https://clinicaltrials.gov/study/NCT06890039",
+    "summary_ko": "「Acute-On-Chronic Liver Failure, Alcoholic Hepatitis, Liver Cirrhosis, Alcoholic」 대상 2상 중재연구 임상이다. 상태는 모집 예정, 등록 규모 78명(목표), 후원사는 Yaqrit Ltd이며, 레지스트리 등록번호는 NCT06890039이다.",
+    "indication": "간경변 복수",
+    "tags": [
+      "G-CSF",
+      "간경변 복수",
+      "2상",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "plasma",
+    "drug": "human albumin (혈청 알부민)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Albumin Infusion Targets on Mortality in Patients With Abdominal Sepsis",
+    "authors": "",
+    "journal": "",
+    "date": "2025-03-13",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06874634",
+    "url": "https://clinicaltrials.gov/study/NCT06874634",
+    "summary_ko": "「28-day Mortality」 대상 관찰연구 임상이다. 상태는 종료, 등록 규모 180명(실제 등록), 후원사는 Nanfang Hospital, Southern Medical University이며, 레지스트리 등록번호는 NCT06874634이다.",
+    "indication": "28-day Mortality",
+    "tags": [
+      "알부민",
+      "28-day Mortality",
+      "관찰연구",
+      "종료"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study to Investigate the Immunogenicity, Reactogenicity, and Safety of mRNA-1083 (Influenza and COVID-19) Vaccine in Adults ≥18 to <65 Years of Age",
+    "authors": "",
+    "journal": "",
+    "date": "2025-03-07",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06864143",
+    "url": "https://clinicaltrials.gov/study/NCT06864143",
+    "summary_ko": "「Influenza, SARS-CoV-2」 대상 2상 중재연구 임상이다. 상태는 종료, 등록 규모 1320명(실제 등록), 후원사는 ModernaTX, Inc.이며, 레지스트리 등록번호는 NCT06864143이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "2상",
+      "중재연구",
+      "종료"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "varicella vaccine (수두 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study on the Immune Response and Safety of an Investigational Chickenpox Vaccine and a Marketed Measles, Mumps and Rubella Vaccine When Administered as Intramuscular Injection to Healthy Children 12 to 15 Months of Age",
+    "authors": "",
+    "journal": "",
+    "date": "2025-03-03",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06855160",
+    "url": "https://clinicaltrials.gov/study/NCT06855160",
+    "summary_ko": "「Chickenpox」 대상 3상 중재연구 임상이다. 상태는 모집 중, 등록 규모 911명(목표), 후원사는 GlaxoSmithKline이며, 레지스트리 등록번호는 NCT06855160이다.",
+    "indication": "수두 예방",
+    "tags": [
+      "수두백신",
+      "수두 예방",
+      "3상",
+      "중재연구",
+      "모집 중"
     ],
     "is_new": false
   },
@@ -5506,6 +7282,30 @@ let DATA = [
   },
   {
     "category": "rare",
+    "drug": "filgrastim (G-CSF (호중구감소증 치료제))",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Base-Edited Hematopoietic Stem/Progenitor Cell X-Linked Severe Combined Immunodeficiency Gene Therapy",
+    "authors": "",
+    "journal": "",
+    "date": "2025-02-28",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06851767",
+    "url": "https://clinicaltrials.gov/study/NCT06851767",
+    "summary_ko": "「X-linked Severe Combined Immunodeficiency, X-SCID, XSCID」 대상 1상/2상 중재연구 임상이다. 상태는 초청 등록 중, 등록 규모 18명(목표), 후원사는 National Institute of Allergy and Infectious Diseases (NIAID)이며, 레지스트리 등록번호는 NCT06851767이다.",
+    "indication": "X-linked Severe Combined Immunodeficiency / X-SCID",
+    "tags": [
+      "G-CSF",
+      "X-linked Severe Combined Immunodeficiency / X-SCID",
+      "1상",
+      "2상",
+      "중재연구"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "rare",
     "drug": "CNS-targeted IDS gene therapy",
     "is_gc": false,
     "source_type": "pubmed",
@@ -5525,6 +7325,30 @@ let DATA = [
       "중추신경",
       "인지",
       "전임상"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Safety and Immunogenicity of the Monovalent Influenza Vaccine A (H5N8) (Inactivated, Fragmented and Adjuvanted) in Adults and Older Adults",
+    "authors": "",
+    "journal": "",
+    "date": "2025-02-24",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06842173",
+    "url": "https://clinicaltrials.gov/study/NCT06842173",
+    "summary_ko": "「Avian Influenza A Virus」 대상 1상/2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 700명(목표), 후원사는 Butantan Institute이며, 레지스트리 등록번호는 NCT06842173이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "2상",
+      "중재연구"
     ],
     "is_new": false
   },
@@ -5572,6 +7396,126 @@ let DATA = [
       "비용효과분석",
       "보건경제",
       "효소대체요법"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Immunogenicity of COVID-19 Vaccine Co-administration With Influenza Vaccine in Healthy Volunteers",
+    "authors": "",
+    "journal": "",
+    "date": "2025-02-18",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06831786",
+    "url": "https://clinicaltrials.gov/study/NCT06831786",
+    "summary_ko": "「COVID - 19」 대상 초기 1상 중재연구 임상이다. 상태는 종료, 등록 규모 36명(실제 등록), 후원사는 Prince of Songkla University이며, 레지스트리 등록번호는 NCT06831786이다.",
+    "indication": "COVID - 19",
+    "tags": [
+      "독감백신",
+      "COVID - 19",
+      "초기 1상",
+      "중재연구",
+      "종료"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Effect of Oral Supplements for Influenza Vaccine Response",
+    "authors": "",
+    "journal": "",
+    "date": "2025-02-14",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06827873",
+    "url": "https://clinicaltrials.gov/study/NCT06827873",
+    "summary_ko": "「Influenza Vaccine Response」 대상 임상단계 미지정 중재연구 임상이다. 상태는 모집 예정, 등록 규모 45명(목표), 후원사는 Tsinghua University이며, 레지스트리 등록번호는 NCT06827873이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "임상단계 미지정",
+      "중재연구",
+      "모집 예정"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Impact of FLU Vaccination on Nasal Resident Memory Immune Responses and Peripheral Respiratory-tropic Memory Immune Responses",
+    "authors": "",
+    "journal": "",
+    "date": "2025-02-13",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06824779",
+    "url": "https://clinicaltrials.gov/study/NCT06824779",
+    "summary_ko": "「Volunteers, Flu Vaccine」 대상 4상 중재연구 임상이다. 상태는 진행 중(모집 종료), 등록 규모 30명(실제 등록), 후원사는 Centre Hospitalier Universitaire de Saint Etienne이며, 레지스트리 등록번호는 NCT06824779이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "4상",
+      "중재연구",
+      "진행 중(모집 종료)"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "Clinical Trials of Quadrivalent Influenza Vaccine",
+    "authors": "",
+    "journal": "",
+    "date": "2025-02-13",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06824519",
+    "url": "https://clinicaltrials.gov/study/NCT06824519",
+    "summary_ko": "「Influenza, Human」 대상 1상/2상 중재연구 임상이다. 상태는 모집 중, 등록 규모 620명(목표), 후원사는 Anhui Zhifei Longcom Biologic Pharmacy Co., Ltd.이며, 레지스트리 등록번호는 NCT06824519이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "2상",
+      "중재연구"
+    ],
+    "is_new": false
+  },
+  {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study to Learn About How the Flu and COVID-19 Vaccines Act in Healthy People",
+    "authors": "",
+    "journal": "",
+    "date": "2025-02-11",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06821061",
+    "url": "https://clinicaltrials.gov/study/NCT06821061",
+    "summary_ko": "「Influenza, COVID-19 (Coronavirus Disease 2019)」 대상 1상/2상 중재연구 임상이다. 상태는 종료, 등록 규모 2650명(실제 등록), 후원사는 BioNTech SE이며, 레지스트리 등록번호는 NCT06821061이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "1상",
+      "2상",
+      "중재연구"
     ],
     "is_new": false
   },
@@ -5650,6 +7594,30 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "vaccine",
+    "drug": "varicella vaccine (수두 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study on the Immune Response and Safety of the Second Dose of an Investigational Chickenpox Vaccine When Given to Healthy Children 3 Months After a First Dose at 12 to 15 Months of Age",
+    "authors": "",
+    "journal": "",
+    "date": "2025-02-03",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06806137",
+    "url": "https://clinicaltrials.gov/study/NCT06806137",
+    "summary_ko": "「Chickenpox」 대상 3상 중재연구 임상이다. 상태는 모집 중, 등록 규모 600명(목표), 후원사는 GlaxoSmithKline이며, 레지스트리 등록번호는 NCT06806137이다.",
+    "indication": "수두 예방",
+    "tags": [
+      "수두백신",
+      "수두 예방",
+      "3상",
+      "중재연구",
+      "모집 중"
+    ],
+    "is_new": false
+  },
+  {
     "category": "plasma",
     "drug": "IVIG (자가면역 피부질환 오프라벨 사용)",
     "is_gc": false,
@@ -5722,6 +7690,29 @@ let DATA = [
     "is_new": false
   },
   {
+    "category": "vaccine",
+    "drug": "influenza vaccine (인플루엔자 백신)",
+    "is_gc": false,
+    "source_type": "clinical",
+    "title": "A Study to Assess Tolerability of the Trivalent Recombinant Vaccine in Individuals Aged 18 and Older Using the Vaccinees Perception of Injection Questionnaire",
+    "authors": "",
+    "journal": "",
+    "date": "2025-01-09",
+    "doi": null,
+    "pmid": null,
+    "nct_id": "NCT06765187",
+    "url": "https://clinicaltrials.gov/study/NCT06765187",
+    "summary_ko": "「Influenza Immunization, Health Volunteers」 대상 관찰연구 임상이다. 상태는 종료, 등록 규모 1007명(실제 등록), 후원사는 Sanofi이며, 레지스트리 등록번호는 NCT06765187이다.",
+    "indication": "인플루엔자 예방",
+    "tags": [
+      "독감백신",
+      "인플루엔자 예방",
+      "관찰연구",
+      "종료"
+    ],
+    "is_new": false
+  },
+  {
     "category": "rare",
     "drug": "Trilaciclib (Cosela, G1 Therapeutics)",
     "is_gc": false,
@@ -5750,7 +7741,7 @@ let DATA = [
 ];
 /*__DATA_END__*/
 
-const AS_OF="2026-08-25";
+const AS_OF="2026-09-04";
 // 분류별 출처 — db: 데이터베이스명 / org: 운영 기관 (약어는 풀네임과 띄어 표기)
 const SRC={
   pubmed:{label:"학술 논문", db:"PubMed",
@@ -5768,13 +7759,14 @@ const CAT_LABEL={plasma:"혈액제제",vaccine:"백신",rare:"헌터증후군/�
 const CAT_SUB={plasma:"면역글로불린(IVIG/SCIG) · 알부민 — GC 제품 허가 적응증 기준",vaccine:"인플루엔자 · 수두 백신",rare:"MPS II · G-CSF(호중구감소증)"};
 const CAT_COLOR={plasma:"#24557f",vaccine:"#16706a",rare:"#5d5a86"};
 const PERIODS=[{k:"",label:"전체"},{k:"3m",label:"최근 3개월"},{k:"6m",label:"최근 6개월"},{k:"12m",label:"최근 12개월"}];
-const TARGETS=[{k:"",label:"전체"},{k:"gc",label:"GC 제품"},{k:"comp",label:"경쟁·동일적응증"}];
+// '대상'(전체·GC 제품·경쟁) 필터는 2026-09-04 삭제했다. GC 자사 항목은 카드의 'GC 제품'
+// 배지로 이미 구분되고, 수집 구간 내 자사 신규 논문이 거의 없어 칩이 늘 0·전체로 갈렸다.
 
 const catLabel=c=>CAT_LABEL[c]||c;
 const catColor=c=>CAT_COLOR[c]||"var(--accent)";
 // multi=false: 분류를 한 번에 하나만 선택(다른 걸 누르면 이전 선택은 해제).
 // '여러 개 선택' 체크박스를 켜면 예전처럼 여러 분류를 동시에 켤 수 있다.
-const state={q:"",cats:new Set(),srcs:new Set(),period:"",target:"",multi:false};
+const state={q:"",cats:new Set(),srcs:new Set(),period:"",multi:false};
 const pad=n=>String(n).padStart(2,"0");
 function catRank(c){const i=CAT_ORDER.indexOf(c);return i<0?99:i;}
 function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
@@ -5792,8 +7784,6 @@ function filtered(){
     if(state.cats.size && !state.cats.has(d.category)) return false;
     if(state.srcs.size && !state.srcs.has(d.source_type)) return false;
     if(cut && (!d.date || d.date<cut)) return false;
-    if(state.target==="gc" && !d.is_gc) return false;
-    if(state.target==="comp" && d.is_gc) return false;
     if(state.q){const hay=(d.title+" "+d.summary_ko+" "+d.drug+" "+(d.authors||"")+" "+(d.journal||"")+" "+(d.indication||"")+" "+((d.tags||[]).join(" "))).toLowerCase();
       if(!hay.includes(state.q.toLowerCase())) return false;}
     return true;
@@ -5831,39 +7821,48 @@ function renderKpis(){
   });
 }
 
+/* ★ 필터 연동 — 위(대분류)에서 고른 것이 아래(소분류) 숫자에 반영된다(2026-09-04).
+   순서:  분류(학술 논문·임상 연구)  →  기간(최근 3·6·12개월)  →  사업 영역
+   예전에는 세 축이 전부 전체 건수를 찍었다. '임상 연구'를 고른 뒤에도 사업 영역 칩이
+   논문까지 합한 숫자여서, 칩을 누르면 표시 건수가 그 숫자와 달라졌다.
+   자기 자신은 자기 축으로 거르지 않는다 — 그러면 고른 칩만 남고 나머지가 0이 된다. */
+const bySrc    = d => !state.srcs.size || state.srcs.has(d.source_type);
+const byPeriod = d => { const cut=periodCutoff(state.period); return !cut || (d.date && d.date>=cut); };
+
 function renderPeriod(){
   const el=document.getElementById("periodpills");
+  const base=DATA.filter(bySrc);                    // 분류까지만 반영
   el.innerHTML=PERIODS.map(p=>{
-    const cut=periodCutoff(p.k);const n=p.k?DATA.filter(d=>d.date&&d.date>=cut).length:DATA.length;
+    const cut=periodCutoff(p.k);const n=p.k?base.filter(d=>d.date&&d.date>=cut).length:base.length;
     return `<button class="pill${p.k===""?" pill-all":""}" data-p="${p.k}" aria-pressed="${state.period===p.k}">${esc(p.label)} <span class="cnt">${n}</span></button>`;
   }).join("");
   el.querySelectorAll(".pill").forEach(b=>b.onclick=()=>{state.period=b.dataset.p;render();});
 }
 
-function renderTarget(){
-  const el=document.getElementById("targetpills");
-  const gc=DATA.filter(d=>d.is_gc).length;
-  el.innerHTML=TARGETS.map(t=>{
-    const n=t.k==="gc"?gc:(t.k==="comp"?DATA.length-gc:DATA.length);
-    const dot=t.k==="gc"?`<span class="pdot" style="background:var(--gc)"></span>`:"";
-    return `<button class="pill${t.k===""?" pill-all":""}" data-t="${t.k}" aria-pressed="${state.target===t.k}">${dot}${esc(t.label)} <span class="cnt">${n}</span></button>`;
-  }).join("");
-  el.querySelectorAll(".pill").forEach(b=>b.onclick=()=>{state.target=b.dataset.t;render();});
-}
-
 function renderCats(){
-  const map={};DATA.forEach(d=>map[d.category]=(map[d.category]||0)+1);
-  const cats=[...new Set([...CAT_ORDER,...Object.keys(map)])].sort((a,b)=>catRank(a)-catRank(b)||a.localeCompare(b));
+  const all=DATA.filter(bySrc);                     // 분류까지 반영 — '수집예정' 판정용
+  const base=all.filter(byPeriod);                  // 분류 + 기간 반영 — 칩에 찍는 숫자
+  const total={};all.forEach(d=>total[d.category]=(total[d.category]||0)+1);
+  const map={};base.forEach(d=>map[d.category]=(map[d.category]||0)+1);
+  const cats=[...new Set([...CAT_ORDER,...Object.keys(total)])].sort((a,b)=>catRank(a)-catRank(b)||a.localeCompare(b));
   const el=document.getElementById("catpills");
-  let h=`<button class="pill pill-all" data-c="" aria-pressed="${state.cats.size===0}">전체 <span class="cnt">${DATA.length}</span></button>`;
-  h+=cats.map(c=>{const n=map[c]||0;
-    return `<button class="pill" data-c="${esc(c)}" aria-pressed="${state.cats.has(c)}"><span class="pdot" style="background:${catColor(c)}"></span>${esc(catLabel(c))} <span class="cnt">${n}</span></button>`;
+  const plabel=(PERIODS.find(p=>p.k===state.period)||{}).label||"전체";
+  let h=`<button class="pill pill-all" data-c="" aria-pressed="${state.cats.size===0}" title="${esc(plabel)} ${base.length}건">전체 <span class="cnt">${base.length}</span></button>`;
+  h+=cats.map(c=>{
+    const n=map[c]||0, t=total[c]||0, on=state.cats.has(c);
+    const dot=`<span class="pdot" style="background:${catColor(c)}"></span>`;
+    // 자료가 아예 없는 영역과, 지금 조건에서만 0인 영역을 다른 말로 구분한다.
+    if(!t) return `<button class="pill pill-empty" disabled title="데이터 수집 예정">${dot}${esc(catLabel(c))} <span class="cnt">수집예정</span></button>`;
+    // 0건이면 누를 이유가 없으니 잠근다. 단 **이미 선택된 칩은 살려 둔다** — 잠가 버리면
+    // 조건을 좁혀 0이 됐을 때 그 선택을 해제할 방법이 없어진다.
+    if(!n && !on) return `<button class="pill pill-empty" disabled title="${esc(plabel)} 조건에서는 0건 · 전체 ${t}건">${dot}${esc(catLabel(c))} <span class="cnt">0</span></button>`;
+    return `<button class="pill" data-c="${esc(c)}" aria-pressed="${on}" title="${esc(plabel)} ${n}건 · 전체 ${t}건">${dot}${esc(catLabel(c))} <span class="cnt">${n}</span></button>`;
   }).join("");
   el.innerHTML=h;
   // 사업 영역도 분류(KPI)와 같은 규칙을 쓴다 — 기본은 한 번에 하나만, '여러 개 선택'(#catmulti)을
   // 켜야 동시에 여러 개가 켜진다(2026-08-21). 예전에는 여기만 항상 복수 선택이라
   // 기간·대상·분류는 하나씩 잡히는데 사업 영역만 계속 쌓여 규칙이 어긋나 보였다.
-  el.querySelectorAll(".pill").forEach(b=>b.onclick=()=>{
+  el.querySelectorAll(".pill:not([disabled])").forEach(b=>b.onclick=()=>{
     const c=b.dataset.c;
     if(!c){                      // '전체' — 항상 초기화
       state.cats.clear();
@@ -5910,7 +7909,7 @@ function card(d){
 }
 
 function render(){
-  renderKpis();renderPeriod();renderTarget();renderCats();
+  renderKpis();renderPeriod();renderCats();
   const list=filtered();
   // 사업영역별로 섹션을 나누므로 category 가 1순위. 그 안에서는 **최신순(date 내림차순)**이 기본이고,
   // 같은 날짜일 때만 GC 제품 우선 → 약물명 순으로 정렬한다.
@@ -5939,7 +7938,7 @@ function render(){
 
 document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value;render();});
 document.getElementById("reset").addEventListener("click",()=>{
-  state.q="";state.cats.clear();state.srcs.clear();state.period="";state.target="";
+  state.q="";state.cats.clear();state.srcs.clear();state.period="";
   document.getElementById("q").value="";render();
 });
 function updateCatHint(){
