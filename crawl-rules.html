@@ -203,6 +203,21 @@
 <style>
   /* 단독 페이지용 보정 — Artifact 호스트가 넣어주던 리셋을 대체 */
   dl{ margin:0; }
+  /* 2026-09 개정 — 대시보드 블록 밖에서도 accent 가 비지 않게 기본값을 준다 */
+  .dot{ background:var(--accent,var(--brand)); }
+  .rules li::before{ background:var(--accent,var(--brand)); }
+  .tag{
+    display:inline-block; margin-left:7px; padding:1px 8px; border-radius:999px;
+    background:var(--tint,var(--card-soft)); color:var(--accent,var(--ink-2));
+    font-family:var(--fs-mono); font-size:.66rem; letter-spacing:.03em;
+    vertical-align:2px; white-space:nowrap; font-weight:700;
+  }
+  .tag.off{ background:var(--card-soft); color:var(--ink-3); }
+  .lede{ background:var(--card); border:1px solid var(--rule); border-radius:14px; padding:16px 18px; }
+  .lede p{ margin:0; font-size:.9rem; color:var(--ink-2); }
+  .lede p + p{ margin-top:8px; }
+  /* 영문 표기 칸(.en) 안의 한국어 보조 설명은 본문 서체로 되돌린다 */
+  .en .sub{ font-family:var(--fs-sans); }
 </style>
 </head>
 <body>
@@ -214,39 +229,104 @@
     <h1>인포허브 크롤링 규칙</h1>
     <p class="standfirst">
       글로벌 사업본부 인포허브의 세 대시보드가 <strong>언제 발행된 자료를</strong>, <strong>어디서</strong>,
-      <strong>어떤 키워드로</strong> 수집하는지 정리한 문서입니다. 실시간 환율은 크롤링이 아닌 시세 API 조회라 제외했습니다.
+      <strong>어떤 규칙으로</strong> 수집하는지 정리한 문서입니다. 실시간 환율은 크롤링이 아닌 시세 API 조회라 제외했습니다.
     </p>
     <div class="meta">
-      <span>기준일 2026-08-21</span>
+      <span>기준일 2026-09-22</span>
+      <span>직전 개정 2026-08-26</span>
       <span>대시보드 <a href="https://infohub-site.vercel.app">infohub-site.vercel.app</a></span>
     </div>
   </header>
+
+  <section>
+    <div class="eyebrow">이번 개정에서 달라진 것</div>
+    <h2><span class="dot"></span>2026-08-26 이후 바뀐 규칙</h2>
+    <ul class="rules">
+      <li><span><strong>수집 주체가 외부 LLM 웹 검색에서 결정론적 크롤러로 바뀌었습니다.</strong> 2026-09-15 외부 LLM 웹 수집 경로를 폐기했습니다 — 실재하는 주소에 다른 기사의 제목·날짜를 붙여 내는 일이 시장·학회 두 축에서 확인됐고, 사람 눈으로는 걸러지지 않아 건마다 원문을 열어야 했습니다.</span></li>
+      <li><span><strong>시장 동향 수집이 4개 축(국내 전문지 · 해외 업계지/와이어 · 경쟁사 뉴스룸 · 일반 언론 검색)으로 재편됐습니다.</strong> 아카이브의 55%를 차지하던 경쟁사 1차 자료를 크롤러가 통째로 비워 두고 있었습니다.</span></li>
+      <li><span><strong>분류 규칙이 코드가 아니라 규칙 JSON에 담깁니다.</strong> 판정 근거가 <code>rules/*.json</code> 한곳에 모여 있고, 골든 표본 155건으로 회귀 검증합니다.</span></li>
+      <li><span><strong>백신 칸은 해외 관련 기사만 받습니다</strong> <span class="tag">2026-09-18</span> 국내 수급·조달·제도 기사는 시장·규제 동향으로 보냅니다.</span></li>
+      <li><span><strong>학술 동향의 수집창이 최근 2년 롤링에서 2025-01-01 이후 고정으로 바뀌었고, ChEMBL 축을 폐지했습니다.</strong></span></li>
+      <li><span><strong>학회 일정에 검증 크롤러가 생겼습니다.</strong> 매달 등록된 행사의 공식 사이트를 다시 훑어 날짜 변경·다음 회차 공개·링크 소멸을 대조합니다. 새 행사 발굴은 여전히 사람 몫입니다.</span></li>
+      <li><span><strong>예약 작업 7개가 전부 중지돼 있습니다</strong> <span class="tag">2026-08-31</span> 갱신은 수동 실행으로 합니다.</span></li>
+    </ul>
+  </section>
 
   <section>
     <div class="eyebrow">한눈에 보기</div>
     <div class="scroll">
       <table class="matrix">
         <thead>
-          <tr><th scope="col">대시보드</th><th scope="col">검색기간</th><th scope="col">소스</th><th scope="col">키워드</th></tr>
+          <tr><th scope="col">대시보드</th><th scope="col">검색기간</th><th scope="col">소스</th><th scope="col">수집 방식</th></tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">시장 동향</th>
-            <td>주간 = 최근 1~4주<br>과거 구간은 <strong>기간을 나눠 소급 수집</strong><br>보관 3년</td>
-            <td>공개 뉴스(국내 제약 전문지 포함) · 경쟁사 공식 IR · 규제기관 발표</td>
-            <td>8개 사업영역 × 경쟁사 + 제품 + 적응증 + 기간<br>+ 시장 · 규제 동향(횡단 축)</td>
+            <td>정기 수집 = 최근 1~4주<br>과거 구간은 <strong>기간을 나눠 소급 수집</strong><br>보관 3년<span class="sub">현재 728건 · 2023-10 ~ 2026-09</span></td>
+            <td>국내 제약 전문지 10곳 · 해외 업계지/와이어 · 경쟁사 뉴스룸 · 일반 언론 검색 · 규제기관 발표</td>
+            <td>RSS·뉴스룸 직접 크롤 후 <strong>규칙 JSON으로 기계 분류</strong><br>국내 기사 전자동 · 해외 기사는 번역 검증을 거쳐 반자동</td>
           </tr>
           <tr>
             <th scope="row">학회 일정</th>
-            <td>올해 ~ 3년 후<br><span class="num">2026 ~ 2029</span></td>
+            <td>올해 ~ 3년 후<br><span class="num">2026 ~ 2029</span><span class="sub">현재 달력 80건</span></td>
             <td>행사 주최 측 공식 사이트</td>
-            <td>고정 감시 47개 행사 + 신규 발굴</td>
+            <td>고정 감시 47개 행사 + 날짜 미정 감시 10건<br>크롤러는 <strong>확인</strong>, 신규 발굴은 사람</td>
           </tr>
           <tr>
             <th scope="row">학술 동향</th>
-            <td>최근 2년<br>45일 이내 자료는 <strong>NEW</strong></td>
-            <td>PubMed · ClinicalTrials.gov · ChEMBL · 프리프린트</td>
-            <td>3개 분류 × GC 제품 + 동일 적응증 경쟁 약물</td>
+            <td><strong>2025-01-01 ~ 현재</strong> 고정<br>45일 이내 자료는 <strong>NEW</strong><span class="sub">현재 308건</span></td>
+            <td>PubMed · ClinicalTrials.gov<span class="sub">ChEMBL·프리프린트는 폐지</span></td>
+            <td>임상은 전자동(등록정보 템플릿 요약)<br>논문은 반자동(검색은 API, 번역만 사람·LLM)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════ 수집 경로 ═══════════ -->
+  <section class="d-market">
+    <div class="eyebrow">2026-09 개정 · 공통</div>
+    <h2><span class="dot"></span>무엇이 수집하는가</h2>
+
+    <div class="lede">
+      <p>세 대시보드 모두 <strong>기계가 실제로 연 페이지에서만</strong> 자료를 만듭니다. 검색·요약을 한꺼번에 외부 LLM에 맡기던 경로는 2026-09-15 폐기했습니다 — 형식이 완벽한 가짜 자료를 만들어 냈기 때문입니다(실재하는 주소에 다른 기사의 제목·날짜, 창작된 URL, 같은 사건에 서로 다른 숫자).</p>
+      <p>남은 LLM의 몫은 <strong>번역과 요약 다듬기</strong>뿐이고, 그것도 원문 근거가 함께 있을 때만 수행합니다. 근거가 부실하면(페이월·자바스크립트 렌더링으로 본문 대신 내비게이션이 잡히는 경우) 번역 대상에서 빼고 따로 남깁니다.</p>
+    </div>
+
+    <h3>시장 동향 — 네 개의 수집 축</h3>
+    <div class="scroll">
+      <table>
+        <caption>축 하나가 실패해도 나머지는 계속 돕니다. 소스마다 켜짐·꺼짐과 실측 수율을 <code>rules/sources.json</code>에 적어 둡니다.</caption>
+        <thead>
+          <tr><th scope="col">축</th><th scope="col">대상</th><th scope="col">한계 · 실측</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">A. 국내 전문지<br><span class="sub">RSS · 전자동</span></th>
+            <td>히트뉴스 · 더바이오 · 팜뉴스 · 의학신문 · 청년의사 · 메디코파마 · 메디파나 · 프레스나인 · 메디팜스투데이 · 약사공론 <span class="num">10곳</span></td>
+            <td>데일리팜 · 약업신문 · 바이오스펙테이터는 <strong>RSS가 없습니다</strong>(2026-08-27 실측). 이 세 곳은 수동 보완 대상입니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">B. 해외 업계지 · 와이어<br><span class="sub">RSS · 반자동</span></th>
+            <td class="en">FDA · Fierce Pharma · Fierce Biotech · Endpoints News · STAT News · PharmaTimes · WHO · 英 MHRA · PR Newswire · GlobeNewswire · ADMA IR</td>
+            <td>와이어 피드는 <strong>최근 2일치만 노출</strong>합니다(GlobeNewswire 20건=2.2일 · PR Newswire 21건=2.4일). 주 1회 크롤이면 앞쪽 며칠이 통째로 빕니다 — 크롤러가 피드 커버리지를 재서 요청 구간보다 짧으면 경고합니다.
+              <span class="sub">Business Wire는 파라미터 4종을 시도해도 항목이 0~1건이라 껐습니다. 자국어 업계지 3곳(日 薬事日報 · 西 Diariofarma · 伯 Panorama Farmacêutico)도 껐습니다 — 응답은 정상이지만 약국·유통 기사뿐이라 표본 12건 중 통과 0건이었습니다.</span></td>
+          </tr>
+          <tr>
+            <th scope="row">C. 경쟁사 뉴스룸<br><span class="sub">HTML 어댑터 · 아카이브 최대 축</span></th>
+            <td>CSL · Takeda(영문·일본어) · JCR · Grifols <span class="num">5개 어댑터</span>
+              <span class="sub">목록 페이지 또는 사이트맵에서 기사 링크만 뽑습니다. URL에 날짜가 있으면 기간 밖 기사는 열지도 않습니다.</span></td>
+            <td>경쟁사 뉴스룸은 <strong>RSS가 거의 없습니다</strong> — Grifols · CSL · Takeda · Octapharma · Kedrion · JCR · Sinovac · 삼성바이오로직스 전부 404/403(2026-08-31 실측).
+              <span class="sub">Octapharma · Kedrion은 목록이 자바스크립트 렌더링이거나 403이라 꺼 두고 사유를 남겼습니다. Grifols는 <code>/en/newsroom</code>에만 기사 링크가 들어 있습니다.</span>
+              <span class="sub">JSON-LD는 참고로만 씁니다 — 학회 축에서 JSON-LD 날짜가 본문과 달랐던 전례가 있습니다.</span></td>
+          </tr>
+          <tr>
+            <th scope="row">D. 일반 언론 검색<br><span class="sub">Bing News RSS</span></th>
+            <td>업계지에도 뉴스룸에도 안 잡히는 기사를 줍는 축. 질의 11개(회사별 8 + 사건별 3).
+              <span class="sub">실제 사례 — 그리폴스 캐나다 혈장센터 공여자 사망(ctvnews · cbc · theglobeandmail), CSL 베링 스위스 감원(swissinfo). 현지 일반 언론이 먼저 쓰고, 어느 나라 어느 매체가 쓸지 미리 알 수 없어 소스 등록으로는 덮이지 않습니다.</span></td>
+            <td><strong>구글 뉴스 RSS는 금지</strong>입니다 — 링크가 암호화 리디렉션이라 원문 주소를 복원할 수 없고, 그러면 중복 판정과 검증이 깨집니다. Bing은 리디렉션의 <code>url=</code> 파라미터에 원문 주소가 그대로 있어 씁니다. GDELT는 사내망에서 연결되지 않습니다.
+              <span class="sub">재게재 매체는 제외합니다 — msn · news.yahoo · finanznachrichten · stocktitan · marketscreener · investing · simplywall.st</span>
+              <span class="sub">검색 결과에는 2~3년 전 기사가 섞여 나옵니다. 발행일로 반드시 거릅니다.</span></td>
           </tr>
         </tbody>
       </table>
@@ -261,41 +341,42 @@
     <dl class="spec">
       <dt>검색기간</dt>
       <dd>
-        <div>정기 수집은 <strong>최근 1~4주</strong>를 훑습니다. 그 이전 구간은 <strong>기간과 감시 대상을 나눠 소급 수집(백필)</strong>합니다 — 한 번에 넓게 요구하면 검색이 얕아져, 대상 2~6개 단위의 블록으로 쪼개 돌립니다.</div>
+        <div>정기 수집은 <strong>최근 1~4주</strong>를 훑습니다(<code>--days</code> 기본 28일). 그 이전 구간은 <strong>기간을 나눠 소급 수집(백필)</strong>합니다 — 한 번에 넓게 요구하면 검색이 얕아져, 대상 2~6개 단위의 블록으로 쪼개 돌립니다.</div>
+        <span class="sub">2025년 12개월과 2026년 1~8월 국내 전문지 구간은 백필이 끝났습니다(2026-08-26 · 2026-08-24).</span>
         <span class="sub">3년이 지난 자료는 갱신할 때 정리됩니다. 수집 창을 벗어난 자료는 화면에서 "이전 자료"로 묶입니다.</span>
       </dd>
 
       <dt>소스</dt>
       <dd>
-        <div>전 세계 공개 뉴스(영문 포함)</div>
-        <div><strong>국내 제약 전문지</strong> — 히트뉴스 · 데일리팜 · 메디코파마뉴스 · 약업신문 · 이데일리 제약바이오 · 바이오스펙테이터 · 더바이오 · 청년의사
-          <span class="sub">영문 경쟁사명으로만 검색하면 결과가 회사 보도자료에 쏠려 국내 매체의 시장 해설 · 업계 구도 기사가 빠집니다. 한국어 검색어로 별도 검색합니다.</span></div>
+        <div>위 <strong>네 개의 수집 축</strong>(국내 전문지 · 해외 업계지/와이어 · 경쟁사 뉴스룸 · 일반 언론 검색)</div>
+        <div><strong>국내 제약 전문지</strong> — 영문 경쟁사명으로만 검색하면 결과가 회사 보도자료에 쏠려 국내 매체의 시장 해설 · 업계 구도 기사가 빠집니다. 한국어 축을 따로 둡니다.</div>
         <div>경쟁사 공식 뉴스룸 · IR(Investor Relations) 페이지 · SEC 공시</div>
         <div>규제기관 · 정부 · 국제기구 발표 — <span class="en">FDA · EMA · PMDA · NMPA · MFDS · WHO · PAHO · UNICEF</span></div>
       </dd>
 
       <dt>키워드</dt>
       <dd>
-        <div>8개 사업영역별로 <strong>경쟁사명 + 제품명 + 적응증 + 기간</strong>을 조합합니다.
-        <span class="en">(예: "Octapharma Octagam news June 2026", "Gamunex-C CIDP reimbursement 2026")</span></div>
+        <div>8개 사업영역별로 <strong>경쟁사명 + 제품명 + 적응증</strong>을 조합합니다. 판정에 쓰는 낱말 목록은 <code>rules/</code> 아래 JSON에 있습니다 — <code>competitors.json</code>(회사·표기) · <code>taxonomy.json</code>(제품) · <code>categories.json</code>(영역 주제어) · <code>filters.json</code>(제외).</div>
         <span class="sub">검색은 실제 브랜드명으로 — 알리글로 · ALYGLO, 지씨플루 · GC FLU, 배리셀라 · Barycela</span>
-        <span class="sub">적응증은 <strong>GC 제품 허가사항 기준</strong> 표준 키워드를 씁니다(아래 적응증 표 참고)</span>
-        <span class="sub">한국어 검색어도 함께 — 혈장분획제제 시장 · 면역글로불린 공급 · 국내 CDMO 수주 · 백신 입찰 조달 · 헌터증후군 급여 · 직판 전환 실적</span>
+        <span class="sub">표기 하나가 빠지면 경쟁사 기사가 "회사 없는 기사"로 판정돼 시장·규제 동향으로 밀립니다 — CSL Seqirus에 <strong>시퀴러스</strong> 표기를 추가한 것이 그 사례입니다(2026-09-18).</span>
+        <span class="sub">자국어 주제어도 함께 — 日 血液製剤 · ハンター症候群 · 受託製造, 西 hemoderivado · vacuna, 葡 imunoglobulina · biossimilar. 키워드가 그 언어를 모르면 소스를 늘려도 전부 탈락합니다(실측 통과 0건이었습니다).</span>
       </dd>
 
       <dt>자사</dt>
       <dd>
         <div><strong>GC녹십자 자사 기사도 함께 수집</strong>합니다 — 자사 단독 기사(실적 · 허가 · 수출 계약)와 <strong>자사가 경쟁사와 함께 언급된 비교 · 업계 기사</strong> 둘 다 대상입니다.</div>
         <span class="sub">검색어 — 알리글로 · ALYGLO · GC녹십자 면역글로불린 · GC알부민 · 지씨플루 · 배리셀라 · 헌터라제 · 뉴라펙 · GC Biopharma</span>
+        <span class="sub">계열사 중 <strong>녹십자웰빙 · GC녹십자의료재단 · GC labs</strong>는 감시 범위 밖입니다(제목으로 판정).</span>
       </dd>
 
-      <dt>제목</dt>
+      <dt>제목 · 요약</dt>
       <dd>
         <div>영문 · 외국어 기사는 <strong>제목을 한국어로 옮겨</strong> 카드에 표시합니다. 원제는 데이터에 그대로 보존되며 "원문 보기" 링크로 확인합니다.</div>
         <span class="sub">회사 · 기관명은 국내 통용 표기로(옥타파마 · 그리폴스 · 美 FDA), 제품 브랜드명은 원문 표기 유지(Octagam · HyQvia · Privigen)</span>
+        <div><strong>요약은 매체가 배포한 본문 요약을 다듬어 쓸 뿐, 지어내지 않습니다.</strong> 국내 전문지 RSS는 요약을 300자쯤에서 문장 도중에 끊어 보내는 곳이 많아, 끝이 문장으로 닫히지 않으면 <strong>마지막 완결 문장까지 되감고 말줄임표</strong>를 붙입니다 — 잘렸다는 사실이 카드에 드러나야 원문을 열게 됩니다.
+          <span class="sub">150자 미만은 손대지 않습니다(제목처럼 짧은 한 줄은 원래 마침표가 없습니다). 한국어 요약은 문장 사이 공백이 없는 경우가 많아 종결어미 "다."를 먼저 찾고, 일반 마침표는 뒤에 공백이나 끝이 와야 문장 끝으로 인정합니다 — 그래야 3.5% · U.S.의 점을 문장 끝으로 오인하지 않습니다.</span></div>
       </dd>
     </dl>
-
     <h3>적응증 키워드 — GC 제품 허가사항 기준</h3>
     <div class="scroll">
       <table>
@@ -356,9 +437,10 @@
             <td class="en">Alburx · Albutein</td>
           </tr>
           <tr>
-            <th scope="row">백신 — 독감 · 수두</th>
+            <th scope="row">백신 — 독감 · 수두<span class="sub">해외 관련만 · 2026-09-18</span></th>
             <td>Sanofi Pasteur · GSK · CSL Seqirus · MSD · Viatris · Abbott · Sinovac · SK바이오사이언스 · IDT Biologika · Moderna</td>
-            <td class="en">Fluzone · Flublok · Fluarix · Flucelvax · Fluad · Influvac · VARIVAX · ProQuad · Varilrix</td>
+            <td class="en">Fluzone · Flublok · Fluarix · Flucelvax · Fluad · Influvac · VARIVAX · ProQuad · Varilrix
+              <span class="sub">국내 수급 · 조달 · 제도 기사는 이 칸이 아니라 <strong>시장 · 규제 동향</strong>으로 보냅니다 — 경쟁사 · 자사 기사는 국내 내용이어도 이 칸에 남깁니다(위 <strong>분류 관문</strong> 표 참고).</span></td>
           </tr>
           <tr>
             <th scope="row">희귀질환 — 헌터증후군<br><span class="sub">헌터라제</span></th>
@@ -411,7 +493,51 @@
       </table>
     </div>
 
-    <h3>수집 품질 규칙 <span class="sub">2026-08 백필 실행에서 확인된 문제를 규칙으로 고정</span></h3>
+
+    <h3>분류 관문 <span class="sub">2026-08~09 개정 · 기사 한 건이 어느 칸에 들어갈지 정하는 순서</span></h3>
+    <div class="scroll">
+      <table>
+        <caption>좁은 영역부터 판정합니다 — 희귀질환 → 백신 → 해외 직판 → 혈액제제 → CMO/CDMO, 그래도 남으면 시장·규제 동향.</caption>
+        <thead>
+          <tr><th scope="col">관문</th><th scope="col">내용</th><th scope="col">없어서 생겼던 오분류</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">감시 범위</th>
+            <td>혈우병 · 고면역글로불린(HBIG · TIG · VZIG)과 <strong>비감시 적응증 79개</strong>(항암 · 비만 · 뇌전증 · 혈액암 등)를 먼저 제외합니다. 시장조사기관 발행물(URL로 판정), 채용 · 부고 · 인사 · 포토 · 증시 기사도 제목으로 걸러냅니다.</td>
+            <td>polycythemia · leukemia가 목록에 없어 혈액암 기사가 "혈액"이라는 낱말 때문에 혈액제제 축으로 샜습니다. 국문에만 규칙이 있고 영문에 없던 비대칭이었습니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">회사 요건<br><span class="sub">PUREPLAY</span></th>
+            <td>회사 정체성이 곧 사업영역인 <strong>전업사 18곳</strong>(CSL Behring · Grifols · Octapharma · ADMA · Kedrion · 삼성바이오로직스 · 셀트리온 · Lonza 등)은 주제어 없이도 그 영역으로 성립시키고, <strong>다각화 빅파마는 주제어를 요구</strong>합니다.</td>
+            <td>회사명만 제목에 있으면 그 영역으로 확정되던 탓에 다케다의 기면증 · 난소암 기사가 혈액제제로, 베링거의 자사 1상 중단이 CMO로 들어왔습니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">백신 = 해외 한정<br><span class="tag">2026-09-18</span></th>
+            <td>제목에 감시 회사도 해외 신호도 없고 본문이 국내 시장 · 제도(국공립병원 · 수의계약 · 국가출하승인 · 식약처 · 품귀 · 공급난)를 말하면 <strong>백신이 아니라 시장 · 규제 동향</strong>으로 보냅니다. 해외 신호는 <strong>제목만</strong>, 국내 신호는 <strong>본문까지</strong> 봅니다 — 국내 조달 기사 본문에도 "WHO 균주 변경"이 배경으로 스치기 때문입니다.
+              <span class="sub">경쟁사 · 자사 기사는 국내 내용이어도 백신 칸에 남깁니다. SK바이오사이언스 분기 실적 · GC녹십자 독감백신 IND 승인을 시장동향으로 보내면 백신 축의 회사 기사가 통째로 흩어집니다.</span></td>
+            <td>"독감백신 품귀 국공립병원 수의계약" · "공급난 대형병원 가격 2배" 같은 국내 시장 기사가 백신 칸에 계속 쌓였습니다. 글로벌 사업본부가 백신 칸에서 보려는 것은 해외 경쟁 · 해외 시장 사건입니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">국내 제도</th>
+            <td>NIP · 건정심 · 질병관리청은 <strong>제목에 그 주제가 있을 때만</strong> 시장 · 규제 동향으로 보냅니다.</td>
+            <td>본문까지 보면 "제약사 독감백신 공급도 속도"처럼 NIP이 배경으로 한 번 스친 기사까지 사라집니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">시장 · 규제 동향<br><span class="sub">마지막 칸</span></th>
+            <td>① 비감시 적응증 제외 ② 규제 · 정책 신호 ③ 제목의 사업축 또는 제도 근거 — <strong>세 관문을 모두</strong> 지나야 들어갑니다.</td>
+            <td>옛 규칙은 "fda" · "급여" 낱말 하나면 통과라 항암 · 비만 · 뇌전증 기사가 통째로 들어왔습니다.</td>
+          </tr>
+          <tr>
+            <th scope="row">같은 사건 중복</th>
+            <td>제목에서 사건을 <strong>서술하는 말과 주제어를 걷어내고 "가리키는 말"만</strong> 남겨, 두 개 이상 겹치고 <strong>회사명 · 제품명을 뺀</strong> 말이 짧은 쪽 기준 절반 이상 겹칠 때만 같은 사건으로 봅니다. 사업영역이 달라도 묶고, <strong>최근 14일분에만</strong> 적용합니다.</td>
+            <td>제목 토큰 유사도만 보던 방식은 한국어 헤드라인에 맞지 않아 같은 사건이 남고 별개 기사가 붙었습니다. 회사 · 제품을 빼지 않으면 "알리글로 자발적 회수"와 "알리글로 미국 성장"이 한 건으로 합쳐집니다. 3년치에 적용했더니 별개 사건 30건이 사라져 최근 구간으로 제한했습니다.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>수집 품질 규칙 <span class="sub">백필·주간 실행에서 확인된 문제를 규칙으로 고정</span></h3>
     <dl class="spec">
       <dt>검색 통로</dt>
       <dd>
@@ -430,6 +556,7 @@
         <span class="sub">주소를 특정하지 못하면 목록 페이지로 대신하지 않고 <strong>그 건을 버립니다</strong>.</span>
         <div>같은 보도자료가 통신사에 재배포돼 있으면 <strong>회사 공식 뉴스룸 주소</strong>를 씁니다.
           <span class="sub">globenewswire · PR Newswire · Business Wire 재배포판을 쓰면 이미 보유한 자료와 주소만 달라져 중복이 걸러지지 않습니다.</span></div>
+        <div>사람이 한 번 빼기로 판정한 주소는 <code>_auto/url_exclusions.json</code>(현재 87건)에 판정 근거와 함께 남습니다 — <strong>지우면 뺐던 기사가 되살아납니다.</strong></div>
       </dd>
 
       <dt>제외</dt>
@@ -441,16 +568,30 @@
         <span class="sub">분기 · 반기 · 연간 실적 자료는 IR로 따로 수집하므로 뉴스에서는 제외합니다(유형만 바꿔 넣는 것도 안 됩니다).</span>
       </dd>
 
+      <dt>IR</dt>
+      <dd>
+        <div><strong>크롤러는 IR 항목을 만들지 않습니다.</strong> IR은 실적 대상 기간의 종료 분기를 적어야 하는데 다케다 · JCR(4~3월) · CSL(7~6월)처럼 회계연도가 다른 회사가 섞여 있어, 규칙만으로 맞추면 한 분기씩 밀립니다(2026-08에 IR 72건 전부가 밀렸던 문제입니다).</div>
+        <span class="sub">실적 자료로 보이는 항목은 분류하지 않고 검토 인박스에 <code>[IR후보]</code> 표시만 달아 넘깁니다. IR 링크는 애그리게이터 미러가 아니라 <strong>회사 공식 IR 페이지</strong>를 씁니다.</span>
+      </dd>
+
       <dt>건수</dt>
       <dd>
-        <div><strong>최소 건수를 요구하지 않습니다.</strong> 2026-08 두 차례 실행에서 최소 건수를 채우려고 실재하는 주소에 없는 제목 · 날짜를 붙인 사례가 나와(누적 13건) 요구 자체를 없앴습니다.</div>
-        <span class="sub">대신 검색을 수행했다는 <strong>보고</strong>를 받습니다 — 대상별 <code>커버리지</code>와 통로별 <code>출처</code> 구성. 0건은 정상이고, 보고가 비어 있으면 검색을 하지 않은 것으로 봅니다.</span>
+        <div><strong>최소 건수를 요구하지 않습니다.</strong> 최소 건수를 채우려고 실재하는 주소에 없는 제목 · 날짜를 붙인 사례가 나와(누적 13건) 요구 자체를 없앴습니다.</div>
+        <span class="sub">대신 검색을 수행했다는 <strong>보고</strong>를 받습니다 — 소스별 수집 · 탈락 사유 · 판정 근거가 실행마다 <code>_report_YYYY-MM-DD.txt</code>로 남습니다. 0건은 정상이고, 보고가 비어 있으면 검색을 하지 않은 것으로 봅니다.</span>
+      </dd>
+
+      <dt>탈락 기록</dt>
+      <dd>
+        <div>걸러낸 기사를 사유와 함께 <code>_auto/drops/</code>에 <strong>90일</strong> 보관합니다. 대시보드에는 섞이지 않습니다.</div>
+        <span class="sub">예전에는 사유별 "개수"만 남아 <strong>조용한 주</strong>와 <strong>규칙이 잘못 조인 주</strong>를 구분할 수 없었습니다. 오분류를 찾을 때마다 아카이브에서 역산해야 했습니다.</span>
       </dd>
 
       <dt>검증</dt>
       <dd>
+        <div>번역 대상은 <strong>번역하기 전에 현행 규칙으로 먼저 거릅니다</strong> — 범위 밖 기사를 번역하는 헛일을 막습니다. 근거가 부실하면 번역에서 빼고 따로 남깁니다(Endpoints · STAT은 페이월 · 자바스크립트라 본문 대신 내비게이션이 잡힙니다).</div>
         <div>수집된 링크는 병합 전에 <strong>본문을 직접 열어</strong> 제목 · 발행일을 대조합니다. 접근이 막히는 도메인은 회피 목록으로 관리합니다.
           <span class="sub">현재 회피 — chosun.com · biz.chosun.com · yna.co.kr · morningstar.com · biospectrumasia.com · accord-healthcare.com</span></div>
+        <div>분류 규칙은 <strong>골든 표본 155건</strong>으로 회귀 검증합니다 — 규칙을 고칠 때마다 과거 판정이 어떻게 달라지는지 먼저 봅니다.</div>
         <span class="sub">같은 사건을 여러 매체가 다뤘으면 원출처 1건만 남깁니다. 다만 국내 매체의 <strong>자체 취재 · 해설</strong>은 별건으로 봅니다.</span>
       </dd>
     </dl>
@@ -465,7 +606,7 @@
       <dt>검색기간</dt>
       <dd>
         <div>오늘 기준 <strong>올해부터 3년 후까지</strong> 열리는 행사 — 현재 <span class="num">2026 ~ 2029</span>년.</div>
-        <span class="sub">이미 지난 행사는 수집하지 않습니다.</span>
+        <span class="sub">이미 지난 행사는 수집하지 않습니다. 현재 달력 80건 — 2026년 41 · 2027년 30 · 2028년 8 · 2029년 1.</span>
       </dd>
 
       <dt>소스</dt>
@@ -474,10 +615,20 @@
         <span class="sub">3자 행사정보 사이트(clocate · 10times · emedevents 등)는 확정되지 않은 추정 일정을 확정처럼 싣기 때문에 근거로 쓰지 않습니다.</span>
       </dd>
 
+      <dt>수집 방식</dt>
+      <dd>
+        <div>이 축에는 공용 API가 없고, 3자 사이트를 긁는 것이 규칙으로 금지돼 있어 <strong>기계가 새 행사를 발굴하는 것은 성립하지 않습니다.</strong> 그래서 역할을 나눕니다.</div>
+        <div><strong>크롤러(확인)</strong> — 이미 등록된 행사의 공식 사이트를 매달 다시 훑어 ① 날짜가 바뀌었는지 ② 다음 회차가 공개됐는지 ③ 링크가 죽었는지 ④ 이미 끝난 행사인지를 대조해 <strong>검토 목록</strong>으로 냅니다.</div>
+        <div><strong>사람(발굴 · 판정)</strong> — 검토 목록을 공식 사이트로 확인해 달력에 올립니다. 신규 발굴도 사람 몫입니다.</div>
+        <span class="sub">크롤러가 자동 반영본을 만들지 않는 이유 — JSON-LD(schema.org Event) 값이 우리가 보는 회차와 다른 경우가 실제로 섞입니다(2026-08-27 실측: Arab Health JSON-LD 2027-01-25 vs 본문 "16-18 September 2026", CPHI China · Biotech Showcase도 같은 어긋남). 같은 도메인이 여러 행사를 굴리거나 대표 이벤트 스키마 하나만 박아 둔 탓입니다.</span>
+        <span class="sub">검증에서 탈락한 후보는 사유 코드(fabricated · unofficial · tentative · bad-url · unfetchable)와 함께 <code>_auto/events_exclusions.json</code>에 남습니다 — 같은 오답이 다음 달에 또 올라와 검증 비용을 재소모하는 것을 막습니다.</span>
+      </dd>
+
       <dt>키워드</dt>
       <dd>
         <div>고정 감시 목록 <strong>47개 행사</strong>를 매번 확인한 뒤, 주목 영역의 누락 행사를 추가로 발굴합니다.</div>
-        <span class="sub">주목 영역 — 혈액제제 · 혈우병 · 백신 · 헌터증후군 · 호중구감소증 · CDMO · 플랜트/기술이전 · 규제실무 · 파트너링</span>
+        <span class="sub">주목 영역 — 혈액제제 · 혈우병 · 백신 · 헌터증후군/MPS · 호중구감소증 · CDMO · 플랜트/기술이전 · 규제실무 · 파트너링</span>
+        <span class="sub">커버리지가 얇은 축은 의식적으로 더 찾습니다 — ⓐ 호중구감소증 · 항암 지지요법 ⓑ 혈장 · 수혈 분야의 유럽 · 아시아 지역 학회 ⓒ 신흥시장(동남아 · 중동 · 중남미) 헬스케어 전시 · 조달 컨퍼런스 ⓓ 각국 규제기관 주최 공개 워크숍</span>
         <span class="sub">※ 제품 수집에서는 혈우병을 제외했지만, <strong>학회 감시는 유지</strong>합니다 — EAHAD · WFH는 혈액제제 네트워킹과 파트너링의 장이기도 합니다.</span>
       </dd>
     </dl>
@@ -491,8 +642,9 @@
         <tbody>
           <tr>
             <th scope="row">산업 · 학술 학회 <span class="num">25</span></th>
-            <td class="en">EAHAD · WFH · ISTH · ISBT · AABB · ASH · EHA · IPFA/EBA · PPTA · World Vaccine Congress · Options for the Control of Influenza · IDWeek · ESCMID Global · CROI · WORLDSymposium · SSIEM · <strong>ICIEM</strong> · <strong>SIMD</strong> · AACR · ASCO · ESMO · MASCC/ISOO · ASGCT · ESGCT · PPB
-              <span class="sub">ICIEM(국제 선천성대사질환학회)은 <strong>4년 주기</strong>입니다 — 15차는 2025년 9월 교토에서 이미 열렸고, 16차는 <strong>2029년 토론토(캐나다)</strong>로 SSIEM 공식 행사 페이지에 등재돼 있으나 <strong>날짜는 아직 미공개</strong>라 달력에는 표시되지 않습니다(3자 사이트의 &ldquo;2029년 9월&rdquo; 표기는 근거로 쓰지 않습니다). 이런 행사는 <code>_auto/events_watchlist.json</code> <strong>날짜 미정 감시 목록</strong>에 올려 매달 <em>공식 발표가 났는지만</em> 확인하고, 날짜가 공개되는 즉시 달력에 반영합니다. 그 사이 해는 매년 열리는 SIMD Annual Meeting으로 감시합니다.</span></td>
+            <td class="en">EAHAD · WFH · ISTH · ISBT · AABB · ASH · EHA · IPFA/EBA · PPTA · World Vaccine Congress · Options for the Control of Influenza · IDWeek · ESCMID Global · CROI · WORLDSymposium · SSIEM · ICIEM · SIMD · AACR · ASCO · ESMO · MASCC/ISOO · ASGCT · ESGCT · PPB
+              <span class="sub">희귀질환 축에 <strong>International MPS Symposium</strong>(IMPSN 주최 · 격년)을 2026-09-02 등재했습니다 — MPS 전 아형을 다루는 최대 국제 학회이고, 경쟁사 JCR이 바로 이 자리에서 헌터증후군(MPS II) 임상 초록 2건을 발표했습니다. 종료된 회차도 이력으로 남깁니다.</span>
+              <span class="sub">백신 축은 4건으로 9개 분류 중 최소였습니다. <strong>DCVMN AGM</strong>(UNICEF · PAHO 조달) · <strong>ESPID</strong>(소아 수두 · 독감 백신)를 더해 달력 6건 + 날짜 미정 감시 3건이 됐습니다.</span></td>
           </tr>
           <tr>
             <th scope="row">파트너링 · 투자 <span class="num">8</span></th>
@@ -500,8 +652,31 @@
           </tr>
           <tr>
             <th scope="row">규제 · 전시 <span class="num">14</span></th>
-            <td class="en">CPHI (Worldwide · China · India · Korea · Japan · MEA) · DCAT Week · INTERPHEX · DIA (Global · Europe · Japan · China) · PDA · ISPE · BioProcess International · Arab Health/WHX Dubai · Global Health Saudi · RAPS Convergence</td>
+            <td class="en">CPHI (Worldwide · China · India · Korea · Japan · MEA) · <strong>CPHI &amp; PMEC Shenzhen</strong> · DCAT Week · INTERPHEX · DIA (Global · Europe · Japan · China) · PDA · ISPE · BioProcess International · Arab Health/WHX Dubai · Global Health Saudi · RAPS Convergence
+              <span class="sub">CPHI &amp; PMEC Shenzhen은 상하이 본전(CPHI &amp; PMEC China)과 <strong>별개 행사</strong>인데 cphi.com/china 본문에 선전 일정이 섞여 나옵니다 — 따로 확인합니다.</span></td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>날짜 미정 감시 목록 <span class="sub">달력에는 못 올리지만 매달 "발표됐는지"는 확인하는 행사 — 현재 10건</span></h3>
+    <div class="scroll">
+      <table>
+        <caption>공식 사이트에 날짜가 뜨는 즉시 달력으로 승격합니다. 3자 사이트의 추정 일정은 근거로 쓰지 않습니다.</caption>
+        <thead>
+          <tr><th scope="col">행사</th><th scope="col">예상</th><th scope="col">상태</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">ICIEM<br><span class="sub">희귀질환 · 4년 주기</span></th><td>제16회 · 2029년 · 토론토</td><td>SSIEM 공식 페이지에 연도 · 도시 · 공동주최만 등재, <strong>날짜 미공개</strong>. 전용 사이트 미개설. 그 사이 해는 매년 열리는 SIMD 연차총회로 감시합니다.</td></tr>
+          <tr><th scope="row">MPS Symposium<br><span class="sub">희귀질환 · 격년</span></th><td>제19회 · 2028년 · 개최지 미정</td><td>공식 history 페이지에 제18회(2026 피렌체)까지만 등재. 회차마다 전용 도메인을 새로 개설하므로 <strong>차기 도메인 개설 여부</strong>도 함께 봅니다.</td></tr>
+          <tr><th scope="row">EAHAD<br><span class="sub">혈우병 · 매년</span></th><td>제20회 · 2027-02 · 브뤼셀(미확정)</td><td>공식 사이트에 카운트다운과 숙박 링크만 있고 날짜 · 도시 미표기. 3자 사이트는 2027-02-02~05로 표기하나 규칙상 근거로 쓰지 않습니다.</td></tr>
+          <tr><th scope="row">WFH<br><span class="sub">혈우병 · 격년</span></th><td>2028년 · 개최지 미정</td><td>공식 페이지에 2026 회차만 게시.</td></tr>
+          <tr><th scope="row">IPFA/EBA<br><span class="sub">혈액 · 격년</span></th><td>제5회 · 2028년 · 개최지 미정</td><td>차기 일정 · 개최지 미게시. 원료 혈장 확보 전략과 직결돼 계속 봅니다.</td></tr>
+          <tr><th scope="row">ESWI</th><td>제11회 · 2027년(격년 추정)</td><td rowspan="3">백신 축을 채우면서 2026-09-02 추가했습니다. 공식 발표 전까지는 주기 추정만 있습니다.</td></tr>
+          <tr><th scope="row">Options XIV</th><td>제14회 · 2028년(격년 추정)</td></tr>
+          <tr><th scope="row">WVC Europe</th><td>2027년 · 개최지 미정</td></tr>
+          <tr><th scope="row">BIO KOREA</th><td>2027 상반기 · 서울 COEX</td><td>2026 회차만 게시.</td></tr>
+          <tr><th scope="row">BioAsia</th><td>2027-02 · 하이데라바드</td><td>도메인이 <strong>사내망에서 DNS 해석 자체가 안 됩니다</strong>(사이트 문제가 아니라 망 차단으로 보임). 사외망에서 재확인이 필요합니다.</td></tr>
         </tbody>
       </table>
     </div>
@@ -513,6 +688,7 @@
       <li><span class="no">제외</span> 예년 패턴("매년 6월 첫째 주")으로 추측한 날짜. 근거가 없으면 넣지 않습니다.</li>
       <li>날짜는 확정이고 개최도시만 미정이면 도시를 비우고 "개최도시 미정(TBA)"으로 표기합니다.</li>
       <li>다음 회차 일정이 아직 공개되지 않은 것은 정상입니다 — 무리해서 채우지 않습니다.</li>
+      <li>이미 등록된 행사와 <strong>같은 행사인지</strong> 약칭 · 주최기관으로 대조하고, 중복 등재하지 않습니다.</li>
     </ul>
   </section>
 
@@ -524,26 +700,38 @@
     <dl class="spec">
       <dt>검색기간</dt>
       <dd>
-        <div>최근 <strong>2년</strong> 이내 자료. 오늘 기준 45일 이내면 <strong>NEW</strong>로 표시합니다.</div>
-        <span class="sub">소스별 날짜 기준이 다릅니다 — 논문·프리프린트는 발행일, 임상은 <strong>연구 시작일</strong>, 기전 데이터는 승인일. 그래서 임상·기전 카드에는 2년보다 오래된 날짜가 정상적으로 표시됩니다.</span>
+        <div><strong>2025-01-01부터 현재까지</strong> 발행된 자료로 고정했습니다<span class="tag">2026-08-25 변경</span> 이전에는 "최근 2년" 롤링이었습니다. 오늘 기준 45일 이내면 <strong>NEW</strong>로 표시합니다.</div>
+        <span class="sub">임상도 같은 구간을 지킵니다. 레지스트리 등록일이 2009년인 옛 임상이 섞여 들어와 화면의 수집기간이 "2009년부터"로 잘못 읽혔습니다 — 병합 단계에도 같은 하한을 둡니다.</span>
       </dd>
 
       <dt>소스</dt>
       <dd>
         <div><strong>학술 논문</strong> — PubMed <span class="en">(NCBI E-utilities)</span></div>
         <div><strong>임상 연구</strong> — ClinicalTrials.gov <span class="en">API v2</span></div>
-        <div><strong>기전 · 활성</strong> — ChEMBL <span class="en">REST (EMBL-EBI)</span></div>
-        <div><strong>프리프린트</strong> — bioRxiv · medRxiv
-          <span class="sub">공개 API가 키워드 검색을 지원하지 않아 커버리지가 제한적입니다.</span></div>
+        <div><strong>폐지</strong> — <span class="en">ChEMBL</span>(기전 · 활성)은 2년간 6건밖에 쌓이지 않아 2026-08-25 탭과 함께 폐지했습니다. 프리프린트(bioRxiv · medRxiv)는 공개 API가 키워드 검색을 지원하지 않아 수집하지 않습니다.
+          <span class="sub">현재 아카이브 308건 — 논문 209 · 임상 99.</span></div>
+      </dd>
+
+      <dt>수집 방식</dt>
+      <dd>
+        <div>출처가 정식 REST API라 제목 · 저자 · 저널 · 발행일 · DOI · PMID · NCT가 전부 구조화돼 나옵니다. <strong>URL과 식별자를 창작할 여지가 아예 없습니다.</strong></div>
+        <div><strong>임상 = 전자동.</strong> 요약을 레지스트리의 구조화 필드(질환 · 임상단계 · 연구유형 · 상태 · 목표등록수 · 후원사)에서 <strong>템플릿으로 조립</strong>합니다 — 지어낸 문장이 아니라 등록정보를 옮긴 것입니다.</div>
+        <div><strong>논문 = 반자동.</strong> 메타데이터와 영문 초록까지 기계가 담아 두고 <strong>한국어 요약과 태그만</strong> 비워 둡니다. 남는 일은 검색이 아니라 번역뿐입니다.</div>
+      </dd>
+
+      <dt>날짜</dt>
+      <dd>
+        <div>논문은 <strong>발행일</strong>, 임상은 <strong>레지스트리 최초 등록일</strong>입니다<span class="tag">변경</span> 연구 시작일은 아직 시작하지 않은 연구에서 미래 날짜가 되고 계획 변경으로 바뀌어 쓰지 않습니다.</div>
+        <span class="sub">PubMed의 발행호 기준 날짜는 실제보다 미래(예: 2026 Dec)로 나올 수 있어, 온라인 게재일이 더 이르면 그쪽을 쓰고 그래도 미래면 제외합니다.</span>
       </dd>
 
       <dt>키워드</dt>
       <dd>
-        <div>3개 분류별로 <strong>GC 제품의 성분 · 브랜드</strong>와 <strong>동일 적응증의 경쟁 · 계열 약물</strong>, <strong>적응증</strong>을 조합합니다.</div>
-        <span class="sub">GC 자사 제품은 최근 2년 신규 논문이 드물어, 대부분 동일 적응증 경쟁 · 계열 약물 근거로 구성됩니다.</span>
+        <div>3개 분류별로 <strong>GC 제품의 성분 · 브랜드</strong>와 <strong>동일 적응증의 경쟁 · 계열 약물</strong>, <strong>적응증</strong>을 조합합니다. 적응증은 시장 동향과 <strong>같은 표준 표기</strong>를 씁니다.</div>
+        <span class="sub">GC 자사 제품은 신규 논문이 드물어, 대부분 동일 적응증 경쟁 · 계열 약물 근거로 구성됩니다. 적응증이 한쪽(PID · CIDP)에만 몰리지 않도록 적응증마다 최소 3건을 목표로 합니다.</span>
+        <span class="sub"><strong>제외</strong> — 혈우병(제8인자 · 비인자 치료제 · 유전자치료)과 고면역글로불린(HBIG · TIG · VZIG). 시장 동향과 같은 범위입니다.</span>
       </dd>
     </dl>
-
     <h3>분류별 수집 대상</h3>
     <div class="scroll">
       <table>
@@ -585,24 +773,32 @@
         <tbody>
           <tr>
             <th scope="row">근거</th>
-            <td>실제 검색 · API 결과에 있는 자료만 싣습니다. 원문 URL이 없으면 제외합니다.</td>
+            <td>실제 크롤 · 검색 · API 결과에 있는 자료만 싣습니다. 원문 URL이 없으면 제외합니다.</td>
           </tr>
           <tr>
             <th scope="row">요약</th>
-            <td>출처에 명시된 사실만 한국어 2문장 이내로. 카드의 원문 링크로 바로 검증할 수 있습니다.</td>
+            <td>출처에 명시된 사실만 한국어 2문장 이내로. 카드의 원문 링크로 바로 검증할 수 있습니다.
+              <span class="sub">기계는 요약을 창작하지 않습니다 — 매체가 배포한 본문 요약을 다듬거나, 레지스트리 등록정보를 템플릿으로 옮기거나, 영문 원문을 번역할 뿐입니다.</span></td>
           </tr>
           <tr>
             <th scope="row">중복 제거</th>
-            <td>시장 동향은 URL, 학술 동향은 PMID · NCT · URL, 학회 일정은 약칭 + 시작일 기준으로 자동 처리됩니다.
+            <td>시장 동향은 URL과 <strong>같은 사건 판정</strong>(최근 14일분), 학술 동향은 PMID · NCT · URL, 학회 일정은 약칭 + 시작일 기준으로 자동 처리됩니다.
               <span class="sub">같은 사건은 원출처 1건만 남기지만, 국내 매체가 자체 취재 · 분석을 더한 해설 기사는 원출처와 <strong>별개 항목으로 함께</strong> 싣습니다.</span></td>
           </tr>
           <tr>
             <th scope="row">누적</th>
-            <td>매 실행 결과를 기존 자료에 병합합니다. 수집이 일부 실패해도 이미 쌓인 자료는 사라지지 않습니다.</td>
+            <td>매 실행 결과를 기존 자료에 병합합니다. 수집이 일부 실패해도 이미 쌓인 자료는 사라지지 않습니다.
+              <span class="sub">검토를 거친 과거 이력은 새 규칙으로 소급해 손대지 않는 것이 원칙입니다 — 규칙 변경의 영향은 먼저 골든 표본과 아카이브 대조로 확인하고, 의도한 건만 소급합니다.</span></td>
           </tr>
           <tr>
             <th scope="row">갱신 주기</th>
-            <td class="num">시장 동향 매일 08:00 · 학술 동향 매주 월요일 10:00 · 학회 일정 매월 1일 00:00</td>
+            <td><strong>예약 작업 7개가 전부 중지돼 있습니다</strong><span class="tag">2026-08-31</span> 갱신은 수동 실행으로 합니다.
+              <span class="sub">중지 이유 — ① 일간 갱신이 강제 종료로 끝난 사고 ② 주간 예약이 수동 작업 중에 끼어들어 미병합 수집분을 지운 사고. 인포허브를 사내 플랫폼으로 옮기는 중이라 로컬 스케줄 자체가 과도기 리스크였습니다.</span>
+              <span class="sub">삭제가 아니라 "사용 안 함"이라 트리거 설정은 그대로 남아 있습니다. 재가동은 강제 종료 원인을 짚고 수동 작업과 겹치지 않을 시각으로 옮긴 뒤에 합니다.</span></td>
+          </tr>
+          <tr>
+            <th scope="row">배포</th>
+            <td>수집 → 병합 → HTML 주입 → 배포가 한 줄로 이어집니다. 대시보드는 완전 정적이라 화면에서 크롤을 호출하지 않습니다.</td>
           </tr>
         </tbody>
       </table>
@@ -611,7 +807,9 @@
 
   <footer>
     <div>대시보드의 각 화면 하단 "참고사항"에 같은 내용이 더 자세히 적혀 있습니다.</div>
-    <div>규칙 원본: <code>_auto/crawl_prompt.txt</code> · <code>_auto/events_prompt.txt</code> · <code>_auto/academic_prompt.txt</code> · <code>_auto/events_watchlist.json</code>(날짜 미정 감시)</div>
+    <div>필드 채우기 규칙: <code>_auto/crawl_prompt.txt</code> · <code>_auto/events_prompt.txt</code> · <code>_auto/academic_prompt.txt</code></div>
+    <div>판정 규칙(기계가 읽는 단일 출처): <code>rules/sources.json</code> · <code>newsrooms.json</code> · <code>news_search.json</code> · <code>competitors.json</code> · <code>taxonomy.json</code> · <code>categories.json</code> · <code>filters.json</code> · <code>merge_rules.json</code></div>
+    <div>사람이 내린 판정의 기록: <code>_auto/url_exclusions.json</code> · <code>_auto/events_exclusions.json</code> · <code>_auto/academic_exclusions.json</code> · <code>_auto/events_watchlist.json</code>(날짜 미정 감시) · <code>_auto/drops/</code>(탈락 기사 90일)</div>
   </footer>
 
 </div>
