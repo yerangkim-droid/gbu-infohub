@@ -582,7 +582,11 @@ function buildSummary(){
     e.stopPropagation();               // 문서 클릭 핸들러가 팝업을 즉시 닫는 것 방지(달력 막대와 동일)
     const ev=EVENTS[Number(tr.dataset.ev)]; if(!ev) return;
     const d=parseD(ev.start); viewYear=d.getFullYear(); viewMonth=d.getMonth()+1; hidePopup(); renderAll();
-    showPopup(ev, tr);                 // 클릭한 행 위치에 요약 팝업(공식 홈페이지 링크 포함)
+    // renderAll() 이 이 표를 다시 그려 클릭한 tr 은 문서에서 떨어져 나간다. 그 tr 에 팝업을
+    // 붙이면 positionPopup() 이 isConnected 검사에서 빠져 팝업이 뜨지 않았다(2026-10-12 수정).
+    // 다시 그려진 같은 행을 찾아 붙인다.
+    const row=host.querySelector(`tbody tr[data-ev="${tr.dataset.ev}"]`) || findBarEl(ev);
+    showPopup(ev, row);                // 클릭한 행 위치에 요약 팝업(공식 홈페이지 링크 포함)
   }));
 }
 
