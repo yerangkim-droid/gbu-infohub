@@ -60,6 +60,7 @@ window.GBU_EVENTS = [
   {name:"J.P. Morgan Healthcare Conference", abbr:"JPM", start:"2027-01-11", end:"2027-01-14", city:"샌프란시스코", country:"미국", type:"파트너링", category:"종합", url:"https://www.jpmorgan.com/about-us/events-conferences/health-care-conference", venue:"", note:"제45회 · 업계 최대 투자·파트너링"},
   {name:"Arab Health / WHX Dubai", abbr:"Arab Health", start:"2027-01-25", end:"2027-01-28", city:"두바이", country:"아랍에미리트 연합", type:"규제전시", category:"규제", url:"https://www.worldhealthexpo.com/events/healthcare/dubai/", venue:"Dubai World Trade Centre", note:"중동 최대 헬스케어(WHX로 리브랜딩)"},
   {name:"WORLDSymposium (리소좀축적질환)", abbr:"WORLDSymposium", start:"2027-01-31", end:"2027-02-04", city:"샌디에이고", country:"미국", type:"학회", category:"희귀질환", url:"https://worldsymposia.org/", venue:"Manchester Grand Hyatt", note:"헌터증후군·MPS 등 LSD 연구"},
+  {name:"EAHAD Annual Congress (유럽혈우병학회)", abbr:"EAHAD", start:"2027-02-02", end:"2027-02-05", city:"브뤼셀", country:"벨기에", type:"학회", category:"혈우병", url:"https://eahadcongress.com/", venue:"", note:"제20회 · 혈우병·응고장애 · 공식 사이트 2-5 February 2027 (2026-10-12 확인)"},
   {name:"SIMD Annual Meeting (미국 선천성대사질환학회)", abbr:"SIMD", start:"2027-03-07", end:"2027-03-10", city:"투손", country:"미국", type:"학회", category:"희귀질환", url:"https://simd.org/index.php/meetings/", venue:"Westin La Paloma Resort & Spa", note:"매년 개최 · ICIEM 비개최 연도의 대체 감시처"},
   {name:"World Vaccine Congress Washington", abbr:"WVC Washington", start:"2027-03-08", end:"2027-03-11", city:"워싱턴 D.C.", country:"미국", type:"학회", category:"백신", url:"https://www.terrapinn.com/conference/world-vaccine-congress-washington/", venue:"Walter E. Washington Convention Center", note:"세계 최대 백신 학회"},
   {name:"PDA Annual Meeting (PDA Week)", abbr:"PDA", start:"2027-03-14", end:"2027-03-18", city:"롤리", country:"미국", type:"규제전시", category:"규제", url:"https://www.pda.org/global-event-calendar/event-detail/pda-week-2027", venue:"Raleigh Convention Center", note:"무균·주사제 제조 규제(PDA Week)"},
@@ -82,10 +83,14 @@ window.GBU_EVENTS = [
   {name:"ISTH Congress (국제혈전지혈학회)", abbr:"ISTH", start:"2027-06-26", end:"2027-06-30", city:"밴쿠버", country:"캐나다", type:"학회", category:"혈우병", url:"https://www.isthcongress.org/", venue:"", note:"혈전·지혈"},
   {name:"DIA Global Annual Meeting", abbr:"DIA", start:"2027-06-28", end:"2027-07-01", city:"샌디에이고", country:"미국", type:"규제전시", category:"규제", url:"https://www.diaglobal.org/Flagship/DIA-2027", venue:"San Diego Convention Center", note:"의약품 규제·개발 종합"},
   {name:"BIO Asia–Taiwan", abbr:"BIO Asia", start:"2027-07-27", end:"2027-07-31", city:"타이베이", country:"대만", type:"파트너링", category:"종합", url:"https://bioasiataiwan.com/en/", venue:"TaiNEX", note:""},
+  {name:"CPHI Korea (원료·CDMO 전시)", abbr:"CPHI Korea", start:"2027-08-24", end:"2027-08-26", city:"서울", country:"한국", type:"규제전시", category:"CDMO·원료", url:"https://www.cphi.com/korea/", venue:"COEX", note:"국내 최대 제약 원료·CDMO 전시 · 공식 사이트 24-26 Aug 2027 (2026-10-12 확인)"},
   {name:"SSIEM Annual Symposium (선천성 대사질환)", abbr:"SSIEM", start:"2027-08-31", end:"2027-09-03", city:"더블린", country:"아일랜드", type:"학회", category:"희귀질환", url:"https://www.ssiem.org/", venue:"Dublin Convention Centre", note:"선천성 대사이상질환"},
+  {name:"CPHI & PMEC Shenzhen (남중국 원료·CDMO 전시)", abbr:"CPHI Shenzhen", start:"2027-09-08", end:"2027-09-10", city:"선전", country:"중국", type:"규제전시", category:"CDMO·원료", url:"https://www.cphi.com/china-shenzhen/", venue:"Shenzhen Convention & Exhibition Center (SZCEC)", note:"상하이 본전(CPHI & PMEC China)과 별개 행사 · 공식 사이트 08-10 September 2027 (2026-10-12 확인)"},
   {name:"ESMO Congress (유럽종양학회)", abbr:"ESMO", start:"2027-09-17", end:"2027-09-21", city:"바르셀로나", country:"스페인", type:"학회", category:"항암", url:"https://www.esmo.org/meeting-calendar/esmo-congress-2027", venue:"", note:""},
+  {name:"BioProcess International (BPI)", abbr:"BPI", start:"2027-09-20", end:"2027-09-23", city:"보스턴", country:"미국", type:"규제전시", category:"CDMO·원료", url:"https://informaconnect.com/bioprocessinternational/", venue:"Hynes Convention Center", note:"바이오 공정 제조 · 공식 사이트 September 20-23, 2027 (2026-10-12 확인)"},
   {name:"AABB Annual Meeting (미국혈액은행협회)", abbr:"AABB", start:"2027-10-16", end:"2027-10-18", city:"애너하임", country:"미국", type:"학회", category:"혈액", url:"https://www.aabb.org/annual-meeting", venue:"", note:"수혈·혈액제제"},
   {name:"CPHI Worldwide (CPHI Frankfurt 2027)", abbr:"CPHI", start:"2027-11-09", end:"2027-11-11", city:"프랑크푸르트", country:"독일", type:"규제전시", category:"CDMO·원료", url:"https://www.cphi.com/europe/", venue:"Messe Frankfurt", note:"세계 최대 제약 원료·CDMO 전시"},
+  {name:"ISBT Regional Congress (국제수혈학회 지역총회, 델리)", abbr:"ISBT Delhi", start:"2027-11-27", end:"2027-11-30", city:"뉴델리", country:"인도", type:"학회", category:"혈액", url:"https://www.isbtweb.org/events/future.html", venue:"", note:"같은 해 로테르담 지역총회(6월)와 별개 회차 · 공식 Future Congresses 27-30 November 2027 (2026-10-12 확인)"},
 
   // ══════════════════════ 2028 ══════════════════════
   {name:"WORLDSymposium (리소좀축적질환)", abbr:"WORLDSymposium", start:"2028-01-30", end:"2028-02-03", city:"올랜도", country:"미국", type:"학회", category:"희귀질환", url:"https://worldsymposia.org/", venue:"Hyatt Regency Orlando", note:"헌터증후군·MPS 등 LSD 연구"},
@@ -99,5 +104,7 @@ window.GBU_EVENTS = [
 
   // ══════════════════════ 2029 ══════════════════════
   {name:"ASGCT Annual Meeting (미국유전자세포치료학회)", abbr:"ASGCT", start:"2029-05-07", end:"2029-05-11", city:"애틀랜타", country:"미국", type:"학회", category:"혈우병", url:"https://annualmeeting.asgct.org/about/future-annual-meetings", venue:"", note:"혈우병 A 유전자치료 등 유전자·세포치료"},
+  {name:"ICIEM (국제 선천성대사질환학회)", abbr:"ICIEM", start:"2029-08-27", end:"2029-08-31", city:"토론토", country:"캐나다", type:"학회", category:"희귀질환", url:"https://simd.org/index.php/meetings/", venue:"", note:"제16회 · 4년 주기 · 공동주최 SIMD 공식 meetings 페이지 Aug 27-31, 2029 Toronto (2026-10-12 확인)"},
+  {name:"ISBT Regional Congress (국제수혈학회 지역총회, 무스카트)", abbr:"ISBT Muscat", start:"2029-11-10", end:"2029-11-13", city:"무스카트", country:"오만", type:"학회", category:"혈액", url:"https://www.isbtweb.org/events/future.html", venue:"", note:"같은 해 런던 회차(2029년 6월, 일자 미공개)와 별개 · 공식 Future Congresses 10-13 November 2029 (2026-10-12 확인)"},
 /*__DATA_END__*/
 ];
