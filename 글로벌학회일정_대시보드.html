@@ -199,7 +199,8 @@
   .cal-bar.type-파트너링{background:var(--partner)}
   .cal-bar.type-규제전시{background:var(--regu)}
   .cal-bar.past{opacity:.5}
-  .cal-bar.live{box-shadow:0 0 0 2px var(--card),0 0 0 3.5px var(--live)}
+  /* 진행 중 강조는 막대 안쪽에 그린다 — 바깥 링(3.5px)은 막대 간격(3~4px)보다 커서 옆 막대·날짜 숫자에 겹쳤다 */
+  .cal-bar.live{box-shadow:inset 0 0 0 2px var(--live),inset 0 0 0 3px rgba(255,255,255,.6),0 1px 2px rgba(0,0,0,.12)}
   .cal-bar.contL{border-top-left-radius:0;border-bottom-left-radius:0}
   .cal-bar.contR{border-top-right-radius:0;border-bottom-right-radius:0}
   .cal-bar .arw{opacity:.85;font-weight:800}
