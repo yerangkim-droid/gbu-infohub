@@ -963,7 +963,11 @@ async function buildSeries(b, q, days, daily){
   const todayStr = tfYmd(new Date());
   const need = [...new Set([b,q].filter(c => c !== "USD"))];
   const curParam = need.length ? "&currencies=" + need.join(",") : "";
-  const pastDates = sampleDates(days, daily).filter(d => d !== todayStr);
+  // 그래프는 fxratesapi 한 출처로만 그린다. 최신값이 폴백(er-api, 하루 1회 갱신)이면
+  // 그 값을 오늘 점으로 섞지 않고 fxratesapi의 오늘자 스냅샷(historical)을 대신 쓴다.
+  // 출처가 섞이면 같은 시각에도 사람마다 등락 방향(빨강/파랑)이 반대로 나왔다(2026-11-02).
+  const liveOk = fxSource === "fxratesapi";
+  const pastDates = sampleDates(days, daily).filter(d => !liveOk || d !== todayStr);
   const rows = await mapLimit(pastDates, daily ? 8 : 6, async (dt)=>{
     const d = await fetchJson(`${HIST_URL}?date=${dt}&base=USD${curParam}`);
     const r = d.rates || {};
@@ -972,13 +976,14 @@ async function buildSeries(b, q, days, daily){
     return isFinite(v) ? { date:dt, value:v } : null;
   });
   const arr = rows.filter(Boolean);
-  const live = pairRate(b, q);                 // 실시간 최신값을 오늘 점으로
-  if(isFinite(live)) arr.push({ date:todayStr, value:live });
+  const live = pairRate(b, q);                 // 실시간 최신값을 오늘 점으로(fxratesapi일 때만)
+  if(liveOk && isFinite(live)) arr.push({ date:todayStr, value:live });
   arr.sort((a,b2)=> a.date < b2.date ? -1 : 1);
   return arr;
 }
 // 최신값 갱신 시: 캐시된 시계열들의 '오늘' 점만 실시간 값으로 업데이트(추가 요청 없음)
 function refreshLivePoint(){
+  if(fxSource !== "fxratesapi") return;        // 폴백 값은 그래프에 섞지 않는다(위 buildSeries 주석 참고)
   const todayStr = tfYmd(new Date());
   Object.keys(seriesCache).forEach(key=>{
     const arr = seriesCache[key]; if(!arr || !arr.length) return;
